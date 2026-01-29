@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Root Menu -->
+    <menuitem
+        id="menu_tool_borrow_root"
+        name="Tool Borrow"
+        sequence="50"
+        groups="tool_borrow.group_tool_user,base.group_portal"
+        web_icon="tool_borrow,static/description/icon.png"/>
+
+    <!-- Tools Menu -->
+    <menuitem
+        id="menu_tool_tools"
+        name="Tools"
+        parent="menu_tool_borrow_root"
+        action="tool_tool_action"
+        sequence="10"
+        groups="tool_borrow.group_tool_user,base.group_portal"/>
+
+    <!-- Loan Requests Menu (for managers to see all) -->
+    <menuitem
+        id="menu_tool_loans"
+        name="Loan Requests"
+        parent="menu_tool_borrow_root"
+        action="tool_loan_action"
+        sequence="20"
+        groups="tool_borrow.group_tool_manager"/>
+
+    <!-- My Loans Menu -->
+    <menuitem
+        id="menu_tool_my_loans"
+        name="My Loans"
+        parent="menu_tool_borrow_root"
+        action="tool_loan_action_my"
+        sequence="30"
+        groups="tool_borrow.group_tool_user,base.group_portal"/>
+
+    <!-- Configuration Menu -->
+    <menuitem
+        id="menu_tool_config"
+        name="Configuration"
+        parent="menu_tool_borrow_root"
+        sequence="100"
+        groups="tool_borrow.group_tool_admin"/>
+
+    <!-- Tool Stages Menu -->
+    <menuitem
+        id="menu_tool_stages"
+        name="Tool Stages"
+        parent="menu_tool_config"
+        action="tool_stage_action"
+        sequence="10"/>
+
+    <!-- Tool Categories Menu -->
+    <menuitem
+        id="menu_tool_categories"
+        name="Tool Categories"
+        parent="menu_tool_config"
+        action="tool_category_action"
+        sequence="20"/>
+</odoo>

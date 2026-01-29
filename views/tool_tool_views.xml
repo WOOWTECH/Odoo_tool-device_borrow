@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tool Stage Views -->
+    <record id="tool_stage_view_list" model="ir.ui.view">
+        <field name="name">tool.stage.list</field>
+        <field name="model">tool.stage</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="is_closed"/>
+                <field name="fold"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="tool_stage_view_form" model="ir.ui.view">
+        <field name="name">tool.stage.form</field>
+        <field name="model">tool.stage</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="sequence"/>
+                        </group>
+                        <group>
+                            <field name="is_closed"/>
+                            <field name="fold"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="description"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="tool_stage_action" model="ir.actions.act_window">
+        <field name="name">Tool Stages</field>
+        <field name="res_model">tool.stage</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Tool Category Views -->
+    <record id="tool_category_view_list" model="ir.ui.view">
+        <field name="name">tool.category.list</field>
+        <field name="model">tool.category</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="tool_count"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="tool_category_view_form" model="ir.ui.view">
+        <field name="name">tool.category.form</field>
+        <field name="model">tool.category</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" placeholder="Category Name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <field name="description"/>
+                    </group>
+                    <notebook>
+                        <page string="Properties Definition" name="properties_def">
+                            <field name="tool_properties_definition"/>
+                        </page>
+                        <page string="Tools" name="tools">
+                            <field name="tool_ids" readonly="1">
+                                <list>
+                                    <field name="code"/>
+                                    <field name="name"/>
+                                    <field name="stage_id"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="tool_category_action" model="ir.actions.act_window">
+        <field name="name">Tool Categories</field>
+        <field name="res_model">tool.category</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Tool List View (Odoo 18 syntax) -->
+    <record id="tool_tool_view_list" model="ir.ui.view">
+        <field name="name">tool.tool.list</field>
+        <field name="model">tool.tool</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="category_id" optional="hide"/>
+                <field name="stage_id" widget="badge"/>
+                <field name="state" widget="badge" decoration-success="state == 'available'" decoration-warning="state == 'borrowed'" decoration-danger="state == 'maintenance'" optional="hide"/>
+                <field name="portal_user_ids" widget="many2many_tags"/>
+                <field name="current_borrower_id"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Tool Form View -->
+    <record id="tool_tool_view_form" model="ir.ui.view">
+        <field name="name">tool.tool.form</field>
+        <field name="model">tool.tool</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_set_maintenance" type="object" string="Set to Maintenance" class="btn-secondary" invisible="state != 'available'" groups="tool_borrow.group_tool_admin"/>
+                    <button name="action_set_available" type="object" string="Set to Available" class="btn-primary" invisible="state != 'maintenance'" groups="tool_borrow.group_tool_admin"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" placeholder="Tool Name"/>
+                        </h1>
+                    </div>
+                    <!-- Status Section: Stage (Service Status) and State (Borrow Status) side by side -->
+                    <group>
+                        <group string="Service Status">
+                            <field name="stage_id" widget="selection" string="Stage"/>
+                        </group>
+                        <group string="Borrow Status">
+                            <field name="state" readonly="1" widget="badge" decoration-success="state == 'available'" decoration-warning="state == 'borrowed'" decoration-danger="state == 'maintenance'" string="Status"/>
+                            <field name="current_borrower_id" readonly="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="code"/>
+                            <field name="category_id" options="{'no_create': False}"/>
+                        </group>
+                        <group>
+                            <field name="portal_user_ids" widget="many2many_tags"/>
+                            <field name="active" invisible="1"/>
+                        </group>
+                    </group>
+                    <!-- Dynamic Properties (like Project tasks) -->
+                    <field name="tool_properties" columns="2"/>
+                    <notebook>
+                        <page string="Loan History" name="loan_history">
+                            <field name="loan_ids" readonly="1">
+                                <list>
+                                    <field name="user_id"/>
+                                    <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-warning="state in ('pending', 'approved')" decoration-success="state == 'returned'" decoration-primary="state == 'borrowed'" decoration-danger="state == 'rejected'"/>
+                                    <field name="request_date"/>
+                                    <field name="borrow_date"/>
+                                    <field name="return_date"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Custom Properties" name="custom_properties">
+                            <field name="property_ids">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name"/>
+                                    <field name="value"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Notes" name="notes">
+                            <field name="notes" placeholder="Add notes about this tool..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tool Search View -->
+    <record id="tool_tool_view_search" model="ir.ui.view">
+        <field name="name">tool.tool.search</field>
+        <field name="model">tool.tool</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="category_id"/>
+                <field name="stage_id"/>
+                <separator/>
+                <filter string="Available" name="available" domain="[('state', '=', 'available')]"/>
+                <filter string="Borrowed" name="borrowed" domain="[('state', '=', 'borrowed')]"/>
+                <filter string="Maintenance" name="maintenance" domain="[('state', '=', 'maintenance')]"/>
+                <separator/>
+                <filter string="Has Portal Access" name="has_portal_access" domain="[('portal_user_ids', '!=', False)]"/>
+                <separator/>
+                <filter string="Archived" name="archived" domain="[('active', '=', False)]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Stage" name="group_stage" context="{'group_by': 'stage_id'}"/>
+                    <filter string="Category" name="group_category" context="{'group_by': 'category_id'}"/>
+                    <filter string="Status" name="group_state" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Tool Action -->
+    <record id="tool_tool_action" model="ir.actions.act_window">
+        <field name="name">Tools</field>
+        <field name="res_model">tool.tool</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="tool_tool_view_search"/>
+        <field name="context">{'search_default_available': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first tool
+            </p>
+            <p>
+                Add tools that can be borrowed by users.
+            </p>
+        </field>
+    </record>
+</odoo>
