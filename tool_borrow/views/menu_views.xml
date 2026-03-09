@@ -5,7 +5,7 @@
         id="menu_tool_borrow_root"
         name="Tool Borrow"
         sequence="50"
-        groups="tool_borrow.group_tool_user,base.group_portal"
+        groups="tool_borrow.group_tool_user"
         web_icon="tool_borrow,static/description/icon.png"/>
 
     <!-- Tools Menu -->
@@ -15,7 +15,7 @@
         parent="menu_tool_borrow_root"
         action="tool_tool_action"
         sequence="10"
-        groups="tool_borrow.group_tool_user,base.group_portal"/>
+        groups="tool_borrow.group_tool_user"/>
 
     <!-- Loan Requests Menu (for managers to see all) -->
     <menuitem
@@ -33,7 +33,7 @@
         parent="menu_tool_borrow_root"
         action="tool_loan_action_my"
         sequence="30"
-        groups="tool_borrow.group_tool_user,base.group_portal"/>
+        groups="tool_borrow.group_tool_user"/>
 
     <!-- Configuration Menu -->
     <menuitem
