@@ -15,7 +15,7 @@ This module provides functionality to manage internal tool/device lending:
 * Access control with User/Manager/Admin levels
     """,
     'author': 'WoowTech',
-    'website': 'https://www.woowtech.com',
+    'website': 'https://aiot.woowtech.io/',
     'depends': ['base', 'mail', 'portal'],
     'data': [
         'security/tool_borrow_security.xml',
