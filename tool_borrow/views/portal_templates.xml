@@ -70,53 +70,6 @@
         </xpath>
     </template>
 
-    <!-- Replace Invoice cards with MDI icons -->
-    <template id="portal_my_home_invoice_mdi" name="Invoice MDI Icons" inherit_id="account.portal_my_home_invoice" priority="99">
-        <!-- Replace Your Invoices card -->
-        <xpath expr="//div[@id='portal_client_category']/t[@t-call='portal.portal_docs_entry'][1]" position="replace">
-            <t t-call="tool_borrow.portal_docs_entry_mdi">
-                <t t-set="icon_class">mdi mdi-file-document-outline</t>
-                <t t-set="title">您的發票</t>
-                <t t-set="url" t-value="'/my/invoices?filterby=invoices'"/>
-                <t t-set="text">追蹤、下載或支付您的發票</t>
-                <t t-set="placeholder_count" t-value="'invoice_count'"/>
-            </t>
-        </xpath>
-        <!-- Replace Our Invoices card -->
-        <xpath expr="//div[@id='portal_vendor_category']/t[@t-call='portal.portal_docs_entry']" position="replace">
-            <t t-call="tool_borrow.portal_docs_entry_mdi">
-                <t t-set="icon_class">mdi mdi-file-document-multiple-outline</t>
-                <t t-set="title">我們的發票</t>
-                <t t-set="url" t-value="'/my/invoices?filterby=bills'"/>
-                <t t-set="text">追蹤、下載或支付我們的發票</t>
-                <t t-set="placeholder_count" t-value="'bill_count'"/>
-            </t>
-        </xpath>
-    </template>
-
-    <!-- Replace Project/Task cards with MDI icons -->
-    <template id="portal_my_home_project_mdi" name="Project MDI Icons" inherit_id="project.portal_my_home" priority="99">
-        <!-- Replace all portal_docs_entry in portal_service_category with MDI versions -->
-        <xpath expr="//div[@id='portal_service_category']" position="replace">
-            <div class="o_portal_category row g-2 mt-3" id="portal_service_category">
-                <t t-call="tool_borrow.portal_docs_entry_mdi">
-                    <t t-set="icon_class">mdi mdi-folder-outline</t>
-                    <t t-set="title">專案</t>
-                    <t t-set="url" t-value="'/my/projects'"/>
-                    <t t-set="text">追蹤專案發展</t>
-                    <t t-set="placeholder_count" t-value="'project_count'"/>
-                </t>
-                <t t-call="tool_borrow.portal_docs_entry_mdi">
-                    <t t-set="icon_class">mdi mdi-clipboard-check-outline</t>
-                    <t t-set="title">任務</t>
-                    <t t-set="url" t-value="'/my/tasks'"/>
-                    <t t-set="text">追蹤專案任務並發表評論</t>
-                    <t t-set="placeholder_count" t-value="'task_count'"/>
-                </t>
-            </div>
-        </xpath>
-    </template>
-
     <!-- Portal Tools List -->
     <template id="portal_my_tools" name="My Tools">
         <t t-call="portal.portal_layout">
@@ -140,11 +93,11 @@
                                 <div class="card-body">
                                     <h5 class="card-title">
                                         <a t-attf-href="/my/tools/#{tool.id}">
-                                            <t t-esc="tool.name"/>
+                                            <t t-out="tool.name"/>
                                         </a>
                                     </h5>
                                     <p class="card-text text-muted">
-                                        <small>編號: <t t-esc="tool.code"/></small>
+                                        <small>編號: <t t-out="tool.code"/></small>
                                     </p>
                                     <p class="card-text">
                                         <span t-if="tool.state == 'available'" class="badge bg-success">可借用</span>
@@ -153,7 +106,7 @@
                                     </p>
                                     <t t-if="tool.category_id">
                                         <p class="card-text">
-                                            <small class="text-muted">類別: <t t-esc="tool.category_id.name"/></small>
+                                            <small class="text-muted">類別: <t t-out="tool.category_id.name"/></small>
                                         </p>
                                     </t>
                                 </div>
@@ -182,7 +135,7 @@
                     <div class="row">
                         <div class="col-12 col-md-8">
                             <h4 class="mb-0">
-                                <t t-esc="tool.name"/>
+                                <t t-out="tool.name"/>
                                 <span class="ms-2" t-if="tool.state == 'available'">
                                     <span class="badge bg-success">可借用</span>
                                 </span>
@@ -195,7 +148,7 @@
                             </h4>
                         </div>
                         <div class="col-12 col-md-4 text-md-end">
-                            <small class="text-muted">編號: <t t-esc="tool.code"/></small>
+                            <small class="text-muted">編號: <t t-out="tool.code"/></small>
                         </div>
                     </div>
                 </div>
@@ -203,19 +156,19 @@
                     <div class="row mb-4">
                         <div class="col-12 col-md-6">
                             <strong>階段:</strong>
-                            <t t-if="tool.stage_id"><t t-esc="tool.stage_id.name"/></t>
+                            <t t-if="tool.stage_id"><t t-out="tool.stage_id.name"/></t>
                             <t t-else="">-</t>
                         </div>
                         <div class="col-12 col-md-6">
                             <strong>類別:</strong>
-                            <t t-if="tool.category_id"><t t-esc="tool.category_id.name"/></t>
+                            <t t-if="tool.category_id"><t t-out="tool.category_id.name"/></t>
                             <t t-else="">-</t>
                         </div>
                     </div>
 
                     <t t-if="tool.current_borrower_id">
                         <div class="alert alert-info">
-                            <strong>目前借用者:</strong> <t t-esc="tool.current_borrower_id.name"/>
+                            <strong>目前借用者:</strong> <t t-out="tool.current_borrower_id.name"/>
                         </div>
                     </t>
 
@@ -251,7 +204,7 @@
 
             <div class="mt-4">
                 <a href="/my/tools" class="btn btn-secondary">
-                    <i class="fa fa-arrow-left"></i> 返回工具列表
+                    <i class="mdi mdi-arrow-left"></i> 返回工具列表
                 </a>
             </div>
         </t>
@@ -289,14 +242,14 @@
                                 <tr>
                                     <td>
                                         <a t-attf-href="/my/loans/#{loan.id}">
-                                            <t t-esc="loan.tool_id.name"/>
+                                            <t t-out="loan.tool_id.name"/>
                                         </a>
                                         <br/>
-                                        <small class="text-muted"><t t-esc="loan.tool_id.code"/></small>
+                                        <small class="text-muted"><t t-out="loan.tool_id.code"/></small>
                                     </td>
                                     <td>
                                         <t t-if="loan.request_date">
-                                            <t t-esc="loan.request_date"/>
+                                            <t t-out="loan.request_date"/>
                                         </t>
                                         <t t-else="">-</t>
                                     </td>
@@ -334,7 +287,7 @@
                     <div class="row">
                         <div class="col-12 col-md-8">
                             <h4 class="mb-0">
-                                借用請求: <t t-esc="loan.tool_id.name"/>
+                                借用請求: <t t-out="loan.tool_id.name"/>
                             </h4>
                         </div>
                         <div class="col-12 col-md-4 text-md-end">
@@ -352,25 +305,25 @@
                         <div class="col-12 col-md-6">
                             <strong>工具:</strong>
                             <a t-attf-href="/my/tools/#{loan.tool_id.id}">
-                                <t t-esc="loan.tool_id.name"/>
+                                <t t-out="loan.tool_id.name"/>
                             </a>
-                            (<t t-esc="loan.tool_id.code"/>)
+                            (<t t-out="loan.tool_id.code"/>)
                         </div>
                         <div class="col-12 col-md-6">
                             <strong>借用人:</strong>
-                            <t t-esc="loan.user_id.name"/>
+                            <t t-out="loan.user_id.name"/>
                         </div>
                     </div>
 
                     <div class="row mb-3">
                         <div class="col-12 col-md-6">
                             <strong>申請日期:</strong>
-                            <t t-if="loan.request_date"><t t-esc="loan.request_date"/></t>
+                            <t t-if="loan.request_date"><t t-out="loan.request_date"/></t>
                             <t t-else="">-</t>
                         </div>
                         <div class="col-12 col-md-6">
                             <strong>批准日期:</strong>
-                            <t t-if="loan.approved_date"><t t-esc="loan.approved_date"/></t>
+                            <t t-if="loan.approved_date"><t t-out="loan.approved_date"/></t>
                             <t t-else="">-</t>
                         </div>
                     </div>
@@ -378,12 +331,12 @@
                     <div class="row mb-3">
                         <div class="col-12 col-md-6">
                             <strong>借出日期:</strong>
-                            <t t-if="loan.borrow_date"><t t-esc="loan.borrow_date"/></t>
+                            <t t-if="loan.borrow_date"><t t-out="loan.borrow_date"/></t>
                             <t t-else="">-</t>
                         </div>
                         <div class="col-12 col-md-6">
                             <strong>歸還日期:</strong>
-                            <t t-if="loan.return_date"><t t-esc="loan.return_date"/></t>
+                            <t t-if="loan.return_date"><t t-out="loan.return_date"/></t>
                             <t t-else="">-</t>
                         </div>
                     </div>
@@ -392,7 +345,7 @@
                         <div class="row mb-3">
                             <div class="col-12">
                                 <strong>批准人:</strong>
-                                <t t-esc="loan.approved_by.name"/>
+                                <t t-out="loan.approved_by.name"/>
                             </div>
                         </div>
                     </t>
@@ -400,7 +353,7 @@
                     <t t-if="loan.notes">
                         <div class="mb-3">
                             <strong>備註:</strong>
-                            <p><t t-esc="loan.notes"/></p>
+                            <p><t t-out="loan.notes"/></p>
                         </div>
                     </t>
 
@@ -409,25 +362,25 @@
                         <h5>狀態時間軸</h5>
                         <ul class="list-group">
                             <li class="list-group-item" t-att-class="'list-group-item-success' if loan.state in ['draft', 'pending', 'approved', 'borrowed', 'returned'] else ''">
-                                <i class="fa fa-check-circle text-success" t-if="loan.state in ['pending', 'approved', 'borrowed', 'returned']"/>
-                                <i class="fa fa-circle text-muted" t-else=""/>
+                                <i class="mdi mdi-check-circle text-success" t-if="loan.state in ['pending', 'approved', 'borrowed', 'returned']"/>
+                                <i class="mdi mdi-circle-outline text-muted" t-else=""/>
                                 草稿 / 已提交
                             </li>
                             <li class="list-group-item" t-att-class="'list-group-item-success' if loan.state in ['approved', 'borrowed', 'returned'] else ('list-group-item-danger' if loan.state == 'rejected' else '')">
-                                <i class="fa fa-check-circle text-success" t-if="loan.state in ['approved', 'borrowed', 'returned']"/>
-                                <i class="fa fa-times-circle text-danger" t-if="loan.state == 'rejected'"/>
-                                <i class="fa fa-circle text-muted" t-if="loan.state in ['draft', 'pending']"/>
+                                <i class="mdi mdi-check-circle text-success" t-if="loan.state in ['approved', 'borrowed', 'returned']"/>
+                                <i class="mdi mdi-close-circle text-danger" t-if="loan.state == 'rejected'"/>
+                                <i class="mdi mdi-circle-outline text-muted" t-if="loan.state in ['draft', 'pending']"/>
                                 <t t-if="loan.state == 'rejected'">已拒絕</t>
                                 <t t-else="">已批准</t>
                             </li>
                             <li class="list-group-item" t-att-class="'list-group-item-success' if loan.state in ['borrowed', 'returned'] else ''">
-                                <i class="fa fa-check-circle text-success" t-if="loan.state in ['borrowed', 'returned']"/>
-                                <i class="fa fa-circle text-muted" t-else=""/>
+                                <i class="mdi mdi-check-circle text-success" t-if="loan.state in ['borrowed', 'returned']"/>
+                                <i class="mdi mdi-circle-outline text-muted" t-else=""/>
                                 已借出
                             </li>
                             <li class="list-group-item" t-att-class="'list-group-item-success' if loan.state == 'returned' else ''">
-                                <i class="fa fa-check-circle text-success" t-if="loan.state == 'returned'"/>
-                                <i class="fa fa-circle text-muted" t-else=""/>
+                                <i class="mdi mdi-check-circle text-success" t-if="loan.state == 'returned'"/>
+                                <i class="mdi mdi-circle-outline text-muted" t-else=""/>
                                 已歸還
                             </li>
                         </ul>
@@ -437,7 +390,7 @@
 
             <div class="mt-4">
                 <a href="/my/loans" class="btn btn-secondary">
-                    <i class="fa fa-arrow-left"></i> 返回我的借用
+                    <i class="mdi mdi-arrow-left"></i> 返回我的借用
                 </a>
             </div>
         </t>
