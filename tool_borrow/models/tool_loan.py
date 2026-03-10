@@ -92,7 +92,7 @@ class ToolLoan(models.Model):
             'state': 'borrowed',
             'borrow_date': fields.Datetime.now(),
         })
-        # Note: tool.state is computed from current_loan_id.state, no direct assignment needed
+        self.tool_id.state = 'borrowed'
 
     def action_confirm_return(self):
         """Confirm tool has been returned"""
@@ -104,7 +104,7 @@ class ToolLoan(models.Model):
             'state': 'returned',
             'return_date': fields.Datetime.now(),
         })
-        # Note: tool.state is computed from current_loan_id.state, no direct assignment needed
+        self.tool_id.state = 'available'
 
     def action_reset_to_draft(self):
         """Reset rejected request to draft"""

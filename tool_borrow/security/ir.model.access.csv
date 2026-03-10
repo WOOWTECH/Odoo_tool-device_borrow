@@ -12,10 +12,6 @@ access_tool_property_internal,tool.property.internal,model_tool_property,base.gr
 access_tool_property_user,tool.property.user,model_tool_property,group_tool_user,1,0,0,0
 access_tool_property_admin,tool.property.admin,model_tool_property,group_tool_admin,1,1,1,1
 access_tool_property_portal,tool.property.portal,model_tool_property,base.group_portal,1,0,0,0
-access_tool_stage_internal,tool.stage.internal,model_tool_stage,base.group_user,1,1,1,1
-access_tool_stage_user,tool.stage.user,model_tool_stage,group_tool_user,1,0,0,0
-access_tool_stage_admin,tool.stage.admin,model_tool_stage,group_tool_admin,1,1,1,1
-access_tool_stage_portal,tool.stage.portal,model_tool_stage,base.group_portal,1,0,0,0
 access_tool_category_internal,tool.category.internal,model_tool_category,base.group_user,1,1,1,1
 access_tool_category_user,tool.category.user,model_tool_category,group_tool_user,1,0,0,0
 access_tool_category_admin,tool.category.admin,model_tool_category,group_tool_admin,1,1,1,1

@@ -477,26 +477,6 @@ msgid "Tool Name"
 msgstr "工具名稱"
 
 #. module: tool_borrow
-#: model:ir.model,name:tool_borrow.model_tool_stage
-msgid "Tool Stage"
-msgstr "工具階段"
-
-#. module: tool_borrow
-#: model:ir.model.fields,field_description:tool_borrow.field_tool_stage__name
-msgid "Stage Name"
-msgstr "階段名稱"
-
-#. module: tool_borrow
-#: model:ir.model.fields,field_description:tool_borrow.field_tool_stage__fold
-msgid "Folded in Kanban"
-msgstr "在看板中摺疊"
-
-#. module: tool_borrow
-#: model:ir.model.fields,field_description:tool_borrow.field_tool_stage__is_closed
-msgid "Is Closed Stage"
-msgstr "是否已關閉階段"
-
-#. module: tool_borrow
 #: model:ir.model,name:tool_borrow.model_tool_category
 msgid "Tool Category"
 msgstr "工具類別"
@@ -517,11 +497,6 @@ msgid "Tool Properties"
 msgstr "工具屬性"
 
 #. module: tool_borrow
-#: model:ir.model.fields,field_description:tool_borrow.field_tool_tool__stage_id
-msgid "Stage"
-msgstr "階段"
-
-#. module: tool_borrow
 #: model:ir.model.fields,field_description:tool_borrow.field_tool_tool__category_id
 msgid "Category"
 msgstr "類別"
@@ -530,12 +505,6 @@ msgstr "類別"
 #: model:ir.model.fields,field_description:tool_borrow.field_tool_tool__tool_properties
 msgid "Properties"
 msgstr "屬性"
-
-#. module: tool_borrow
-#: model:ir.actions.act_window,name:tool_borrow.tool_stage_action
-#: model:ir.ui.menu,name:tool_borrow.menu_tool_stages
-msgid "Tool Stages"
-msgstr "工具階段"
 
 #. module: tool_borrow
 #: model:ir.actions.act_window,name:tool_borrow.tool_category_action
@@ -549,44 +518,9 @@ msgid "Configuration"
 msgstr "設定"
 
 #. module: tool_borrow
-#: model:tool.stage,name:tool_borrow.tool_stage_in_service
-msgid "In Service"
-msgstr "服役中"
-
-#. module: tool_borrow
-#: model:tool.stage,name:tool_borrow.tool_stage_maintenance
-msgid "Under Maintenance"
-msgstr "維護中"
-
-#. module: tool_borrow
-#: model:tool.stage,name:tool_borrow.tool_stage_retired
-msgid "Retired"
-msgstr "已退役"
-
-#. module: tool_borrow
-#: model:tool.stage,description:tool_borrow.tool_stage_in_service
-msgid "Tool is in normal service condition"
-msgstr "工具處於正常服役狀態"
-
-#. module: tool_borrow
-#: model:tool.stage,description:tool_borrow.tool_stage_maintenance
-msgid "Tool is under maintenance"
-msgstr "工具維護中"
-
-#. module: tool_borrow
-#: model:tool.stage,description:tool_borrow.tool_stage_retired
-msgid "Tool has been retired and is no longer in use"
-msgstr "工具已退役，不再使用"
-
-#. module: tool_borrow
 #: model_terms:ir.ui.view,arch_db:tool_borrow.tool_tool_view_form
-msgid "Service Status"
-msgstr "服役狀態"
-
-#. module: tool_borrow
-#: model_terms:ir.ui.view,arch_db:tool_borrow.tool_tool_view_form
-msgid "Borrow Status"
-msgstr "借用狀態"
+msgid "Status"
+msgstr "狀態"
 
 #. module: tool_borrow
 #: model:tool.category,name:tool_borrow.tool_category_general

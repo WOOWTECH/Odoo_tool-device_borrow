@@ -43,14 +43,6 @@
         sequence="100"
         groups="tool_borrow.group_tool_admin"/>
 
-    <!-- Tool Stages Menu -->
-    <menuitem
-        id="menu_tool_stages"
-        name="Tool Stages"
-        parent="menu_tool_config"
-        action="tool_stage_action"
-        sequence="10"/>
-
     <!-- Tool Categories Menu -->
     <menuitem
         id="menu_tool_categories"
