@@ -60,7 +60,7 @@
             <list>
                 <field name="code"/>
                 <field name="name"/>
-                <field name="category_id" optional="hide"/>
+                <field name="category_id" optional="show"/>
                 <field name="state" widget="badge" decoration-success="state == 'available'" decoration-warning="state == 'borrowed'" decoration-danger="state == 'maintenance'"/>
                 <field name="portal_user_ids" widget="many2many_tags"/>
                 <field name="current_borrower_id"/>
