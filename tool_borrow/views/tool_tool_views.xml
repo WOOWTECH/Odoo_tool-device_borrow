@@ -93,7 +93,7 @@
                     </group>
                     <group>
                         <group>
-                            <field name="code" readonly="id"/>
+                            <field name="code" readonly="1" force_save="1"/>
                             <field name="category_id" options="{'no_create': False}"/>
                         </group>
                         <group>
