@@ -29,7 +29,7 @@ class ToolTool(models.Model):
     _order = 'name'
 
     name = fields.Char(string='Name', required=True, tracking=True)
-    code = fields.Char(string='Code', required=True, copy=False, tracking=True)
+    code = fields.Char(string='Code', required=True, default='New', copy=False, tracking=True)
 
     state = fields.Selection([
         ('available', 'Available'),
@@ -83,6 +83,13 @@ class ToolTool(models.Model):
     _sql_constraints = [
         ('code_uniq', 'unique(code)', 'Tool code must be unique!'),
     ]
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if not vals.get('code') or vals['code'] == 'New':
+                vals['code'] = self.env['ir.sequence'].next_by_code('tool.tool') or 'New'
+        return super().create(vals_list)
 
     @api.depends('loan_ids', 'loan_ids.state')
     def _compute_current_loan(self):

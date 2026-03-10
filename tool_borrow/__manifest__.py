@@ -20,6 +20,7 @@ This module provides functionality to manage internal tool/device lending:
     'data': [
         'security/tool_borrow_security.xml',
         'security/ir.model.access.csv',
+        'data/tool_sequence_data.xml',
         'data/tool_category_data.xml',
         'views/tool_tool_views.xml',
         'views/tool_loan_views.xml',
