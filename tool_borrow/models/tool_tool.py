@@ -14,6 +14,8 @@ class ToolStage(models.Model):
         help='This stage is folded in the kanban view when there are no records in that stage to display.')
     is_closed = fields.Boolean(string='Is Closed Stage',
         help='Tools in this stage are considered closed/unavailable.')
+    is_maintenance = fields.Boolean(string='Is Maintenance Stage',
+        help='Tools in this stage are considered under maintenance and unavailable for borrowing.')
     description = fields.Text(string='Description', translate=True)
 
     _sql_constraints = [
@@ -124,12 +126,14 @@ class ToolTool(models.Model):
         """Return all stages for group_expand in kanban view"""
         return stages.search([])
 
-    @api.depends('stage_id', 'stage_id.is_closed', 'current_loan_id', 'current_loan_id.state')
+    @api.depends('stage_id', 'stage_id.is_closed', 'stage_id.is_maintenance', 'current_loan_id', 'current_loan_id.state')
     def _compute_state(self):
         """Compute state based on stage and borrowing status"""
         for tool in self:
             if tool.current_loan_id and tool.current_loan_id.state == 'borrowed':
                 tool.state = 'borrowed'
+            elif tool.stage_id and tool.stage_id.is_maintenance:
+                tool.state = 'maintenance'
             elif tool.stage_id and tool.stage_id.is_closed:
                 tool.state = 'maintenance'
             else:
@@ -147,7 +151,7 @@ class ToolTool(models.Model):
         if self.state == 'borrowed':
             raise UserError(_('Cannot set tool to maintenance while it is borrowed.'))
         # Find maintenance stage
-        maintenance_stage = self.env['tool.stage'].search([('is_closed', '=', True)], limit=1)
+        maintenance_stage = self.env['tool.stage'].search([('is_maintenance', '=', True)], limit=1)
         if maintenance_stage:
             self.stage_id = maintenance_stage
 
@@ -156,7 +160,7 @@ class ToolTool(models.Model):
         if self.state == 'borrowed':
             raise UserError(_('Cannot set tool to available while it is borrowed. Please confirm return first.'))
         # Find available stage
-        available_stage = self.env['tool.stage'].search([('is_closed', '=', False)], limit=1)
+        available_stage = self.env['tool.stage'].search([('is_closed', '=', False), ('is_maintenance', '=', False)], limit=1)
         if available_stage:
             self.stage_id = available_stage
 

@@ -16,7 +16,7 @@ class ToolBorrowPortal(CustomerPortal):
     def _prepare_home_portal_values(self, counters):
         values = super()._prepare_home_portal_values(counters)
         if 'tool_count' in counters:
-            values['tool_count'] = request.env['tool.tool'].search_count([])
+            values['tool_count'] = request.env['tool.tool'].search_count([('portal_user_ids', 'in', request.env.user.id)])
         if 'loan_count' in counters:
             values['loan_count'] = request.env['tool.loan'].search_count([
                 ('user_id', '=', request.env.user.id)
@@ -32,7 +32,7 @@ class ToolBorrowPortal(CustomerPortal):
         values = self._prepare_portal_layout_values()
         Tool = request.env['tool.tool']
 
-        domain = []
+        domain = [('portal_user_ids', 'in', request.env.user.id)]
 
         # Default sort by name
         searchbar_sortings = {
@@ -77,7 +77,7 @@ class ToolBorrowPortal(CustomerPortal):
     @http.route(['/my/tools/<int:tool_id>'], type='http', auth='user', website=True)
     def portal_my_tool_detail(self, tool_id, **kw):
         tool = request.env['tool.tool'].browse(tool_id)
-        if not tool.exists():
+        if not tool.exists() or request.env.user.id not in tool.portal_user_ids.ids:
             return request.redirect('/my/tools')
 
         values = self._prepare_portal_layout_values()
@@ -164,7 +164,7 @@ class ToolBorrowPortal(CustomerPortal):
     @http.route(['/my/tools/<int:tool_id>/request'], type='http', auth='user', website=True, methods=['POST'])
     def portal_request_tool(self, tool_id, **kw):
         tool = request.env['tool.tool'].browse(tool_id)
-        if not tool.exists() or tool.state != 'available':
+        if not tool.exists() or tool.state != 'available' or request.env.user.id not in tool.portal_user_ids.ids:
             return request.redirect('/my/tools')
 
         # Create loan request
