@@ -14,6 +14,7 @@
             <field name="name">Under Maintenance</field>
             <field name="sequence">20</field>
             <field name="is_closed">False</field>
+            <field name="is_maintenance">True</field>
             <field name="fold">False</field>
             <field name="description">Tool is under maintenance</field>
         </record>

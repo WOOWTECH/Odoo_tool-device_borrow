@@ -9,6 +9,7 @@
                 <field name="sequence" widget="handle"/>
                 <field name="name"/>
                 <field name="is_closed"/>
+                <field name="is_maintenance"/>
                 <field name="fold"/>
             </list>
         </field>
@@ -27,6 +28,7 @@
                         </group>
                         <group>
                             <field name="is_closed"/>
+                            <field name="is_maintenance"/>
                             <field name="fold"/>
                         </group>
                     </group>
