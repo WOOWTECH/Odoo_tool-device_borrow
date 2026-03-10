@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Default Tool Category -->
+        <record id="tool_category_general" model="tool.category">
+            <field name="name">General Tools</field>
+            <field name="description">General purpose tools without specific category</field>
+        </record>
+    </data>
+</odoo>

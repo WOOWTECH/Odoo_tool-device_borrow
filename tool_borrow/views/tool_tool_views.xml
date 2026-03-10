@@ -1,51 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Tool Stage Views -->
-    <record id="tool_stage_view_list" model="ir.ui.view">
-        <field name="name">tool.stage.list</field>
-        <field name="model">tool.stage</field>
-        <field name="arch" type="xml">
-            <list editable="bottom">
-                <field name="sequence" widget="handle"/>
-                <field name="name"/>
-                <field name="is_closed"/>
-                <field name="is_maintenance"/>
-                <field name="fold"/>
-            </list>
-        </field>
-    </record>
-
-    <record id="tool_stage_view_form" model="ir.ui.view">
-        <field name="name">tool.stage.form</field>
-        <field name="model">tool.stage</field>
-        <field name="arch" type="xml">
-            <form>
-                <sheet>
-                    <group>
-                        <group>
-                            <field name="name"/>
-                            <field name="sequence"/>
-                        </group>
-                        <group>
-                            <field name="is_closed"/>
-                            <field name="is_maintenance"/>
-                            <field name="fold"/>
-                        </group>
-                    </group>
-                    <group>
-                        <field name="description"/>
-                    </group>
-                </sheet>
-            </form>
-        </field>
-    </record>
-
-    <record id="tool_stage_action" model="ir.actions.act_window">
-        <field name="name">Tool Stages</field>
-        <field name="res_model">tool.stage</field>
-        <field name="view_mode">list,form</field>
-    </record>
-
     <!-- Tool Category Views -->
     <record id="tool_category_view_list" model="ir.ui.view">
         <field name="name">tool.category.list</field>
@@ -82,7 +36,7 @@
                                 <list>
                                     <field name="code"/>
                                     <field name="name"/>
-                                    <field name="stage_id"/>
+                                    <field name="state" widget="badge" decoration-success="state == 'available'" decoration-warning="state == 'borrowed'" decoration-danger="state == 'maintenance'"/>
                                 </list>
                             </field>
                         </page>
@@ -107,8 +61,7 @@
                 <field name="code"/>
                 <field name="name"/>
                 <field name="category_id" optional="hide"/>
-                <field name="stage_id" widget="badge"/>
-                <field name="state" widget="badge" decoration-success="state == 'available'" decoration-warning="state == 'borrowed'" decoration-danger="state == 'maintenance'" optional="hide"/>
+                <field name="state" widget="badge" decoration-success="state == 'available'" decoration-warning="state == 'borrowed'" decoration-danger="state == 'maintenance'"/>
                 <field name="portal_user_ids" widget="many2many_tags"/>
                 <field name="current_borrower_id"/>
             </list>
@@ -132,13 +85,9 @@
                             <field name="name" placeholder="Tool Name"/>
                         </h1>
                     </div>
-                    <!-- Status Section: Stage (Service Status) and State (Borrow Status) side by side -->
                     <group>
-                        <group string="Service Status">
-                            <field name="stage_id" widget="selection" string="Stage"/>
-                        </group>
-                        <group string="Borrow Status">
-                            <field name="state" readonly="1" widget="badge" decoration-success="state == 'available'" decoration-warning="state == 'borrowed'" decoration-danger="state == 'maintenance'" string="Status"/>
+                        <group string="Status">
+                            <field name="state" readonly="1" widget="badge" decoration-success="state == 'available'" decoration-warning="state == 'borrowed'" decoration-danger="state == 'maintenance'"/>
                             <field name="current_borrower_id" readonly="1"/>
                         </group>
                     </group>
@@ -194,7 +143,6 @@
                 <field name="name"/>
                 <field name="code"/>
                 <field name="category_id"/>
-                <field name="stage_id"/>
                 <separator/>
                 <filter string="Available" name="available" domain="[('state', '=', 'available')]"/>
                 <filter string="Borrowed" name="borrowed" domain="[('state', '=', 'borrowed')]"/>
@@ -204,7 +152,6 @@
                 <separator/>
                 <filter string="Archived" name="archived" domain="[('active', '=', False)]"/>
                 <group expand="0" string="Group By">
-                    <filter string="Stage" name="group_stage" context="{'group_by': 'stage_id'}"/>
                     <filter string="Category" name="group_category" context="{'group_by': 'category_id'}"/>
                     <filter string="Status" name="group_state" context="{'group_by': 'state'}"/>
                 </group>

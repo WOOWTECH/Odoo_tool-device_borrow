@@ -155,9 +155,10 @@
                 <div class="card-body">
                     <div class="row mb-4">
                         <div class="col-12 col-md-6">
-                            <strong>階段:</strong>
-                            <t t-if="tool.stage_id"><t t-out="tool.stage_id.name"/></t>
-                            <t t-else="">-</t>
+                            <strong>狀態:</strong>
+                            <span t-if="tool.state == 'available'" class="badge bg-success">可借用</span>
+                            <span t-elif="tool.state == 'borrowed'" class="badge bg-warning">已借出</span>
+                            <span t-elif="tool.state == 'maintenance'" class="badge bg-danger">維護中</span>
                         </div>
                         <div class="col-12 col-md-6">
                             <strong>類別:</strong>
