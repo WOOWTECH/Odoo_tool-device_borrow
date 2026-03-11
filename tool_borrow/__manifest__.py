@@ -1,6 +1,6 @@
 {
     'name': 'Tool Borrow',
-    'version': '18.0.1.0.0',
+    'version': '18.0.1.2.0',
     'category': 'Inventory',
     'summary': 'Manage tool and device borrowing with approval workflow',
     'description': """
@@ -28,6 +28,7 @@ This module provides functionality to manage internal tool/device lending:
         'views/menu_views.xml',
         'views/portal_templates.xml',
     ],
+    'post_init_hook': '_post_init_hook',
     'installable': True,
     'application': True,
     'license': 'LGPL-3',

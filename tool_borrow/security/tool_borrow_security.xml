@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- Delete stale access records from previous CSV rows -->
+    <delete model="ir.model.access" search="[('id', '=', ref('access_tool_tool_internal'))]"/>
+    <delete model="ir.model.access" search="[('id', '=', ref('access_tool_loan_internal'))]"/>
+    <delete model="ir.model.access" search="[('id', '=', ref('access_tool_property_internal'))]"/>
+    <delete model="ir.model.access" search="[('id', '=', ref('access_tool_category_internal'))]"/>
+    <!-- Delete stale ir.rule -->
+    <delete model="ir.rule" search="[('id', '=', ref('tool_tool_rule_internal'))]"/>
+
     <!-- Module Category -->
     <record id="module_category_tool_borrow" model="ir.module.category">
         <field name="name">Tool Borrow</field>
@@ -30,16 +38,16 @@
     </record>
 
     <!-- Record Rules -->
-    <!-- Internal Users (base.group_user) - Full access to all records -->
-    <record id="tool_tool_rule_internal" model="ir.rule">
-        <field name="name">Tool: Internal users full access</field>
+    <!-- Manager - read/write access to all tool records -->
+    <record id="tool_tool_rule_manager" model="ir.rule">
+        <field name="name">Tool: Manager read/write access</field>
         <field name="model_id" ref="model_tool_tool"/>
         <field name="domain_force">[(1, '=', 1)]</field>
-        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+        <field name="groups" eval="[(4, ref('group_tool_manager'))]"/>
         <field name="perm_read" eval="True"/>
         <field name="perm_write" eval="True"/>
-        <field name="perm_create" eval="True"/>
-        <field name="perm_unlink" eval="True"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
     </record>
 
     <!-- Tool Rules -->
