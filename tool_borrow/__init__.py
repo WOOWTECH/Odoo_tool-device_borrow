@@ -25,3 +25,18 @@ def _post_init_hook(env):
         menu = env.ref(xmlid, raise_if_not_found=False)
         if menu:
             menu.write({'groups_id': [(6, 0, [admin_group.id])]})
+
+    # Force-replace action groups to prevent User role from accessing backend via direct URL
+    for xmlid in [
+        'tool_borrow.tool_tool_action',
+        'tool_borrow.tool_loan_action',
+        'tool_borrow.tool_loan_action_my',
+    ]:
+        action = env.ref(xmlid, raise_if_not_found=False)
+        if action:
+            action.write({'groups_id': [(6, 0, [manager_group.id])]})
+
+    for xmlid in ['tool_borrow.tool_category_action']:
+        action = env.ref(xmlid, raise_if_not_found=False)
+        if action:
+            action.write({'groups_id': [(6, 0, [admin_group.id])]})
