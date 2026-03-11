@@ -92,6 +92,7 @@
         <field name="res_model">tool.loan</field>
         <field name="view_mode">list,form</field>
         <field name="search_view_id" ref="tool_loan_view_search"/>
+        <field name="groups_id" eval="[(4, ref('tool_borrow.group_tool_manager'))]"/>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 No loan requests yet
@@ -108,6 +109,7 @@
         <field name="res_model">tool.loan</field>
         <field name="view_mode">list,form</field>
         <field name="search_view_id" ref="tool_loan_view_search"/>
+        <field name="groups_id" eval="[(4, ref('tool_borrow.group_tool_manager'))]"/>
         <field name="context">{'search_default_my_loans': 1}</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
