@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Root Menu -->
+    <!-- Root Menu (groups set via record tags below) -->
     <menuitem
         id="menu_tool_borrow_root"
         name="Tool Borrow"
         sequence="50"
-        groups="tool_borrow.group_tool_user"
         web_icon="tool_borrow,static/description/icon.png"/>
 
     <!-- Tools Menu -->
@@ -14,8 +13,7 @@
         name="Tools"
         parent="menu_tool_borrow_root"
         action="tool_tool_action"
-        sequence="10"
-        groups="tool_borrow.group_tool_user"/>
+        sequence="10"/>
 
     <!-- Loan Requests Menu (for managers to see all) -->
     <menuitem
@@ -23,8 +21,7 @@
         name="Loan Requests"
         parent="menu_tool_borrow_root"
         action="tool_loan_action"
-        sequence="20"
-        groups="tool_borrow.group_tool_manager"/>
+        sequence="20"/>
 
     <!-- My Loans Menu -->
     <menuitem
@@ -32,16 +29,14 @@
         name="My Loans"
         parent="menu_tool_borrow_root"
         action="tool_loan_action_my"
-        sequence="30"
-        groups="tool_borrow.group_tool_user"/>
+        sequence="30"/>
 
     <!-- Configuration Menu -->
     <menuitem
         id="menu_tool_config"
         name="Configuration"
         parent="menu_tool_borrow_root"
-        sequence="100"
-        groups="tool_borrow.group_tool_admin"/>
+        sequence="100"/>
 
     <!-- Tool Categories Menu -->
     <menuitem
@@ -50,4 +45,8 @@
         parent="menu_tool_config"
         action="tool_category_action"
         sequence="20"/>
+
+    <!-- Menu groups are set to manager-only via post-migration script and post_init_hook.
+         Odoo's res.groups._apply_group() propagates implied groups to menus during XML loading,
+         so groups must be corrected AFTER all data files are processed. -->
 </odoo>
