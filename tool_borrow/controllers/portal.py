@@ -21,7 +21,9 @@ class ToolBorrowPortal(CustomerPortal):
     def _prepare_home_portal_values(self, counters):
         values = super()._prepare_home_portal_values(counters)
         has_tool_access = self._check_tool_borrow_access()
-        values['show_tool_borrow'] = has_tool_access
+        if not counters:
+            # Only set template visibility flag for page render, not for /my/counters RPC
+            values['show_tool_borrow'] = has_tool_access
         if has_tool_access:
             if 'tool_count' in counters:
                 values['tool_count'] = request.env['tool.tool'].search_count([('allowed_user_ids', 'in', request.env.user.id)])
