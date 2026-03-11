@@ -41,21 +41,23 @@
             <t t-set="portal_client_category_enable" t-value="True"/>
         </xpath>
         <xpath expr="//div[@id='portal_client_category']" position="inside">
-            <t t-call="tool_borrow.portal_docs_entry_mdi">
-                <t t-set="icon_class">mdi mdi-tools</t>
-                <t t-set="title">工具</t>
-                <t t-set="url" t-value="'/my/tools'"/>
-                <t t-set="text">瀏覽可用工具</t>
-                <t t-set="placeholder_count" t-value="'tool_count'"/>
-                <t t-set="config_card" t-value="True"/>
-            </t>
-            <t t-call="tool_borrow.portal_docs_entry_mdi">
-                <t t-set="icon_class">mdi mdi-clipboard-text-clock-outline</t>
-                <t t-set="title">我的借用</t>
-                <t t-set="url" t-value="'/my/loans'"/>
-                <t t-set="text">查看您的借用請求</t>
-                <t t-set="placeholder_count" t-value="'loan_count'"/>
-                <t t-set="config_card" t-value="True"/>
+            <t t-if="show_tool_borrow">
+                <t t-call="tool_borrow.portal_docs_entry_mdi">
+                    <t t-set="icon_class">mdi mdi-tools</t>
+                    <t t-set="title">工具</t>
+                    <t t-set="url" t-value="'/my/tools'"/>
+                    <t t-set="text">瀏覽可用工具</t>
+                    <t t-set="placeholder_count" t-value="'tool_count'"/>
+                    <t t-set="config_card" t-value="True"/>
+                </t>
+                <t t-call="tool_borrow.portal_docs_entry_mdi">
+                    <t t-set="icon_class">mdi mdi-clipboard-text-clock-outline</t>
+                    <t t-set="title">我的借用</t>
+                    <t t-set="url" t-value="'/my/loans'"/>
+                    <t t-set="text">查看您的借用請求</t>
+                    <t t-set="placeholder_count" t-value="'loan_count'"/>
+                    <t t-set="config_card" t-value="True"/>
+                </t>
             </t>
         </xpath>
         <!-- Replace Security card with MDI icon version -->
