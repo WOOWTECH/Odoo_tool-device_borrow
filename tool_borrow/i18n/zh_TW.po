@@ -549,6 +549,11 @@ msgstr "屬性定義"
 
 #. module: tool_borrow
 #: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_home_tool_borrow
+msgid "Tools"
+msgstr "工具"
+
+#. module: tool_borrow
+#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_home_tool_borrow
 msgid "Browse available tools"
 msgstr "瀏覽可用工具"
 
@@ -564,8 +569,48 @@ msgstr "目前沒有可供您使用的工具。"
 
 #. module: tool_borrow
 #: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_tools
+#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_tool_detail
+msgid "Code:"
+msgstr "編號："
+
+#. module: tool_borrow
+#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_tools
+#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_tool_detail
+msgid "Available"
+msgstr "可借用"
+
+#. module: tool_borrow
+#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_tools
+#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_tool_detail
+msgid "Borrowed"
+msgstr "已借出"
+
+#. module: tool_borrow
+#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_tools
+#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_tool_detail
+msgid "Maintenance"
+msgstr "維護中"
+
+#. module: tool_borrow
+#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_tools
+#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_tool_detail
+msgid "Category:"
+msgstr "類別："
+
+#. module: tool_borrow
+#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_tools
 msgid "View Details"
 msgstr "查看詳情"
+
+#. module: tool_borrow
+#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_tool_detail
+msgid "Status:"
+msgstr "狀態："
+
+#. module: tool_borrow
+#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_tool_detail
+msgid "Currently borrowed by:"
+msgstr "目前借用者："
 
 #. module: tool_borrow
 #: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_tool_detail
@@ -593,11 +638,6 @@ msgid "Back to Tools"
 msgstr "返回工具列表"
 
 #. module: tool_borrow
-#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_tool_detail
-msgid "Currently borrowed by:"
-msgstr "目前借用者："
-
-#. module: tool_borrow
 #: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_loans
 msgid "You have no loan requests yet."
 msgstr "您目前沒有借用請求。"
@@ -614,8 +654,43 @@ msgstr "以提出請求。"
 
 #. module: tool_borrow
 #: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_loans
+msgid "Tool"
+msgstr "工具"
+
+#. module: tool_borrow
+#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_loans
+msgid "Request Date"
+msgstr "申請日期"
+
+#. module: tool_borrow
+#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_loans
 msgid "Actions"
 msgstr "操作"
+
+#. module: tool_borrow
+#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_loans
+msgid "Draft"
+msgstr "草稿"
+
+#. module: tool_borrow
+#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_loans
+msgid "Pending"
+msgstr "待審核"
+
+#. module: tool_borrow
+#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_loans
+msgid "Approved"
+msgstr "已批准"
+
+#. module: tool_borrow
+#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_loans
+msgid "Rejected"
+msgstr "已拒絕"
+
+#. module: tool_borrow
+#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_loans
+msgid "Returned"
+msgstr "已歸還"
 
 #. module: tool_borrow
 #: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_loans
@@ -626,6 +701,46 @@ msgstr "查看"
 #: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_loan_detail
 msgid "Loan Request:"
 msgstr "借用請求："
+
+#. module: tool_borrow
+#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_loan_detail
+msgid "Tool:"
+msgstr "工具："
+
+#. module: tool_borrow
+#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_loan_detail
+msgid "Borrower:"
+msgstr "借用人："
+
+#. module: tool_borrow
+#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_loan_detail
+msgid "Request Date:"
+msgstr "申請日期："
+
+#. module: tool_borrow
+#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_loan_detail
+msgid "Approved Date:"
+msgstr "批准日期："
+
+#. module: tool_borrow
+#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_loan_detail
+msgid "Borrow Date:"
+msgstr "借出日期："
+
+#. module: tool_borrow
+#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_loan_detail
+msgid "Return Date:"
+msgstr "歸還日期："
+
+#. module: tool_borrow
+#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_loan_detail
+msgid "Approved By:"
+msgstr "批准人："
+
+#. module: tool_borrow
+#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_loan_detail
+msgid "Notes:"
+msgstr "備註："
 
 #. module: tool_borrow
 #: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_loan_detail
