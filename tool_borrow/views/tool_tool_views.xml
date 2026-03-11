@@ -63,7 +63,7 @@
                 <field name="name"/>
                 <field name="category_id" optional="show"/>
                 <field name="state" widget="badge" decoration-success="state == 'available'" decoration-warning="state == 'borrowed'" decoration-danger="state == 'maintenance'"/>
-                <field name="portal_user_ids" widget="many2many_tags"/>
+                <field name="allowed_user_ids" widget="many2many_tags"/>
                 <field name="current_borrower_id"/>
             </list>
         </field>
@@ -98,7 +98,7 @@
                             <field name="category_id" options="{'no_create': False}"/>
                         </group>
                         <group>
-                            <field name="portal_user_ids" widget="many2many_tags"/>
+                            <field name="allowed_user_ids" widget="many2many_tags"/>
                             <field name="active" invisible="1"/>
                         </group>
                     </group>
@@ -149,7 +149,7 @@
                 <filter string="Borrowed" name="borrowed" domain="[('state', '=', 'borrowed')]"/>
                 <filter string="Maintenance" name="maintenance" domain="[('state', '=', 'maintenance')]"/>
                 <separator/>
-                <filter string="Has Portal Access" name="has_portal_access" domain="[('portal_user_ids', '!=', False)]"/>
+                <filter string="Has Allowed Users" name="has_allowed_users" domain="[('allowed_user_ids', '!=', False)]"/>
                 <separator/>
                 <filter string="Archived" name="archived" domain="[('active', '=', False)]"/>
                 <group expand="0" string="Group By">

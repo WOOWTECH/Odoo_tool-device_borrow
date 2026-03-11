@@ -51,15 +51,15 @@ class ToolTool(models.Model):
         copy=True,
     )
 
-    # Changed from boolean to many2many for portal users
-    portal_user_ids = fields.Many2many(
+    # Allowed users who can see/request this tool (internal + portal with a tool_borrow role)
+    allowed_user_ids = fields.Many2many(
         'res.users',
         'tool_tool_portal_user_rel',
         'tool_id',
         'user_id',
-        string='Portal Users',
-        domain=[('share', '=', True)],
-        help='Select portal users who can request to borrow this tool',
+        string='Allowed Users',
+        domain=[('tool_borrow_access', 'in', ['user', 'manager', 'admin'])],
+        help='Select users who can request to borrow this tool',
     )
 
     loan_ids = fields.One2many('tool.loan', 'tool_id', string='Loan History')
