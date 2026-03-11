@@ -13,14 +13,22 @@ def _website_installed():
 
 class ToolBorrowPortal(CustomerPortal):
 
+    def _check_tool_borrow_access(self):
+        """Check if current user has tool_borrow access. Returns True if access granted."""
+        access = request.env.user.sudo().tool_borrow_access
+        return access and access != 'no_access'
+
     def _prepare_home_portal_values(self, counters):
         values = super()._prepare_home_portal_values(counters)
-        if 'tool_count' in counters:
-            values['tool_count'] = request.env['tool.tool'].search_count([('allowed_user_ids', 'in', request.env.user.id)])
-        if 'loan_count' in counters:
-            values['loan_count'] = request.env['tool.loan'].search_count([
-                ('user_id', '=', request.env.user.id)
-            ])
+        has_tool_access = self._check_tool_borrow_access()
+        values['show_tool_borrow'] = has_tool_access
+        if has_tool_access:
+            if 'tool_count' in counters:
+                values['tool_count'] = request.env['tool.tool'].search_count([('allowed_user_ids', 'in', request.env.user.id)])
+            if 'loan_count' in counters:
+                values['loan_count'] = request.env['tool.loan'].search_count([
+                    ('user_id', '=', request.env.user.id)
+                ])
         return values
 
     # Routes with website=True - required when website module is installed
@@ -29,6 +37,8 @@ class ToolBorrowPortal(CustomerPortal):
 
     @http.route(['/my/tools', '/my/tools/page/<int:page>'], type='http', auth='user', website=True)
     def portal_my_tools(self, page=1, sortby=None, **kw):
+        if not self._check_tool_borrow_access():
+            return request.redirect('/my/home')
         values = self._prepare_portal_layout_values()
         Tool = request.env['tool.tool']
 
@@ -76,6 +86,8 @@ class ToolBorrowPortal(CustomerPortal):
 
     @http.route(['/my/tools/<int:tool_id>'], type='http', auth='user', website=True)
     def portal_my_tool_detail(self, tool_id, **kw):
+        if not self._check_tool_borrow_access():
+            return request.redirect('/my/home')
         tool = request.env['tool.tool'].browse(tool_id)
         if not tool.exists() or request.env.user.id not in tool.allowed_user_ids.ids:
             return request.redirect('/my/tools')
@@ -89,6 +101,8 @@ class ToolBorrowPortal(CustomerPortal):
 
     @http.route(['/my/loans', '/my/loans/page/<int:page>'], type='http', auth='user', website=True)
     def portal_my_loans(self, page=1, sortby=None, filterby=None, **kw):
+        if not self._check_tool_borrow_access():
+            return request.redirect('/my/home')
         values = self._prepare_portal_layout_values()
         Loan = request.env['tool.loan']
 
@@ -150,6 +164,8 @@ class ToolBorrowPortal(CustomerPortal):
 
     @http.route(['/my/loans/<int:loan_id>'], type='http', auth='user', website=True)
     def portal_my_loan_detail(self, loan_id, **kw):
+        if not self._check_tool_borrow_access():
+            return request.redirect('/my/home')
         loan = request.env['tool.loan'].browse(loan_id)
         if not loan.exists() or loan.user_id != request.env.user:
             return request.redirect('/my/loans')
@@ -163,6 +179,8 @@ class ToolBorrowPortal(CustomerPortal):
 
     @http.route(['/my/tools/<int:tool_id>/request'], type='http', auth='user', website=True, methods=['POST'])
     def portal_request_tool(self, tool_id, **kw):
+        if not self._check_tool_borrow_access():
+            return request.redirect('/my/home')
         tool = request.env['tool.tool'].browse(tool_id)
         if not tool.exists() or tool.state != 'available' or request.env.user.id not in tool.allowed_user_ids.ids:
             return request.redirect('/my/tools')
