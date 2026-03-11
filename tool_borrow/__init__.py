@@ -40,3 +40,8 @@ def _post_init_hook(env):
         action = env.ref(xmlid, raise_if_not_found=False)
         if action:
             action.write({'groups_id': [(6, 0, [admin_group.id])]})
+
+    # Set Odoo admin user to tool_borrow Admin by default
+    admin_user = env.ref('base.user_admin', raise_if_not_found=False)
+    if admin_user and admin_user.tool_borrow_access != 'admin':
+        admin_user.write({'tool_borrow_access': 'admin'})
