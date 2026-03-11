@@ -9,7 +9,13 @@ class ResUsers(models.Model):
         ('user', 'User'),
         ('manager', 'Manager'),
         ('admin', 'Admin'),
-    ], string='Tool Borrow Access', default='no_access', groups='base.group_system')
+    ], string='Tool Borrow Access', default='no_access', required=True, groups='base.group_system')
+
+    def init(self):
+        """Backfill any NULL tool_borrow_access values to 'no_access' on module upgrade."""
+        self.env.cr.execute(
+            "UPDATE res_users SET tool_borrow_access = 'no_access' WHERE tool_borrow_access IS NULL"
+        )
 
     def _get_tool_borrow_group_commands(self, access_value):
         """Build groups_id commands to sync tool borrow groups atomically."""
