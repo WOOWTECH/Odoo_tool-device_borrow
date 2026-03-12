@@ -88,7 +88,7 @@
 
     <!-- Loan Action (All Loans - for managers) -->
     <record id="tool_loan_action" model="ir.actions.act_window">
-        <field name="name">Loan Requests</field>
+        <field name="name">Borrow Requests</field>
         <field name="res_model">tool.loan</field>
         <field name="view_mode">list,form</field>
         <field name="search_view_id" ref="tool_loan_view_search"/>
@@ -103,21 +103,4 @@
         </field>
     </record>
 
-    <!-- My Loans Action (filtered to current user) -->
-    <record id="tool_loan_action_my" model="ir.actions.act_window">
-        <field name="name">My Loans</field>
-        <field name="res_model">tool.loan</field>
-        <field name="view_mode">list,form</field>
-        <field name="search_view_id" ref="tool_loan_view_search"/>
-        <field name="groups_id" eval="[(4, ref('tool_borrow.group_tool_manager'))]"/>
-        <field name="context">{'search_default_my_loans': 1}</field>
-        <field name="help" type="html">
-            <p class="o_view_nocontent_smiling_face">
-                You haven't borrowed any tools yet
-            </p>
-            <p>
-                Create a loan request to borrow a tool.
-            </p>
-        </field>
-    </record>
 </odoo>
