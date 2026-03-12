@@ -9,7 +9,7 @@ class ResUsers(models.Model):
         ('user', 'User'),
         ('manager', 'Manager'),
         ('admin', 'Admin'),
-    ], string='Tool Borrow Access', default='no_access', required=True, groups='base.group_system')
+    ], string='Tool Borrow Access', default='no_access', required=True)
 
     def init(self):
         """Backfill any NULL tool_borrow_access values to 'no_access' on module upgrade."""
