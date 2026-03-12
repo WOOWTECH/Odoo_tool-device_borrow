@@ -102,7 +102,11 @@ msgid "Available"
 msgstr "可借用"
 
 #. module: tool_borrow
-#: model:ir.model.fields.selection,name:tool_borrow.selection__tool_tool__state__borrowed
+#: model:ir.model.fields.selection,name:tool_borrow.selection__tool_tool__state__unavailable
+msgid "Unavailable"
+msgstr "不可借用"
+
+#. module: tool_borrow
 #: model:ir.model.fields.selection,name:tool_borrow.selection__tool_loan__state__borrowed
 msgid "Borrowed"
 msgstr "已借出"
@@ -377,14 +381,14 @@ msgstr "借用：入口網站可讀取/建立自己的記錄"
 #. module: tool_borrow
 #: code:addons/tool_borrow/models/tool_tool.py:0
 #, python-format
-msgid "Cannot set tool to maintenance while it is borrowed."
-msgstr "工具借出中，無法設為維護狀態。"
+msgid "Cannot set tool to maintenance while it is unavailable. Please confirm return first."
+msgstr "工具不可借用中，無法設為維護狀態。請先確認歸還。"
 
 #. module: tool_borrow
 #: code:addons/tool_borrow/models/tool_tool.py:0
 #, python-format
-msgid "Cannot set tool to available while it is borrowed. Please confirm return first."
-msgstr "工具借出中，無法設為可借用狀態。請先確認歸還。"
+msgid "Cannot set tool to available while it is unavailable. Please confirm return first."
+msgstr "工具不可借用中，無法設為可借用狀態。請先確認歸還。"
 
 #. module: tool_borrow
 #: code:addons/tool_borrow/models/tool_loan.py:0
@@ -567,8 +571,8 @@ msgstr "可借用"
 #. module: tool_borrow
 #: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_tools
 #: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_tool_detail
-msgid "Borrowed"
-msgstr "已借出"
+msgid "Unavailable"
+msgstr "不可借用"
 
 #. module: tool_borrow
 #: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_tools
@@ -594,8 +598,8 @@ msgstr "狀態："
 
 #. module: tool_borrow
 #: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_tool_detail
-msgid "Currently borrowed by:"
-msgstr "目前借用者："
+msgid "Currently used by:"
+msgstr "目前使用者："
 
 #. module: tool_borrow
 #: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_tool_detail

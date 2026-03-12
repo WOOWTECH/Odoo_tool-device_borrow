@@ -69,6 +69,7 @@ class ToolLoan(models.Model):
             'approved_date': fields.Datetime.now(),
             'approved_by': self.env.user.id,
         })
+        self.tool_id.state = 'unavailable'
 
     def action_reject(self):
         """Reject loan request"""
@@ -86,13 +87,10 @@ class ToolLoan(models.Model):
         self._check_manager_access()
         if self.state != 'approved':
             raise UserError(_('Only approved requests can be confirmed for borrowing.'))
-        if self.tool_id.state != 'available':
-            raise UserError(_('This tool is no longer available.'))
         self.write({
             'state': 'borrowed',
             'borrow_date': fields.Datetime.now(),
         })
-        self.tool_id.state = 'borrowed'
 
     def action_confirm_return(self):
         """Confirm tool has been returned"""

@@ -33,7 +33,7 @@ class ToolTool(models.Model):
 
     state = fields.Selection([
         ('available', 'Available'),
-        ('borrowed', 'Borrowed'),
+        ('unavailable', 'Unavailable'),
         ('maintenance', 'Under Maintenance'),
     ], string='Status', default='available', required=True, tracking=True)
 
@@ -94,20 +94,20 @@ class ToolTool(models.Model):
     @api.depends('loan_ids', 'loan_ids.state')
     def _compute_current_loan(self):
         for tool in self:
-            current_loan = tool.loan_ids.filtered(lambda l: l.state == 'borrowed')[:1]
+            current_loan = tool.loan_ids.filtered(lambda l: l.state in ('approved', 'borrowed'))[:1]
             tool.current_loan_id = current_loan
             tool.current_borrower_id = current_loan.user_id if current_loan else False
 
     def action_set_maintenance(self):
         self.ensure_one()
-        if self.state == 'borrowed':
-            raise UserError(_('Cannot set tool to maintenance while it is borrowed.'))
+        if self.state == 'unavailable':
+            raise UserError(_('Cannot set tool to maintenance while it is unavailable. Please confirm return first.'))
         self.state = 'maintenance'
 
     def action_set_available(self):
         self.ensure_one()
-        if self.state == 'borrowed':
-            raise UserError(_('Cannot set tool to available while it is borrowed. Please confirm return first.'))
+        if self.state == 'unavailable':
+            raise UserError(_('Cannot set tool to available while it is unavailable. Please confirm return first.'))
         self.state = 'available'
 
 

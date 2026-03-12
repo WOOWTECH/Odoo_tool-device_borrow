@@ -36,7 +36,7 @@
                                 <list>
                                     <field name="code"/>
                                     <field name="name"/>
-                                    <field name="state" widget="badge" decoration-success="state == 'available'" decoration-warning="state == 'borrowed'" decoration-danger="state == 'maintenance'"/>
+                                    <field name="state" widget="badge" decoration-success="state == 'available'" decoration-warning="state == 'unavailable'" decoration-danger="state == 'maintenance'"/>
                                 </list>
                             </field>
                         </page>
@@ -62,7 +62,7 @@
                 <field name="code"/>
                 <field name="name"/>
                 <field name="category_id" optional="show"/>
-                <field name="state" widget="badge" decoration-success="state == 'available'" decoration-warning="state == 'borrowed'" decoration-danger="state == 'maintenance'"/>
+                <field name="state" widget="badge" decoration-success="state == 'available'" decoration-warning="state == 'unavailable'" decoration-danger="state == 'maintenance'"/>
                 <field name="allowed_user_ids" widget="many2many_tags"/>
                 <field name="current_borrower_id"/>
             </list>
@@ -88,7 +88,7 @@
                     </div>
                     <group>
                         <group string="Status">
-                            <field name="state" readonly="1" widget="badge" decoration-success="state == 'available'" decoration-warning="state == 'borrowed'" decoration-danger="state == 'maintenance'"/>
+                            <field name="state" readonly="1" widget="badge" decoration-success="state == 'available'" decoration-warning="state == 'unavailable'" decoration-danger="state == 'maintenance'"/>
                             <field name="current_borrower_id" readonly="1"/>
                         </group>
                     </group>
@@ -146,7 +146,7 @@
                 <field name="category_id"/>
                 <separator/>
                 <filter string="Available" name="available" domain="[('state', '=', 'available')]"/>
-                <filter string="Borrowed" name="borrowed" domain="[('state', '=', 'borrowed')]"/>
+                <filter string="Unavailable" name="unavailable" domain="[('state', '=', 'unavailable')]"/>
                 <filter string="Maintenance" name="maintenance" domain="[('state', '=', 'maintenance')]"/>
                 <separator/>
                 <filter string="Has Allowed Users" name="has_allowed_users" domain="[('allowed_user_ids', '!=', False)]"/>
