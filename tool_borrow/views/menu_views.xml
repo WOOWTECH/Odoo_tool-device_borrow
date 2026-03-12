@@ -15,21 +15,13 @@
         action="tool_tool_action"
         sequence="10"/>
 
-    <!-- Loan Requests Menu (for managers to see all) -->
+    <!-- Borrow Requests Menu (for managers to see all) -->
     <menuitem
         id="menu_tool_loans"
-        name="Loan Requests"
+        name="Borrow Requests"
         parent="menu_tool_borrow_root"
         action="tool_loan_action"
         sequence="20"/>
-
-    <!-- My Loans Menu -->
-    <menuitem
-        id="menu_tool_my_loans"
-        name="My Loans"
-        parent="menu_tool_borrow_root"
-        action="tool_loan_action_my"
-        sequence="30"/>
 
     <!-- Configuration Menu -->
     <menuitem

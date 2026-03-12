@@ -15,7 +15,6 @@ def _post_init_hook(env):
         'tool_borrow.menu_tool_borrow_root',
         'tool_borrow.menu_tool_tools',
         'tool_borrow.menu_tool_loans',
-        'tool_borrow.menu_tool_my_loans',
     ]:
         menu = env.ref(xmlid, raise_if_not_found=False)
         if menu:
@@ -30,7 +29,6 @@ def _post_init_hook(env):
     for xmlid in [
         'tool_borrow.tool_tool_action',
         'tool_borrow.tool_loan_action',
-        'tool_borrow.tool_loan_action_my',
     ]:
         action = env.ref(xmlid, raise_if_not_found=False)
         if action:

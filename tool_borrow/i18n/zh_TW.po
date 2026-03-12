@@ -244,14 +244,8 @@ msgstr "工具"
 #. module: tool_borrow
 #: model:ir.actions.act_window,name:tool_borrow.tool_loan_action
 #: model:ir.ui.menu,name:tool_borrow.menu_tool_loans
-msgid "Loan Requests"
-msgstr "借用請求"
-
-#. module: tool_borrow
-#: model:ir.actions.act_window,name:tool_borrow.tool_loan_action_my
-#: model:ir.ui.menu,name:tool_borrow.menu_tool_my_loans
-msgid "My Loans"
-msgstr "我的借用"
+msgid "Borrow Requests"
+msgstr "借用申請"
 
 #. module: tool_borrow
 #: model_terms:ir.actions.act_window,help:tool_borrow.tool_tool_action
@@ -273,15 +267,6 @@ msgstr "尚無借用請求"
 msgid "Loan requests will appear here when users submit them."
 msgstr "使用者提交借用請求後，將會顯示在這裡。"
 
-#. module: tool_borrow
-#: model_terms:ir.actions.act_window,help:tool_borrow.tool_loan_action_my
-msgid "You haven't borrowed any tools yet"
-msgstr "您尚未借用任何工具"
-
-#. module: tool_borrow
-#: model_terms:ir.actions.act_window,help:tool_borrow.tool_loan_action_my
-msgid "Create a loan request to borrow a tool."
-msgstr "建立借用請求以借用工具。"
 
 #. module: tool_borrow
 #: model_terms:ir.ui.view,arch_db:tool_borrow.tool_tool_view_form
