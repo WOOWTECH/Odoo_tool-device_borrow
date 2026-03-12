@@ -58,7 +58,7 @@
                                     </p>
                                     <p class="card-text">
                                         <span t-if="tool.state == 'available'" class="badge bg-success">Available</span>
-                                        <span t-if="tool.state == 'borrowed'" class="badge bg-warning">Borrowed</span>
+                                        <span t-if="tool.state == 'unavailable'" class="badge bg-warning">Unavailable</span>
                                         <span t-if="tool.state == 'maintenance'" class="badge bg-danger">Maintenance</span>
                                     </p>
                                     <t t-if="tool.category_id">
@@ -96,8 +96,8 @@
                                 <span class="ms-2" t-if="tool.state == 'available'">
                                     <span class="badge bg-success">Available</span>
                                 </span>
-                                <span class="ms-2" t-if="tool.state == 'borrowed'">
-                                    <span class="badge bg-warning">Borrowed</span>
+                                <span class="ms-2" t-if="tool.state == 'unavailable'">
+                                    <span class="badge bg-warning">Unavailable</span>
                                 </span>
                                 <span class="ms-2" t-if="tool.state == 'maintenance'">
                                     <span class="badge bg-danger">Maintenance</span>
@@ -114,7 +114,7 @@
                         <div class="col-12 col-md-6">
                             <strong>Status:</strong>
                             <span t-if="tool.state == 'available'" class="badge bg-success">Available</span>
-                            <span t-elif="tool.state == 'borrowed'" class="badge bg-warning">Borrowed</span>
+                            <span t-elif="tool.state == 'unavailable'" class="badge bg-warning">Unavailable</span>
                             <span t-elif="tool.state == 'maintenance'" class="badge bg-danger">Maintenance</span>
                         </div>
                         <div class="col-12 col-md-6">
@@ -126,7 +126,7 @@
 
                     <t t-if="tool.current_borrower_id">
                         <div class="alert alert-info">
-                            <strong>Currently borrowed by:</strong> <t t-out="tool.current_borrower_id.name"/>
+                            <strong>Currently used by:</strong> <t t-out="tool.current_borrower_id.name"/>
                         </div>
                     </t>
 
