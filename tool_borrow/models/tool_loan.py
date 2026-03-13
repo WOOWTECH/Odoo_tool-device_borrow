@@ -31,12 +31,12 @@ class ToolLoan(models.Model):
         ('returned', 'Returned'),
     ], string='Status', default='draft', required=True, tracking=True)
 
-    request_date = fields.Datetime(string='Request Date', readonly=True)
-    approved_date = fields.Datetime(string='Approved Date', readonly=True)
-    borrow_date = fields.Datetime(string='Borrow Date', readonly=True)
-    return_date = fields.Datetime(string='Return Date', readonly=True)
+    request_date = fields.Datetime(string='Request Date')
+    approved_date = fields.Datetime(string='Approved Date')
+    borrow_date = fields.Datetime(string='Borrow Date')
+    return_date = fields.Datetime(string='Return Date')
 
-    approved_by = fields.Many2one('res.users', string='Approved By', readonly=True)
+    approved_by = fields.Many2one('res.users', string='Approved By')
     notes = fields.Text(string='Notes')
 
     def _check_manager_access(self):
@@ -120,7 +120,9 @@ class ToolLoan(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
             if vals.get('tool_id'):
-                tool = self.env['tool.tool'].browse(vals['tool_id'])
-                if tool.state != 'available':
-                    raise UserError(_('Cannot create loan request for unavailable tool.'))
+                state = vals.get('state', 'draft')
+                if state == 'draft':
+                    tool = self.env['tool.tool'].browse(vals['tool_id'])
+                    if tool.state != 'available':
+                        raise UserError(_('Cannot create loan request for unavailable tool.'))
         return super().create(vals_list)
