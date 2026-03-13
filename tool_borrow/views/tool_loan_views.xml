@@ -9,9 +9,9 @@
                 <field name="tool_id"/>
                 <field name="user_id"/>
                 <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-warning="state in ('pending', 'approved')" decoration-success="state == 'returned'" decoration-primary="state == 'borrowed'" decoration-danger="state == 'rejected'"/>
-                <field name="request_date"/>
-                <field name="borrow_date"/>
-                <field name="return_date"/>
+                <field name="request_date" readonly="1"/>
+                <field name="borrow_date" readonly="1"/>
+                <field name="return_date" readonly="1"/>
             </list>
         </field>
     </record>
@@ -38,17 +38,17 @@
                             <field name="user_id" readonly="state != 'draft'" options="{'no_create': True}"/>
                         </group>
                         <group>
-                            <field name="request_date"/>
-                            <field name="approved_date"/>
-                            <field name="approved_by"/>
+                            <field name="request_date" readonly="1"/>
+                            <field name="approved_date" readonly="1"/>
+                            <field name="approved_by" readonly="1"/>
                         </group>
                     </group>
                     <group>
                         <group>
-                            <field name="borrow_date"/>
+                            <field name="borrow_date" readonly="1"/>
                         </group>
                         <group>
-                            <field name="return_date"/>
+                            <field name="return_date" readonly="1"/>
                         </group>
                     </group>
                     <group>
