@@ -11,15 +11,9 @@ class ToolCategory(models.Model):
     name = fields.Char(string='Category Name', required=True, translate=True)
     description = fields.Text(string='Description', translate=True)
     tool_ids = fields.One2many('tool.tool', 'category_id', string='Tools')
-    tool_count = fields.Integer(string='Tool Count', compute='_compute_tool_count')
 
     # Properties Definition for tools in this category
     tool_properties_definition = fields.PropertiesDefinition('Tool Properties')
-
-    @api.depends('tool_ids')
-    def _compute_tool_count(self):
-        for category in self:
-            category.tool_count = len(category.tool_ids)
 
 
 class ToolTool(models.Model):
