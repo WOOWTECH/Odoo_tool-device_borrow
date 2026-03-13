@@ -110,6 +110,24 @@ class ToolTool(models.Model):
             raise UserError(_('Cannot set tool to available while it is unavailable. Please confirm return first.'))
         self.state = 'available'
 
+    def _export_rows(self, fields, *, _is_toplevel_call=True):
+        """Export allowed_user_ids as comma-separated in a single cell.
+
+        By default Odoo expands many2many fields into separate rows.
+        Setting import_compat=True triggers the built-in comma-separation
+        logic (models.py line 1204). Within _export_rows, import_compat
+        only affects reference fields and m2m serialization — column
+        headers and field filtering happen earlier in the export pipeline.
+        """
+        has_allowed_users = any(
+            f and f[0] == 'allowed_user_ids' for f in fields
+        )
+        if has_allowed_users and not self.env.context.get('import_compat'):
+            return super().with_context(import_compat=True)._export_rows(
+                fields, _is_toplevel_call=_is_toplevel_call,
+            )
+        return super()._export_rows(fields, _is_toplevel_call=_is_toplevel_call)
+
 
 class ToolProperty(models.Model):
     _name = 'tool.property'
