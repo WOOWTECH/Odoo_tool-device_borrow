@@ -12,6 +12,24 @@
 - **角色權限控管** — 四種存取層級：無存取權限、使用者、管理者、管理員。
 - **匯出友善** — 多對多欄位（如允許使用者）匯出時以逗號分隔於同一儲存格，確保匯入匯出資料一致性。
 
+## 系統截圖
+
+### 後台 — 工具管理
+![工具列表](static/description/tool_list.png)
+![工具表單](static/description/tool_form.png)
+
+### 後台 — 借用流程
+![借用申請](static/description/loan_list.png)
+![借用表單](static/description/loan_form.png)
+
+### 後台 — 系統設定
+![工具分類](static/description/category_list.png)
+![使用者權限設定](static/description/user_access.png)
+
+### 入口網站 — 自助服務
+![入口網站工具列表](static/description/portal_tools.png)
+![工具詳情](static/description/portal_tool_detail.png)
+
 ## 安裝方式
 
 ### 先決條件
