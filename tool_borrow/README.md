@@ -12,6 +12,24 @@ A tool and device borrowing management module for **Odoo 18**.
 - **Role-based access** — four levels controlled per user: No Access, User, Manager, Admin.
 - **Export-friendly** — many2many fields (e.g. Allowed Users) export as comma-separated values in a single cell for clean import/export cycles.
 
+## Screenshots
+
+### Backend — Tool Management
+![Tool List](static/description/tool_list.png)
+![Tool Form](static/description/tool_form.png)
+
+### Backend — Loan Workflow
+![Loan Requests](static/description/loan_list.png)
+![Loan Form](static/description/loan_form.png)
+
+### Backend — Configuration
+![Tool Categories](static/description/category_list.png)
+![User Access Settings](static/description/user_access.png)
+
+### Portal — Self-Service
+![Portal Tools](static/description/portal_tools.png)
+![Tool Detail](static/description/portal_tool_detail.png)
+
 ## Installation
 
 ### Prerequisites
