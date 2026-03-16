@@ -15,20 +15,20 @@ A tool and device borrowing management module for **Odoo 18**.
 ## Screenshots
 
 ### Backend — Tool Management
-![Tool List](static/description/tool_list.png)
-![Tool Form](static/description/tool_form.png)
+![Tool List](tool_borrow/static/description/tool_list.png)
+![Tool Form](tool_borrow/static/description/tool_form.png)
 
 ### Backend — Loan Workflow
-![Loan Requests](static/description/loan_list.png)
-![Loan Form](static/description/loan_form.png)
+![Loan Requests](tool_borrow/static/description/loan_list.png)
+![Loan Form](tool_borrow/static/description/loan_form.png)
 
 ### Backend — Configuration
-![Tool Categories](static/description/category_list.png)
-![User Access Settings](static/description/user_access.png)
+![Tool Categories](tool_borrow/static/description/category_list.png)
+![User Access Settings](tool_borrow/static/description/user_access.png)
 
 ### Portal — Self-Service
-![Portal Tools](static/description/portal_tools.png)
-![Tool Detail](static/description/portal_tool_detail.png)
+![Portal Tools](tool_borrow/static/description/portal_tools.png)
+![Tool Detail](tool_borrow/static/description/portal_tool_detail.png)
 
 ## Installation
 
