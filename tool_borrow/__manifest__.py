@@ -7,12 +7,25 @@
 Tool Borrow Module
 ==================
 
-This module provides functionality to manage internal tool/device lending:
+A comprehensive tool and device borrowing management system for Odoo 18.
 
-* Tool management with status tracking (available, borrowed, maintenance)
-* Loan request workflow with manager approval
-* Support for both internal users and portal users
-* Access control with User/Manager/Admin levels
+Key Features
+------------
+* **Tool Management** — Organize tools by category with status tracking
+  (Available / Unavailable / Under Maintenance), auto-generated codes,
+  and dynamic properties per category.
+* **Loan Workflow with Approval** — Full lifecycle management:
+  Draft → Pending → Approved → Borrowed → Returned (or Rejected).
+  Managers approve or reject requests; the system updates tool
+  availability automatically.
+* **Portal Self-Service** — Portal users can browse available tools
+  and submit borrow requests directly from the website.
+* **Role-Based Access Control** — Four levels per user:
+  No Access, User, Manager, Admin.
+* **Export-Friendly** — Many2many fields (e.g. Allowed Users) export
+  as comma-separated values for clean import/export cycles.
+
+For full documentation, see the README at the repository root.
     """,
     'author': 'WoowTech',
     'website': 'https://aiot.woowtech.io/',
