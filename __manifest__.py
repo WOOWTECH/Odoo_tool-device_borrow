@@ -1,6 +1,6 @@
 {
     'name': 'Tool Borrow',
-    'version': '18.0.1.0.0',
+    'version': '18.0.1.3.0',
     'category': 'Inventory',
     'summary': 'Manage tool and device borrowing with approval workflow',
     'description': """
