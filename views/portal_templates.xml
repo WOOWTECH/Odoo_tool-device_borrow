@@ -249,6 +249,16 @@
                     </div>
                 </div>
 
+                <!-- Message / Chatter Section -->
+                <div class="tb-chatter-section mt-4">
+                    <div class="tb-section-title">
+                        <i class="mdi mdi-comment-text-outline"/> 評論留言
+                    </div>
+                    <t t-call="portal.message_thread">
+                        <t t-set="object" t-value="tool"/>
+                    </t>
+                </div>
+
                 <!-- Back Link -->
                 <a href="/my/tools" class="tb-back-link">
                     <i class="mdi mdi-arrow-left"/> 返回工具列表
@@ -582,6 +592,16 @@
                             </div>
                         </div>
                     </div>
+                </div>
+
+                <!-- Message / Chatter Section -->
+                <div class="tb-chatter-section mt-4">
+                    <div class="tb-section-title">
+                        <i class="mdi mdi-comment-text-outline"/> 評論留言
+                    </div>
+                    <t t-call="portal.message_thread">
+                        <t t-set="object" t-value="loan"/>
+                    </t>
                 </div>
 
                 <!-- Back Link -->

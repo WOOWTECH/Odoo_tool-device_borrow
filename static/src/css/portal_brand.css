@@ -98,37 +98,44 @@
     min-height: 100vh;
 }
 
+/* --- Hamburger Menu Override (basic three-line ☰) --- */
+.o_main_navbar .navbar-toggler .oi,
+.o_main_navbar .navbar-toggler .fa,
+.o_main_navbar .navbar-toggler .mdi,
+.o_main_navbar .navbar-toggler [class*="oi-"],
+.o_main_navbar button.navbar-toggler .oi {
+    font-size: 0 !important;
+    line-height: 0;
+    display: block;
+    width: 22px;
+    height: 18px;
+    position: relative;
+}
+
+.o_main_navbar .navbar-toggler .oi::before,
+.o_main_navbar .navbar-toggler .fa::before,
+.o_main_navbar .navbar-toggler .mdi::before,
+.o_main_navbar .navbar-toggler [class*="oi-"]::before {
+    content: '' !important;
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: currentColor;
+    position: absolute;
+    top: 0;
+    left: 0;
+    box-shadow: 0 8px 0 currentColor, 0 16px 0 currentColor;
+}
+
 /* --- Page Header --- */
 .tb-page-header {
-    background: linear-gradient(135deg, var(--tb-primary) 0%, var(--tb-primary-light) 100%);
+    background: var(--tb-primary);
     padding: var(--tb-space-xl) 0;
     margin: calc(-1 * var(--tb-space-md)) calc(-1 * var(--tb-space-md)) var(--tb-space-xl);
     border-radius: 0 0 var(--tb-radius-xl) var(--tb-radius-xl);
     color: var(--tb-white);
     position: relative;
     overflow: hidden;
-}
-
-.tb-page-header::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    right: -10%;
-    width: 300px;
-    height: 300px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 50%;
-}
-
-.tb-page-header::after {
-    content: '';
-    position: absolute;
-    bottom: -30%;
-    left: -5%;
-    width: 200px;
-    height: 200px;
-    background: rgba(255, 255, 255, 0.03);
-    border-radius: 50%;
 }
 
 .tb-page-header h2 {
@@ -377,22 +384,11 @@
 }
 
 .tb-detail-header {
-    background: linear-gradient(135deg, var(--tb-primary) 0%, var(--tb-primary-light) 100%);
+    background: var(--tb-primary);
     padding: var(--tb-space-xl) var(--tb-space-xl);
     color: var(--tb-white);
     position: relative;
     overflow: hidden;
-}
-
-.tb-detail-header::before {
-    content: '';
-    position: absolute;
-    top: -40%;
-    right: -8%;
-    width: 250px;
-    height: 250px;
-    background: rgba(255, 255, 255, 0.04);
-    border-radius: 50%;
 }
 
 .tb-detail-header h3 {
@@ -545,7 +541,7 @@
     display: inline-flex;
     align-items: center;
     gap: var(--tb-space-sm);
-    background: linear-gradient(135deg, var(--tb-primary) 0%, var(--tb-primary-light) 100%);
+    background: var(--tb-primary);
     color: var(--tb-white) !important;
     border: none;
     padding: 10px 24px;
@@ -965,4 +961,70 @@
     font-size: 1.5rem;
     color: var(--tb-primary);
     line-height: 1;
+}
+
+/* --- Portal Chatter / Message Section --- */
+.tb-chatter-section {
+    margin-top: var(--tb-space-xl);
+}
+
+.tb-chatter-section .tb-section-title {
+    margin-bottom: var(--tb-space-md);
+}
+
+.tb-chatter-section .o_portal_chatter {
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.tb-chatter-section .o_portal_chatter_composer {
+    background: var(--tb-bg-light);
+    border-radius: var(--tb-radius-md);
+    padding: var(--tb-space-lg);
+    border: 1px solid rgba(113, 75, 103, 0.08);
+    margin-bottom: var(--tb-space-lg);
+}
+
+.tb-chatter-section .o_portal_chatter_composer textarea {
+    border: 1px solid rgba(113, 75, 103, 0.15);
+    border-radius: var(--tb-radius-md);
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.9rem;
+    transition: var(--tb-transition);
+}
+
+.tb-chatter-section .o_portal_chatter_composer textarea:focus {
+    border-color: var(--tb-primary);
+    box-shadow: 0 0 0 3px rgba(113, 75, 103, 0.1);
+}
+
+.tb-chatter-section .o_portal_chatter_composer .btn-primary {
+    background: var(--tb-primary);
+    border-color: var(--tb-primary);
+    border-radius: var(--tb-radius-full);
+    font-family: 'Outfit', sans-serif;
+    font-weight: 500;
+}
+
+.tb-chatter-section .o_portal_chatter_composer .btn-primary:hover {
+    background: var(--tb-primary-dark);
+    border-color: var(--tb-primary-dark);
+}
+
+.tb-chatter-section .o_portal_chatter_message {
+    border-bottom: 1px solid var(--tb-bg-light);
+    padding: var(--tb-space-md) 0;
+}
+
+.tb-chatter-section .o_portal_chatter_message:last-child {
+    border-bottom: none;
+}
+
+.tb-chatter-section .o_portal_chatter_avatar {
+    border-radius: 50%;
+}
+
+.tb-chatter-section .o_portal_chatter_message_title {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--tb-deep-gray);
 }
