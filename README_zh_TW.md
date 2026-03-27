@@ -15,20 +15,10 @@
 ## 系統截圖
 
 ### 後台 — 工具管理
-![工具列表](tool_borrow/static/description/tool_list.png)
 ![工具表單](tool_borrow/static/description/tool_form.png)
-
-### 後台 — 借用流程
-![借用申請](tool_borrow/static/description/loan_list.png)
-![借用表單](tool_borrow/static/description/loan_form.png)
 
 ### 後台 — 系統設定
 ![工具分類](tool_borrow/static/description/category_list.png)
-![使用者權限設定](tool_borrow/static/description/user_access.png)
-
-### 入口網站 — 自助服務
-![入口網站工具列表](tool_borrow/static/description/portal_tools.png)
-![工具詳情](tool_borrow/static/description/portal_tool_detail.png)
 
 ## 安裝方式
 
