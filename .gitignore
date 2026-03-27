@@ -5,3 +5,4 @@ user_prompt.md
 .playwright-mcp/
 backup_files/
 log.log
+non_functional_sensitive_files.md
