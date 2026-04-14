@@ -6,9 +6,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-27 00:00+0000\n"
-"PO-Revision-Date: 2026-01-27 00:00+0000\n"
-"Last-Translator: \n"
+"POT-Creation-Date: 2026-04-14 00:00+0000\n"
+"PO-Revision-Date: 2026-04-14 00:00+0000\n"
+"Last-Translator: WoowTech <info@woowtech.com>\n"
 "Language-Team: Chinese (Taiwan) <>\n"
 "Language: zh_TW\n"
 "MIME-Version: 1.0\n"
@@ -16,9 +16,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
+
+#. ============================================================
+#. Module Category & Top-Level Menu
+#. ============================================================
+
 #. module: tool_borrow
 #: model:ir.module.category,name:tool_borrow.module_category_tool_borrow
 #: model:ir.ui.menu,name:tool_borrow.menu_tool_borrow_root
+#: model_terms:ir.ui.view,arch_db:tool_borrow.res_users_view_form_tool_borrow
 msgid "Tool Borrow"
 msgstr "工具借用"
 
@@ -27,10 +33,10 @@ msgstr "工具借用"
 msgid "Manage tool borrowing permissions"
 msgstr "管理工具借用權限"
 
-#. module: tool_borrow
-#: model:ir.model.fields.selection,name:tool_borrow.selection__res_users__tool_borrow_access__no_access
-msgid "No Access"
-msgstr "無存取權"
+
+#. ============================================================
+#. Security Groups
+#. ============================================================
 
 #. module: tool_borrow
 #: model:res.groups,name:tool_borrow.group_tool_user
@@ -65,8 +71,123 @@ msgstr "可以批准/拒絕借用請求並查看所有借用記錄"
 msgid "Full access to manage tools and loans"
 msgstr "完整的工具和借用管理權限"
 
+
+#. ============================================================
+#. Record Rules (ir.rule)
+#. ============================================================
+
+#. module: tool_borrow
+#: model:ir.rule,name:tool_borrow.tool_tool_rule_internal
+msgid "Tool: Internal users full access"
+msgstr "工具：內部使用者完整存取"
+
+#. module: tool_borrow
+#: model:ir.rule,name:tool_borrow.tool_tool_rule_user
+msgid "Tool: User can read all"
+msgstr "工具：使用者可讀取全部"
+
+#. module: tool_borrow
+#: model:ir.rule,name:tool_borrow.tool_tool_rule_admin
+msgid "Tool: Admin full access"
+msgstr "工具：管理員完整存取"
+
+#. module: tool_borrow
+#: model:ir.rule,name:tool_borrow.tool_tool_rule_portal
+msgid "Tool: Portal can read all tools"
+msgstr "工具：入口網站可讀取所有工具"
+
+#. module: tool_borrow
+#: model:ir.rule,name:tool_borrow.tool_property_rule_user
+msgid "Property: User can read all"
+msgstr "屬性：使用者可讀取全部"
+
+#. module: tool_borrow
+#: model:ir.rule,name:tool_borrow.tool_property_rule_admin
+msgid "Property: Admin full access"
+msgstr "屬性：管理員完整存取"
+
+#. module: tool_borrow
+#: model:ir.rule,name:tool_borrow.tool_property_rule_portal
+msgid "Property: Portal can read all tool properties"
+msgstr "屬性：入口網站可讀取所有工具屬性"
+
+#. module: tool_borrow
+#: model:ir.rule,name:tool_borrow.tool_loan_rule_user_read_own
+msgid "Loan: User can read own"
+msgstr "借用：使用者可讀取自己的記錄"
+
+#. module: tool_borrow
+#: model:ir.rule,name:tool_borrow.tool_loan_rule_user_create
+msgid "Loan: User can create own"
+msgstr "借用：使用者可建立自己的記錄"
+
+#. module: tool_borrow
+#: model:ir.rule,name:tool_borrow.tool_loan_rule_manager
+msgid "Loan: Manager full read/write"
+msgstr "借用：管理員完整讀寫"
+
+#. module: tool_borrow
+#: model:ir.rule,name:tool_borrow.tool_loan_rule_admin
+msgid "Loan: Admin full access"
+msgstr "借用：管理員完整存取"
+
+#. module: tool_borrow
+#: model:ir.rule,name:tool_borrow.tool_loan_rule_portal
+msgid "Loan: Portal can read/create own"
+msgstr "借用：入口網站可讀取/建立自己的記錄"
+
+#. module: tool_borrow
+#: model:ir.rule,name:tool_borrow.tool_stage_rule_user
+msgid "Stage: User can read all"
+msgstr "階段：使用者可讀取全部"
+
+#. module: tool_borrow
+#: model:ir.rule,name:tool_borrow.tool_stage_rule_admin
+msgid "Stage: Admin full access"
+msgstr "階段：管理員完整存取"
+
+#. module: tool_borrow
+#: model:ir.rule,name:tool_borrow.tool_stage_rule_portal
+msgid "Stage: Portal can read all"
+msgstr "階段：入口網站可讀取全部"
+
+#. module: tool_borrow
+#: model:ir.rule,name:tool_borrow.tool_category_rule_user
+msgid "Category: User can read all"
+msgstr "類別：使用者可讀取全部"
+
+#. module: tool_borrow
+#: model:ir.rule,name:tool_borrow.tool_category_rule_admin
+msgid "Category: Admin full access"
+msgstr "類別：管理員完整存取"
+
+#. module: tool_borrow
+#: model:ir.rule,name:tool_borrow.tool_category_rule_portal
+msgid "Category: Portal can read all"
+msgstr "類別：入口網站可讀取全部"
+
+
+#. ============================================================
+#. Model Descriptions (ir.model)
+#. ============================================================
+
+#. module: tool_borrow
+#: model:ir.model,name:tool_borrow.model_tool_stage
+msgid "Tool Stage"
+msgstr "工具階段"
+
+#. module: tool_borrow
+#: model:ir.model,name:tool_borrow.model_tool_category
+msgid "Tool Category"
+msgstr "工具類別"
+
 #. module: tool_borrow
 #: model:ir.model,name:tool_borrow.model_tool_tool
+#: model:ir.model.fields,field_description:tool_borrow.field_tool_loan__tool_id
+#: model:ir.model.fields,field_description:tool_borrow.field_tool_property__tool_id
+#: model_terms:ir.ui.view,arch_db:tool_borrow.tool_loan_view_search
+#: code:addons/tool_borrow/controllers/portal.py:0
+#, python-format
 msgid "Tool"
 msgstr "工具"
 
@@ -77,54 +198,145 @@ msgstr "工具借用記錄"
 
 #. module: tool_borrow
 #: model:ir.model,name:tool_borrow.model_tool_property
-msgid "Tool Property"
+msgid "Tool Custom Property"
+msgstr "工具自訂屬性"
+
+
+#. ============================================================
+#. tool.stage Fields
+#. ============================================================
+
+#. module: tool_borrow
+#: model:ir.model.fields,field_description:tool_borrow.field_tool_stage__name
+msgid "Stage Name"
+msgstr "階段名稱"
+
+#. module: tool_borrow
+#: model:ir.model.fields,field_description:tool_borrow.field_tool_stage__sequence
+#: model:ir.model.fields,field_description:tool_borrow.field_tool_property__sequence
+msgid "Sequence"
+msgstr "順序"
+
+#. module: tool_borrow
+#: model:ir.model.fields,field_description:tool_borrow.field_tool_stage__fold
+msgid "Folded in Kanban"
+msgstr "在看板中摺疊"
+
+#. module: tool_borrow
+#: model:ir.model.fields,help:tool_borrow.field_tool_stage__fold
+msgid "This stage is folded in the kanban view when there are no records in that stage to display."
+msgstr "當此階段沒有記錄可顯示時，在看板檢視中會被摺疊。"
+
+#. module: tool_borrow
+#: model:ir.model.fields,field_description:tool_borrow.field_tool_stage__is_closed
+msgid "Is Closed Stage"
+msgstr "是否已關閉階段"
+
+#. module: tool_borrow
+#: model:ir.model.fields,help:tool_borrow.field_tool_stage__is_closed
+msgid "Tools in this stage are considered closed/unavailable."
+msgstr "此階段的工具視為已關閉/不可用。"
+
+#. module: tool_borrow
+#: model:ir.model.fields,field_description:tool_borrow.field_tool_stage__description
+#: model:ir.model.fields,field_description:tool_borrow.field_tool_category__description
+msgid "Description"
+msgstr "說明"
+
+#. module: tool_borrow
+#: model:ir.model.constraint,message:tool_borrow.constraint_tool_stage_name_uniq
+msgid "Stage name must be unique!"
+msgstr "階段名稱必須唯一！"
+
+
+#. ============================================================
+#. tool.category Fields
+#. ============================================================
+
+#. module: tool_borrow
+#: model:ir.model.fields,field_description:tool_borrow.field_tool_category__name
+#: model_terms:ir.ui.view,arch_db:tool_borrow.tool_category_view_form
+msgid "Category Name"
+msgstr "類別名稱"
+
+#. module: tool_borrow
+#: model:ir.model.fields,field_description:tool_borrow.field_tool_category__tool_ids
+#: model:ir.actions.act_window,name:tool_borrow.tool_tool_action
+#: model:ir.ui.menu,name:tool_borrow.menu_tool_tools
+#: model_terms:ir.ui.view,arch_db:tool_borrow.tool_category_view_form
+msgid "Tools"
+msgstr "工具"
+
+#. module: tool_borrow
+#: model:ir.model.fields,field_description:tool_borrow.field_tool_category__tool_count
+msgid "Tool Count"
+msgstr "工具數量"
+
+#. module: tool_borrow
+#: model:ir.model.fields,field_description:tool_borrow.field_tool_category__tool_properties_definition
+msgid "Tool Properties"
 msgstr "工具屬性"
+
+
+#. ============================================================
+#. tool.tool Fields
+#. ============================================================
 
 #. module: tool_borrow
 #: model:ir.model.fields,field_description:tool_borrow.field_tool_tool__name
+#: code:addons/tool_borrow/controllers/portal.py:0
+#, python-format
 msgid "Name"
 msgstr "名稱"
 
 #. module: tool_borrow
 #: model:ir.model.fields,field_description:tool_borrow.field_tool_tool__code
+#: code:addons/tool_borrow/controllers/portal.py:0
+#, python-format
 msgid "Code"
 msgstr "編號"
 
 #. module: tool_borrow
+#: model:ir.model.fields,field_description:tool_borrow.field_tool_tool__stage_id
+#: model_terms:ir.ui.view,arch_db:tool_borrow.tool_tool_view_search
+msgid "Stage"
+msgstr "階段"
+
+#. module: tool_borrow
 #: model:ir.model.fields,field_description:tool_borrow.field_tool_tool__state
 #: model:ir.model.fields,field_description:tool_borrow.field_tool_loan__state
+#: model_terms:ir.ui.view,arch_db:tool_borrow.tool_tool_view_search
+#: model_terms:ir.ui.view,arch_db:tool_borrow.tool_loan_view_search
+#: code:addons/tool_borrow/controllers/portal.py:0
+#, python-format
 msgid "Status"
 msgstr "狀態"
 
 #. module: tool_borrow
-#: model:ir.model.fields.selection,name:tool_borrow.selection__tool_tool__state__available
-msgid "Available"
-msgstr "可借用"
+#: model:ir.model.fields,field_description:tool_borrow.field_tool_tool__category_id
+#: model_terms:ir.ui.view,arch_db:tool_borrow.tool_tool_view_search
+msgid "Category"
+msgstr "類別"
 
 #. module: tool_borrow
-#: model:ir.model.fields.selection,name:tool_borrow.selection__tool_tool__state__unavailable
-msgid "Unavailable"
-msgstr "不可借用"
+#: model:ir.model.fields,help:tool_borrow.field_tool_tool__category_id
+msgid "Category determines which properties are available for this tool"
+msgstr "類別決定此工具可使用哪些屬性"
 
 #. module: tool_borrow
-#: model:ir.model.fields.selection,name:tool_borrow.selection__tool_loan__state__borrowed
-msgid "Borrowed"
-msgstr "已借出"
+#: model:ir.model.fields,field_description:tool_borrow.field_tool_tool__tool_properties
+msgid "Properties"
+msgstr "屬性"
 
 #. module: tool_borrow
-#: model:ir.model.fields.selection,name:tool_borrow.selection__tool_tool__state__maintenance
-msgid "Under Maintenance"
-msgstr "維護中"
+#: model:ir.model.fields,field_description:tool_borrow.field_tool_tool__portal_user_ids
+msgid "Portal Users"
+msgstr "入口網站使用者"
 
 #. module: tool_borrow
-#: model:ir.model.fields,field_description:tool_borrow.field_tool_tool__allowed_user_ids
-msgid "Allowed Users"
-msgstr "允許的使用者"
-
-#. module: tool_borrow
-#: model:ir.model.fields,help:tool_borrow.field_tool_tool__allowed_user_ids
-msgid "Select users who can request to borrow this tool"
-msgstr "選擇可以請求借用此工具的使用者"
+#: model:ir.model.fields,help:tool_borrow.field_tool_tool__portal_user_ids
+msgid "Select portal users who can request to borrow this tool"
+msgstr "選擇可以請求借用此工具的入口網站使用者"
 
 #. module: tool_borrow
 #: model:ir.model.fields,field_description:tool_borrow.field_tool_tool__loan_ids
@@ -135,14 +347,20 @@ msgstr "借用歷史"
 #. module: tool_borrow
 #: model:ir.model.fields,field_description:tool_borrow.field_tool_tool__property_ids
 #: model_terms:ir.ui.view,arch_db:tool_borrow.tool_tool_view_form
-msgid "Properties"
-msgstr "屬性"
+msgid "Custom Properties"
+msgstr "自訂屬性"
 
 #. module: tool_borrow
 #: model:ir.model.fields,field_description:tool_borrow.field_tool_tool__notes
+#: model:ir.model.fields,field_description:tool_borrow.field_tool_loan__notes
 #: model_terms:ir.ui.view,arch_db:tool_borrow.tool_tool_view_form
 msgid "Notes"
 msgstr "備註"
+
+#. module: tool_borrow
+#: model:ir.model.fields,field_description:tool_borrow.field_tool_tool__active
+msgid "Active"
+msgstr "啟用"
 
 #. module: tool_borrow
 #: model:ir.model.fields,field_description:tool_borrow.field_tool_tool__current_loan_id
@@ -155,42 +373,47 @@ msgid "Current Borrower"
 msgstr "目前借用人"
 
 #. module: tool_borrow
-#: model:ir.model.fields,field_description:tool_borrow.field_tool_loan__tool_id
-msgid "Tool"
-msgstr "工具"
+#: model:ir.model.constraint,message:tool_borrow.constraint_tool_tool_code_uniq
+msgid "Tool code must be unique!"
+msgstr "工具編號必須唯一！"
+
+
+#. ============================================================
+#. tool.tool Selection Values
+#. ============================================================
+
+#. module: tool_borrow
+#: model:ir.model.fields.selection,name:tool_borrow.selection__tool_tool__state__available
+#: model_terms:ir.ui.view,arch_db:tool_borrow.tool_tool_view_search
+msgid "Available"
+msgstr "可借用"
+
+#. module: tool_borrow
+#: model:ir.model.fields.selection,name:tool_borrow.selection__tool_tool__state__borrowed
+#: model:ir.model.fields.selection,name:tool_borrow.selection__tool_loan__state__borrowed
+#: model_terms:ir.ui.view,arch_db:tool_borrow.tool_tool_view_search
+#: model_terms:ir.ui.view,arch_db:tool_borrow.tool_loan_view_search
+#: code:addons/tool_borrow/controllers/portal.py:0
+#, python-format
+msgid "Borrowed"
+msgstr "已借出"
+
+#. module: tool_borrow
+#: model:ir.model.fields.selection,name:tool_borrow.selection__tool_tool__state__maintenance
+#: model:tool.stage,name:tool_borrow.tool_stage_maintenance
+msgid "Under Maintenance"
+msgstr "維護中"
 
 #. module: tool_borrow
 #: model:ir.model.fields,field_description:tool_borrow.field_tool_loan__user_id
+#: model_terms:ir.ui.view,arch_db:tool_borrow.tool_loan_view_search
 msgid "Borrower"
 msgstr "借用人"
 
 #. module: tool_borrow
-#: model:ir.model.fields.selection,name:tool_borrow.selection__tool_loan__state__draft
-msgid "Draft"
-msgstr "草稿"
-
-#. module: tool_borrow
-#: model:ir.model.fields.selection,name:tool_borrow.selection__tool_loan__state__pending
-msgid "Pending Approval"
-msgstr "待審核"
-
-#. module: tool_borrow
-#: model:ir.model.fields.selection,name:tool_borrow.selection__tool_loan__state__approved
-msgid "Approved"
-msgstr "已批准"
-
-#. module: tool_borrow
-#: model:ir.model.fields.selection,name:tool_borrow.selection__tool_loan__state__rejected
-msgid "Rejected"
-msgstr "已拒絕"
-
-#. module: tool_borrow
-#: model:ir.model.fields.selection,name:tool_borrow.selection__tool_loan__state__returned
-msgid "Returned"
-msgstr "已歸還"
-
-#. module: tool_borrow
 #: model:ir.model.fields,field_description:tool_borrow.field_tool_loan__request_date
+#: code:addons/tool_borrow/controllers/portal.py:0
+#, python-format
 msgid "Request Date"
 msgstr "申請日期"
 
@@ -214,20 +437,44 @@ msgstr "歸還日期"
 msgid "Approved By"
 msgstr "批准人"
 
-#. module: tool_borrow
-#: model:ir.model.fields,field_description:tool_borrow.field_res_users__tool_borrow_access
-msgid "Tool Borrow Access"
-msgstr "工具借用權限"
+
+#. ============================================================
+#. tool.loan Selection Values
+#. ============================================================
 
 #. module: tool_borrow
-#: model:ir.model.fields,field_description:tool_borrow.field_tool_property__tool_id
-msgid "Tool"
-msgstr "工具"
+#: model:ir.model.fields.selection,name:tool_borrow.selection__tool_loan__state__draft
+#: model_terms:ir.ui.view,arch_db:tool_borrow.tool_loan_view_search
+msgid "Draft"
+msgstr "草稿"
 
 #. module: tool_borrow
-#: model:ir.model.fields,field_description:tool_borrow.field_tool_property__sequence
-msgid "Sequence"
-msgstr "順序"
+#: model:ir.model.fields.selection,name:tool_borrow.selection__tool_loan__state__pending
+#: model_terms:ir.ui.view,arch_db:tool_borrow.tool_loan_view_search
+msgid "Pending Approval"
+msgstr "待審核"
+
+#. module: tool_borrow
+#: model:ir.model.fields.selection,name:tool_borrow.selection__tool_loan__state__approved
+#: model_terms:ir.ui.view,arch_db:tool_borrow.tool_loan_view_search
+#: code:addons/tool_borrow/controllers/portal.py:0
+#, python-format
+msgid "Approved"
+msgstr "已批准"
+
+#. module: tool_borrow
+#: model:ir.model.fields.selection,name:tool_borrow.selection__tool_loan__state__rejected
+#: model_terms:ir.ui.view,arch_db:tool_borrow.tool_loan_view_search
+msgid "Rejected"
+msgstr "已拒絕"
+
+#. module: tool_borrow
+#: model:ir.model.fields.selection,name:tool_borrow.selection__tool_loan__state__returned
+#: model_terms:ir.ui.view,arch_db:tool_borrow.tool_loan_view_search
+#: code:addons/tool_borrow/controllers/portal.py:0
+#, python-format
+msgid "Returned"
+msgstr "已歸還"
 
 #. module: tool_borrow
 #: model:ir.model.fields,field_description:tool_borrow.field_tool_property__name
@@ -239,17 +486,51 @@ msgstr "屬性名稱"
 msgid "Property Value"
 msgstr "屬性值"
 
+
+#. ============================================================
+#. res.users Fields
+#. ============================================================
+
 #. module: tool_borrow
-#: model:ir.actions.act_window,name:tool_borrow.tool_tool_action
-#: model:ir.ui.menu,name:tool_borrow.menu_tool_tools
-msgid "Tools"
-msgstr "工具"
+#: model:ir.model.fields,field_description:tool_borrow.field_res_users__tool_borrow_access
+#: model_terms:ir.ui.view,arch_db:tool_borrow.res_users_view_form_tool_borrow
+msgid "Tool Borrow Access"
+msgstr "工具借用權限"
 
 #. module: tool_borrow
 #: model:ir.actions.act_window,name:tool_borrow.tool_loan_action
 #: model:ir.ui.menu,name:tool_borrow.menu_tool_loans
-msgid "Borrow Requests"
-msgstr "借用申請"
+msgid "Loan Requests"
+msgstr "借用請求"
+
+#. module: tool_borrow
+#: model:ir.actions.act_window,name:tool_borrow.tool_loan_action_my
+#: model:ir.ui.menu,name:tool_borrow.menu_tool_my_loans
+#: model_terms:ir.ui.view,arch_db:tool_borrow.tool_loan_view_search
+msgid "My Loans"
+msgstr "我的借用"
+
+#. module: tool_borrow
+#: model:ir.ui.menu,name:tool_borrow.menu_tool_config
+msgid "Configuration"
+msgstr "設定"
+
+#. module: tool_borrow
+#: model:ir.actions.act_window,name:tool_borrow.tool_stage_action
+#: model:ir.ui.menu,name:tool_borrow.menu_tool_stages
+msgid "Tool Stages"
+msgstr "工具階段"
+
+#. module: tool_borrow
+#: model:ir.actions.act_window,name:tool_borrow.tool_category_action
+#: model:ir.ui.menu,name:tool_borrow.menu_tool_categories
+msgid "Tool Categories"
+msgstr "工具類別"
+
+
+#. ============================================================
+#. Action Help Texts
+#. ============================================================
 
 #. module: tool_borrow
 #: model_terms:ir.actions.act_window,help:tool_borrow.tool_tool_action
@@ -271,6 +552,20 @@ msgstr "尚無借用請求"
 msgid "Loan requests will appear here when users submit them."
 msgstr "使用者提交借用請求後，將會顯示在這裡。"
 
+#. module: tool_borrow
+#: model_terms:ir.actions.act_window,help:tool_borrow.tool_loan_action_my
+msgid "You haven't borrowed any tools yet"
+msgstr "您尚未借用任何工具"
+
+#. module: tool_borrow
+#: model_terms:ir.actions.act_window,help:tool_borrow.tool_loan_action_my
+msgid "Create a loan request to borrow a tool."
+msgstr "建立借用請求以借用工具。"
+
+
+#. ============================================================
+#. Tool Form View (tool_tool_view_form)
+#. ============================================================
 
 #. module: tool_borrow
 #: model_terms:ir.ui.view,arch_db:tool_borrow.tool_tool_view_form
@@ -283,14 +578,39 @@ msgid "Set to Available"
 msgstr "設為可借用"
 
 #. module: tool_borrow
+#: model_terms:ir.ui.view,arch_db:tool_borrow.tool_tool_view_form
+msgid "Tool Name"
+msgstr "工具名稱"
+
+#. module: tool_borrow
+#: model_terms:ir.ui.view,arch_db:tool_borrow.tool_tool_view_form
+msgid "Service Status"
+msgstr "服役狀態"
+
+#. module: tool_borrow
+#: model_terms:ir.ui.view,arch_db:tool_borrow.tool_tool_view_form
+msgid "Borrow Status"
+msgstr "借用狀態"
+
+#. module: tool_borrow
+#: model_terms:ir.ui.view,arch_db:tool_borrow.tool_tool_view_form
+msgid "Add notes about this tool..."
+msgstr "新增此工具的備註..."
+
+#. module: tool_borrow
+#: model_terms:ir.ui.view,arch_db:tool_borrow.tool_category_view_form
+msgid "Properties Definition"
+msgstr "屬性定義"
+
+#. module: tool_borrow
 #: model_terms:ir.ui.view,arch_db:tool_borrow.tool_tool_view_search
 msgid "Maintenance"
 msgstr "維護中"
 
 #. module: tool_borrow
 #: model_terms:ir.ui.view,arch_db:tool_borrow.tool_tool_view_search
-msgid "Has Allowed Users"
-msgstr "有允許的使用者"
+msgid "Has Portal Access"
+msgstr "有入口網站存取權"
 
 #. module: tool_borrow
 #: model_terms:ir.ui.view,arch_db:tool_borrow.tool_tool_view_search
@@ -302,6 +622,11 @@ msgstr "已封存"
 #: model_terms:ir.ui.view,arch_db:tool_borrow.tool_loan_view_search
 msgid "Group By"
 msgstr "分組依據"
+
+
+#. ============================================================
+#. Loan Form View (tool_loan_view_form)
+#. ============================================================
 
 #. module: tool_borrow
 #: model_terms:ir.ui.view,arch_db:tool_borrow.tool_loan_view_form
@@ -334,61 +659,76 @@ msgid "Reset to Draft"
 msgstr "重設為草稿"
 
 #. module: tool_borrow
-#: model_terms:ir.ui.view,arch_db:tool_borrow.tool_loan_view_search
-msgid "My Loans"
-msgstr "我的借用"
+#: model_terms:ir.ui.view,arch_db:tool_borrow.tool_loan_view_form
+msgid "Add any notes about this loan request..."
+msgstr "新增此借用請求的備註..."
+
+
+#. ============================================================
+#. Data: Tool Stage Records
+#. ============================================================
 
 #. module: tool_borrow
-#: model:ir.rule,name:tool_borrow.tool_tool_rule_user
-msgid "Tool: User can read all"
-msgstr "工具：使用者可讀取全部"
+#: model:tool.stage,name:tool_borrow.tool_stage_in_service
+msgid "In Service"
+msgstr "服役中"
 
 #. module: tool_borrow
-#: model:ir.rule,name:tool_borrow.tool_tool_rule_admin
-msgid "Tool: Admin full access"
-msgstr "工具：管理員完整存取"
+#: model:tool.stage,name:tool_borrow.tool_stage_retired
+msgid "Retired"
+msgstr "已退役"
 
 #. module: tool_borrow
-#: model:ir.rule,name:tool_borrow.tool_tool_rule_portal
-msgid "Tool: Portal can read shared tools"
-msgstr "工具：入口網站可讀取共享工具"
+#: model:tool.stage,description:tool_borrow.tool_stage_in_service
+msgid "Tool is in normal service condition"
+msgstr "工具處於正常服役狀態"
 
 #. module: tool_borrow
-#: model:ir.rule,name:tool_borrow.tool_loan_rule_user_read_own
-msgid "Loan: User can read own"
-msgstr "借用：使用者可讀取自己的記錄"
+#: model:tool.stage,description:tool_borrow.tool_stage_maintenance
+msgid "Tool is under maintenance"
+msgstr "工具維護中"
 
 #. module: tool_borrow
-#: model:ir.rule,name:tool_borrow.tool_loan_rule_user_create
-msgid "Loan: User can create own"
-msgstr "借用：使用者可建立自己的記錄"
+#: model:tool.stage,description:tool_borrow.tool_stage_retired
+msgid "Tool has been retired and is no longer in use"
+msgstr "工具已退役，不再使用"
+
+
+#. ============================================================
+#. Data: Tool Category Records
+#. ============================================================
 
 #. module: tool_borrow
-#: model:ir.rule,name:tool_borrow.tool_loan_rule_manager
-msgid "Loan: Manager full read/write"
-msgstr "借用：管理員完整讀寫"
+#: model:tool.category,name:tool_borrow.tool_category_general
+msgid "General Tools"
+msgstr "一般工具"
 
 #. module: tool_borrow
-#: model:ir.rule,name:tool_borrow.tool_loan_rule_admin
-msgid "Loan: Admin full access"
-msgstr "借用：管理員完整存取"
+#: model:tool.category,description:tool_borrow.tool_category_general
+msgid "General purpose tools without specific category"
+msgstr "無特定類別的一般用途工具"
 
-#. module: tool_borrow
-#: model:ir.rule,name:tool_borrow.tool_loan_rule_portal
-msgid "Loan: Portal can read/create own"
-msgstr "借用：入口網站可讀取/建立自己的記錄"
+
+#. ============================================================
+#. Python: UserError Messages (tool_tool.py)
+#. ============================================================
 
 #. module: tool_borrow
 #: code:addons/tool_borrow/models/tool_tool.py:0
 #, python-format
-msgid "Cannot set tool to maintenance while it is unavailable. Please confirm return first."
-msgstr "工具不可借用中，無法設為維護狀態。請先確認歸還。"
+msgid "Cannot set tool to maintenance while it is borrowed."
+msgstr "工具借出中，無法設為維護狀態。"
 
 #. module: tool_borrow
 #: code:addons/tool_borrow/models/tool_tool.py:0
 #, python-format
-msgid "Cannot set tool to available while it is unavailable. Please confirm return first."
-msgstr "工具不可借用中，無法設為可借用狀態。請先確認歸還。"
+msgid "Cannot set tool to available while it is borrowed. Please confirm return first."
+msgstr "工具借出中，無法設為可借用狀態。請先確認歸還。"
+
+
+#. ============================================================
+#. Python: UserError Messages (tool_loan.py)
+#. ============================================================
 
 #. module: tool_borrow
 #: code:addons/tool_borrow/models/tool_loan.py:0
@@ -451,98 +791,25 @@ msgid "Cannot create loan request for unavailable tool."
 msgstr "無法為不可用的工具建立借用請求。"
 
 #. module: tool_borrow
-#: model:ir.model.constraint,message:tool_borrow.constraint_tool_tool_code_uniq
-msgid "Tool code must be unique!"
-msgstr "工具編號必須唯一！"
+#: code:addons/tool_borrow/controllers/portal.py:0
+#, python-format
+msgid "All"
+msgstr "全部"
 
 #. module: tool_borrow
-#: model_terms:ir.ui.view,arch_db:tool_borrow.res_users_view_form_tool_borrow
-msgid "Tool Borrow Access"
-msgstr "工具借用權限"
+#: code:addons/tool_borrow/controllers/portal.py:0
+#, python-format
+msgid "Pending"
+msgstr "待審核"
 
-#. module: tool_borrow
-#: model_terms:ir.ui.view,arch_db:tool_borrow.tool_tool_view_form
-msgid "Add notes about this tool..."
-msgstr "新增此工具的備註..."
 
-#. module: tool_borrow
-#: model_terms:ir.ui.view,arch_db:tool_borrow.tool_tool_view_form
-msgid "Tool Name"
-msgstr "工具名稱"
-
-#. module: tool_borrow
-#: model:ir.model,name:tool_borrow.model_tool_category
-msgid "Tool Category"
-msgstr "工具類別"
-
-#. module: tool_borrow
-#: model:ir.model.fields,field_description:tool_borrow.field_tool_category__name
-msgid "Category Name"
-msgstr "類別名稱"
-
-#. module: tool_borrow
-#: model:ir.model.fields,field_description:tool_borrow.field_tool_category__tool_count
-msgid "Tool Count"
-msgstr "工具數量"
-
-#. module: tool_borrow
-#: model:ir.model.fields,field_description:tool_borrow.field_tool_category__tool_properties_definition
-msgid "Tool Properties"
-msgstr "工具屬性"
-
-#. module: tool_borrow
-#: model:ir.model.fields,field_description:tool_borrow.field_tool_tool__category_id
-msgid "Category"
-msgstr "類別"
-
-#. module: tool_borrow
-#: model:ir.model.fields,field_description:tool_borrow.field_tool_tool__tool_properties
-msgid "Properties"
-msgstr "屬性"
-
-#. module: tool_borrow
-#: model:ir.actions.act_window,name:tool_borrow.tool_category_action
-#: model:ir.ui.menu,name:tool_borrow.menu_tool_categories
-msgid "Tool Categories"
-msgstr "工具類別"
-
-#. module: tool_borrow
-#: model:ir.ui.menu,name:tool_borrow.menu_tool_config
-msgid "Configuration"
-msgstr "設定"
-
-#. module: tool_borrow
-#: model_terms:ir.ui.view,arch_db:tool_borrow.tool_tool_view_form
-msgid "Status"
-msgstr "狀態"
-
-#. module: tool_borrow
-#: model:tool.category,name:tool_borrow.tool_category_general
-msgid "General Tools"
-msgstr "一般工具"
-
-#. module: tool_borrow
-#: model:tool.category,description:tool_borrow.tool_category_general
-msgid "General purpose tools without specific category"
-msgstr "無特定類別的一般用途工具"
-
-#. module: tool_borrow
-#: model_terms:ir.ui.view,arch_db:tool_borrow.tool_tool_view_form
-msgid "Custom Properties"
-msgstr "自訂屬性"
-
-#. module: tool_borrow
-#: model_terms:ir.ui.view,arch_db:tool_borrow.tool_category_view_form
-msgid "Properties Definition"
-msgstr "屬性定義"
+#. ============================================================
+#. Portal Templates (portal_templates.xml)
+#. ============================================================
 
 #. module: tool_borrow
 #: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_home_tool_borrow
-msgid "Tools"
-msgstr "工具"
-
-#. module: tool_borrow
-#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_home_tool_borrow
+#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_loans
 msgid "Browse available tools"
 msgstr "瀏覽可用工具"
 
@@ -558,48 +825,8 @@ msgstr "目前沒有可供您使用的工具。"
 
 #. module: tool_borrow
 #: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_tools
-#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_tool_detail
-msgid "Code:"
-msgstr "編號："
-
-#. module: tool_borrow
-#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_tools
-#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_tool_detail
-msgid "Available"
-msgstr "可借用"
-
-#. module: tool_borrow
-#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_tools
-#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_tool_detail
-msgid "Unavailable"
-msgstr "不可借用"
-
-#. module: tool_borrow
-#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_tools
-#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_tool_detail
-msgid "Maintenance"
-msgstr "維護中"
-
-#. module: tool_borrow
-#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_tools
-#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_tool_detail
-msgid "Category:"
-msgstr "類別："
-
-#. module: tool_borrow
-#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_tools
 msgid "View Details"
 msgstr "查看詳情"
-
-#. module: tool_borrow
-#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_tool_detail
-msgid "Status:"
-msgstr "狀態："
-
-#. module: tool_borrow
-#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_tool_detail
-msgid "Currently used by:"
-msgstr "目前使用者："
 
 #. module: tool_borrow
 #: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_tool_detail
@@ -623,6 +850,11 @@ msgstr "提交借用請求"
 
 #. module: tool_borrow
 #: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_tool_detail
+msgid "Currently borrowed by:"
+msgstr "目前借用者："
+
+#. module: tool_borrow
+#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_tool_detail
 msgid "Back to Tools"
 msgstr "返回工具列表"
 
@@ -633,53 +865,13 @@ msgstr "您目前沒有借用請求。"
 
 #. module: tool_borrow
 #: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_loans
-msgid "Browse available tools"
-msgstr "瀏覽可用工具"
-
-#. module: tool_borrow
-#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_loans
 msgid "to make a request."
 msgstr "以提出請求。"
 
 #. module: tool_borrow
 #: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_loans
-msgid "Tool"
-msgstr "工具"
-
-#. module: tool_borrow
-#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_loans
-msgid "Request Date"
-msgstr "申請日期"
-
-#. module: tool_borrow
-#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_loans
 msgid "Actions"
 msgstr "操作"
-
-#. module: tool_borrow
-#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_loans
-msgid "Draft"
-msgstr "草稿"
-
-#. module: tool_borrow
-#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_loans
-msgid "Pending"
-msgstr "待審核"
-
-#. module: tool_borrow
-#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_loans
-msgid "Approved"
-msgstr "已批准"
-
-#. module: tool_borrow
-#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_loans
-msgid "Rejected"
-msgstr "已拒絕"
-
-#. module: tool_borrow
-#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_loans
-msgid "Returned"
-msgstr "已歸還"
 
 #. module: tool_borrow
 #: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_loans
@@ -690,46 +882,6 @@ msgstr "查看"
 #: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_loan_detail
 msgid "Loan Request:"
 msgstr "借用請求："
-
-#. module: tool_borrow
-#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_loan_detail
-msgid "Tool:"
-msgstr "工具："
-
-#. module: tool_borrow
-#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_loan_detail
-msgid "Borrower:"
-msgstr "借用人："
-
-#. module: tool_borrow
-#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_loan_detail
-msgid "Request Date:"
-msgstr "申請日期："
-
-#. module: tool_borrow
-#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_loan_detail
-msgid "Approved Date:"
-msgstr "批准日期："
-
-#. module: tool_borrow
-#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_loan_detail
-msgid "Borrow Date:"
-msgstr "借出日期："
-
-#. module: tool_borrow
-#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_loan_detail
-msgid "Return Date:"
-msgstr "歸還日期："
-
-#. module: tool_borrow
-#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_loan_detail
-msgid "Approved By:"
-msgstr "批准人："
-
-#. module: tool_borrow
-#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_loan_detail
-msgid "Notes:"
-msgstr "備註："
 
 #. module: tool_borrow
 #: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_loan_detail
