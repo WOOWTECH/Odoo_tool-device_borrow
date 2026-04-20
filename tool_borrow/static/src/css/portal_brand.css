@@ -16,9 +16,13 @@
 :root {
     /* Brand Primary — follows odoo_color_customizer if installed */
     --tb-primary: var(--custom-primary, #714B67);
+    --tb-primary-dark: var(--custom-primary-active, #5a3c52);
     --tb-primary-light: var(--custom-primary-hover, #8e6584);
     --tb-primary-lighter: var(--custom-primary-light, #f3edf2);
-    --tb-primary-dark: var(--custom-primary-active, #5a3c52);
+
+    /* Text-safe brand color: used for links/titles on white background.
+       Uses the darkest brand shade so bright primary colors stay readable. */
+    --tb-primary-text: var(--custom-primary-active, #5a3c52);
 
     /* Woowtech Identity */
     --tb-brand-blue: #6183FC;
@@ -164,12 +168,12 @@
 /* --- Portal Home Cards --- */
 .o_portal_icon .mdi {
     font-size: 2.5rem;
-    color: var(--tb-primary) !important;
+    color: var(--tb-primary-text) !important;
     transition: var(--tb-transition);
 }
 
 .o_portal_index_card a:hover .o_portal_icon .mdi {
-    color: var(--tb-primary-dark) !important;
+    color: var(--tb-primary) !important;
     transform: scale(1.1);
 }
 
@@ -225,7 +229,7 @@
     justify-content: center;
     flex-shrink: 0;
     background: var(--tb-primary-lighter);
-    color: var(--tb-primary);
+    color: var(--tb-primary-text);
     font-size: 1.5rem;
 }
 
@@ -249,7 +253,7 @@
 }
 
 .tb-tool-card-title a:hover {
-    color: var(--tb-primary);
+    color: var(--tb-primary-text);
 }
 
 .tb-tool-card-code {
@@ -357,7 +361,7 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    color: var(--tb-primary);
+    color: var(--tb-primary-text);
     font-size: 0.85rem;
     font-weight: 500;
     text-decoration: none;
@@ -365,7 +369,7 @@
 }
 
 .tb-view-link:hover {
-    color: var(--tb-primary-dark);
+    color: var(--tb-primary);
     gap: 10px;
 }
 
@@ -440,7 +444,7 @@
     align-items: center;
     justify-content: center;
     background: var(--tb-white);
-    color: var(--tb-primary);
+    color: var(--tb-primary-text);
     font-size: 1.2rem;
     flex-shrink: 0;
     box-shadow: var(--tb-shadow-sm);
@@ -462,7 +466,7 @@
 }
 
 .tb-info-value a {
-    color: var(--tb-primary);
+    color: var(--tb-primary-text);
     text-decoration: none;
 }
 
@@ -515,7 +519,7 @@
 }
 
 .tb-request-form h5 .mdi {
-    color: var(--tb-primary);
+    color: var(--tb-primary-text);
     font-size: 1.4rem;
 }
 
@@ -646,7 +650,7 @@
 }
 
 .tb-loan-tool-name a:hover {
-    color: var(--tb-primary);
+    color: var(--tb-primary-text);
 }
 
 .tb-loan-tool-code {
@@ -713,7 +717,7 @@
 
 .tb-timeline-dot-active {
     background: var(--tb-primary-lighter);
-    color: var(--tb-primary);
+    color: var(--tb-primary-text);
     box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.08);
 }
 
@@ -776,7 +780,7 @@
 }
 
 .tb-notes-section h5 .mdi {
-    color: var(--tb-primary);
+    color: var(--tb-primary-text);
 }
 
 .tb-notes-content {
@@ -808,7 +812,7 @@
 }
 
 .tb-empty-state a {
-    color: var(--tb-primary);
+    color: var(--tb-primary-text);
     font-weight: 500;
 }
 
@@ -826,14 +830,14 @@
 }
 
 .tb-back-link:hover {
-    color: var(--tb-primary);
+    color: var(--tb-primary-text);
 }
 
 /* --- Pagination Override --- */
 .tb-portal-page .pagination .page-link {
     border-radius: var(--tb-radius-sm);
     margin: 0 2px;
-    color: var(--tb-primary);
+    color: var(--tb-primary-text);
     border-color: rgba(0, 0, 0, 0.10);
     font-family: 'Outfit', sans-serif;
     font-size: 0.85rem;
@@ -951,7 +955,7 @@
 }
 
 .tb-section-title .mdi {
-    color: var(--tb-primary);
+    color: var(--tb-primary-text);
     font-size: 1.3rem;
 }
 
@@ -959,7 +963,7 @@
 .tb-counter {
     font-weight: 700;
     font-size: 1.5rem;
-    color: var(--tb-primary);
+    color: var(--tb-primary-text);
     line-height: 1;
 }
 
@@ -1027,4 +1031,73 @@
     font-weight: 600;
     font-size: 0.9rem;
     color: var(--tb-deep-gray);
+}
+
+/* ============================================================
+   Color Customizer Overrides
+   odoo_color_customizer sets broad link color with !important:
+     #wrapwrap a:not(.btn):not(.nav-link):not(.dropdown-item)
+       { color: <primary> !important; }        — specificity (1,3,1)
+   Our portal_brand.css loads BEFORE the customizer CSS, so at
+   equal specificity the customizer wins.  We use specificity (1,4,1)
+   via #wrapwrap + 4 class selectors to guarantee our text-safe
+   colors prevail regardless of source order.
+   ============================================================ */
+/* --- Title links: dark text on white  — specificity (1,4,1) --- */
+#wrapwrap .tb-portal-page .tb-tool-card .tb-tool-card-info .tb-tool-card-title a,
+#wrapwrap .tb-portal-page .tb-loans-table .table-responsive .tb-loan-tool-name a {
+    color: var(--tb-deep-gray) !important;
+}
+
+#wrapwrap .tb-portal-page .tb-tool-card .tb-tool-card-info .tb-tool-card-title a:hover,
+#wrapwrap .tb-portal-page .tb-loans-table .table-responsive .tb-loan-tool-name a:hover {
+    color: var(--tb-primary-text) !important;
+}
+
+/* --- Accent links: darker brand shade  — specificity (1,4,1) --- */
+#wrapwrap .tb-portal-page .tb-tool-card .tb-tool-card-footer .tb-view-link,
+#wrapwrap .tb-portal-page .tb-loans-table .table-responsive a.tb-view-link,
+#wrapwrap .tb-portal-page .tb-detail-card .tb-detail-body .tb-info-value a,
+#wrapwrap .tb-portal-page .tb-detail-card .tb-detail-body .tb-empty-state a {
+    color: var(--tb-primary-text) !important;
+}
+
+#wrapwrap .tb-portal-page .tb-tool-card .tb-tool-card-footer .tb-view-link:hover,
+#wrapwrap .tb-portal-page .tb-loans-table .table-responsive a.tb-view-link:hover {
+    color: var(--tb-primary) !important;
+}
+
+/* --- Back links: gray default, brand accent on hover --- */
+#wrapwrap .o_portal_wrap .container .tb-portal-page a.tb-back-link {
+    color: var(--tb-gray) !important;
+}
+
+#wrapwrap .o_portal_wrap .container .tb-portal-page a.tb-back-link:hover {
+    color: var(--tb-primary-text) !important;
+}
+
+/* --- Pagination — specificity (1,4,1) --- */
+#wrapwrap .tb-portal-page .pagination .page-item .page-link {
+    color: var(--tb-primary-text) !important;
+}
+
+#wrapwrap .tb-portal-page .pagination .page-item.active .page-link {
+    color: var(--tb-white) !important;
+    background: var(--tb-primary) !important;
+    border-color: var(--tb-primary) !important;
+}
+
+/* --- Portal home card text — specificity (1,4,1) --- */
+#wrapwrap .o_portal_wrap .container .o_portal_my_home .o_portal_index_card a {
+    color: inherit !important;
+}
+
+/* --- Breadcrumb links — covers both list and detail page layouts --- */
+#wrapwrap main .o_portal_submenu.breadcrumb .breadcrumb-item a {
+    color: var(--tb-primary-text) !important;
+}
+
+/* --- Mobile loan card links: the <a> IS the card element --- */
+#wrapwrap .o_portal_wrap .tb-portal-page .tb-loan-cards a.tb-loan-card-item {
+    color: inherit !important;
 }

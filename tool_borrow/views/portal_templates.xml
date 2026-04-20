@@ -47,6 +47,8 @@
                 <t t-set="url" t-value="'/my/tools'"/>
                 <t t-set="text">Browse available tools</t>
                 <t t-set="placeholder_count" t-value="'tool_count'"/>
+                <t t-set="show_count" t-value="True"/>
+                <t t-set="count" t-value="tool_count"/>
                 <t t-set="config_card" t-value="True"/>
             </t>
             <t t-call="tool_borrow.portal_docs_entry_mdi">
@@ -55,6 +57,8 @@
                 <t t-set="url" t-value="'/my/loans'"/>
                 <t t-set="text">View your loan requests</t>
                 <t t-set="placeholder_count" t-value="'loan_count'"/>
+                <t t-set="show_count" t-value="True"/>
+                <t t-set="count" t-value="loan_count"/>
                 <t t-set="config_card" t-value="True"/>
             </t>
         </xpath>
