@@ -14,11 +14,11 @@
 
 /* --- CSS Custom Properties (Design Tokens) --- */
 :root {
-    /* Brand Primary */
-    --tb-primary: #714B67;
-    --tb-primary-light: #8e6584;
-    --tb-primary-lighter: #f3edf2;
-    --tb-primary-dark: #5a3c52;
+    /* Brand Primary — follows odoo_color_customizer if installed */
+    --tb-primary: var(--custom-primary, #714B67);
+    --tb-primary-light: var(--custom-primary-hover, #8e6584);
+    --tb-primary-lighter: var(--custom-primary-light, #f3edf2);
+    --tb-primary-dark: var(--custom-primary-active, #5a3c52);
 
     /* Woowtech Identity */
     --tb-brand-blue: #6183FC;
@@ -75,11 +75,11 @@
     --tb-radius-xl: 20px;
     --tb-radius-full: 50px;
 
-    /* Shadows */
-    --tb-shadow-sm: 0 1px 3px rgba(113, 75, 103, 0.06);
-    --tb-shadow-md: 0 4px 12px rgba(113, 75, 103, 0.08);
-    --tb-shadow-lg: 0 8px 24px rgba(113, 75, 103, 0.12);
-    --tb-shadow-xl: 0 16px 48px rgba(113, 75, 103, 0.16);
+    /* Shadows — use neutral tones for cross-theme compatibility */
+    --tb-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+    --tb-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --tb-shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.10);
+    --tb-shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.14);
 
     /* Transitions */
     --tb-transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
@@ -194,7 +194,7 @@
 .tb-tool-card {
     background: var(--tb-white);
     border-radius: var(--tb-radius-lg);
-    border: 1px solid rgba(113, 75, 103, 0.08);
+    border: 1px solid rgba(0, 0, 0, 0.06);
     overflow: hidden;
     transition: var(--tb-transition);
     display: flex;
@@ -378,7 +378,7 @@
 .tb-detail-card {
     background: var(--tb-white);
     border-radius: var(--tb-radius-lg);
-    border: 1px solid rgba(113, 75, 103, 0.08);
+    border: 1px solid rgba(0, 0, 0, 0.06);
     overflow: hidden;
     box-shadow: var(--tb-shadow-sm);
 }
@@ -501,7 +501,7 @@
     background: var(--tb-bg-light);
     border-radius: var(--tb-radius-lg);
     padding: var(--tb-space-xl);
-    border: 2px dashed rgba(113, 75, 103, 0.15);
+    border: 2px dashed rgba(0, 0, 0, 0.10);
     margin-top: var(--tb-space-xl);
 }
 
@@ -520,7 +520,7 @@
 }
 
 .tb-request-form textarea {
-    border: 1px solid rgba(113, 75, 103, 0.15);
+    border: 1px solid rgba(0, 0, 0, 0.10);
     border-radius: var(--tb-radius-md);
     padding: var(--tb-space-md);
     font-family: 'Outfit', sans-serif;
@@ -532,7 +532,7 @@
 
 .tb-request-form textarea:focus {
     border-color: var(--tb-primary);
-    box-shadow: 0 0 0 3px rgba(113, 75, 103, 0.1);
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.08);
     outline: none;
 }
 
@@ -552,12 +552,12 @@
     cursor: pointer;
     transition: var(--tb-transition);
     text-decoration: none !important;
-    box-shadow: 0 2px 8px rgba(113, 75, 103, 0.2);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
 }
 
 .tb-btn-primary:hover {
     transform: translateY(-1px);
-    box-shadow: 0 4px 16px rgba(113, 75, 103, 0.3);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
     color: var(--tb-white) !important;
 }
 
@@ -592,7 +592,7 @@
 .tb-loans-table {
     background: var(--tb-white);
     border-radius: var(--tb-radius-lg);
-    border: 1px solid rgba(113, 75, 103, 0.08);
+    border: 1px solid rgba(0, 0, 0, 0.06);
     overflow: hidden;
     box-shadow: var(--tb-shadow-sm);
 }
@@ -611,7 +611,7 @@
     text-transform: uppercase;
     letter-spacing: 0.06em;
     color: var(--tb-gray);
-    border-bottom: 1px solid rgba(113, 75, 103, 0.08);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
     white-space: nowrap;
 }
 
@@ -628,7 +628,7 @@
 }
 
 .tb-loans-table tbody tr:hover {
-    background: rgba(113, 75, 103, 0.02);
+    background: rgba(0, 0, 0, 0.02);
 }
 
 .tb-loans-table tbody tr:last-child td {
@@ -714,7 +714,7 @@
 .tb-timeline-dot-active {
     background: var(--tb-primary-lighter);
     color: var(--tb-primary);
-    box-shadow: 0 0 0 4px rgba(113, 75, 103, 0.1);
+    box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.08);
 }
 
 .tb-timeline-dot-pending {
@@ -791,7 +791,7 @@
     padding: var(--tb-space-2xl) var(--tb-space-xl);
     background: var(--tb-white);
     border-radius: var(--tb-radius-lg);
-    border: 2px dashed rgba(113, 75, 103, 0.12);
+    border: 2px dashed rgba(0, 0, 0, 0.08);
 }
 
 .tb-empty-state .mdi {
@@ -834,7 +834,7 @@
     border-radius: var(--tb-radius-sm);
     margin: 0 2px;
     color: var(--tb-primary);
-    border-color: rgba(113, 75, 103, 0.15);
+    border-color: rgba(0, 0, 0, 0.10);
     font-family: 'Outfit', sans-serif;
     font-size: 0.85rem;
 }
@@ -864,7 +864,7 @@
     .tb-loan-card-item {
         background: var(--tb-white);
         border-radius: var(--tb-radius-md);
-        border: 1px solid rgba(113, 75, 103, 0.08);
+        border: 1px solid rgba(0, 0, 0, 0.06);
         padding: var(--tb-space-md);
         display: flex;
         align-items: center;
@@ -931,7 +931,7 @@
 .tb-portal-page .o_portal_search_panel {
     background: var(--tb-white);
     border-radius: var(--tb-radius-lg);
-    border: 1px solid rgba(113, 75, 103, 0.08);
+    border: 1px solid rgba(0, 0, 0, 0.06);
     padding: var(--tb-space-md);
     margin-bottom: var(--tb-space-lg);
     box-shadow: var(--tb-shadow-sm);
@@ -980,12 +980,12 @@
     background: var(--tb-bg-light);
     border-radius: var(--tb-radius-md);
     padding: var(--tb-space-lg);
-    border: 1px solid rgba(113, 75, 103, 0.08);
+    border: 1px solid rgba(0, 0, 0, 0.06);
     margin-bottom: var(--tb-space-lg);
 }
 
 .tb-chatter-section .o_portal_chatter_composer textarea {
-    border: 1px solid rgba(113, 75, 103, 0.15);
+    border: 1px solid rgba(0, 0, 0, 0.10);
     border-radius: var(--tb-radius-md);
     font-family: 'Outfit', sans-serif;
     font-size: 0.9rem;
@@ -994,7 +994,7 @@
 
 .tb-chatter-section .o_portal_chatter_composer textarea:focus {
     border-color: var(--tb-primary);
-    box-shadow: 0 0 0 3px rgba(113, 75, 103, 0.1);
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.08);
 }
 
 .tb-chatter-section .o_portal_chatter_composer .btn-primary {
