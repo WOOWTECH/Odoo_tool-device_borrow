@@ -1,0 +1,2 @@
+[     619ms] [ERROR] TypeError: Cannot read properties of null (reading 'remove')
+    at http://localhost:9076/web/assets/e5888da/web.assets_frontend_lazy.min.js:8657:2424 @ http://localhost:9076/web/assets/e5888da/web.assets_frontend_lazy.min.js:3967

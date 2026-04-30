@@ -1,0 +1,63 @@
+- generic [ref=e2]:
+  - link "跳至內容" [ref=e3] [cursor=pointer]:
+    - /url: "#wrap"
+  - banner [ref=e4]:
+    - navigation [ref=e5]:
+      - generic [ref=e6]:
+        - link "Logo of YourCompany" [ref=e7] [cursor=pointer]:
+          - /url: /
+          - img "Logo of YourCompany" [ref=e8]
+        - list [ref=e9]:
+          - listitem [ref=e10]:
+            - button "Joel Willis" [ref=e11] [cursor=pointer]
+            - text:  
+  - main [ref=e12]:
+    - generic [ref=e14]:
+      - heading "我的帳戶" [level=3] [ref=e16]
+      - generic [ref=e17]:
+        - generic [ref=e20]:
+          - link "設備借用 瀏覽設備工具及借還管理" [ref=e23] [cursor=pointer]:
+            - /url: /my/equipment
+            - img [ref=e25]
+            - generic [ref=e26]:
+              - generic [ref=e27]: 設備借用
+              - generic [ref=e28]: 瀏覽設備工具及借還管理
+          - link "連線及保安 配置您的連線參數" [ref=e31] [cursor=pointer]:
+            - /url: /my/security
+            - img [ref=e33]
+            - generic [ref=e34]:
+              - generic [ref=e35]: 連線及保安
+              - generic [ref=e36]: 配置您的連線參數
+        - generic [ref=e39]:
+          - generic [ref=e40]:
+            - img "聯絡人" [ref=e41]
+            - generic [ref=e42]:
+              - heading "Joel Willis" [level=5] [ref=e43]
+              - paragraph [ref=e44]: YourCompany
+          - generic [ref=e48]:
+            - generic [ref=e49]:
+              - img "地址" [ref=e50]: 
+              - generic [ref=e51]:
+                - text: 858 Lynn Street
+                - text: Bayonne NJ 07002
+                - text: 美國
+            - generic [ref=e52]:
+              - img "電話" [ref=e53]: 
+              - generic [ref=e54]: (683)-556-5104
+            - generic [ref=e55]:
+              - img "電郵地址" [ref=e56]: 
+              - generic [ref=e57]: joel.willis63@example.com
+          - button " 編輯資料" [ref=e58] [cursor=pointer]:
+            - generic [ref=e59]: 
+            - text: 編輯資料
+  - contentinfo [ref=e60]:
+    - generic [ref=e63]:
+      - generic [ref=e64]:
+        - generic [ref=e65]: 版權所有 © YourCompany
+        - button "繁體中文" [expanded] [ref=e67] [cursor=pointer]
+      - generic [ref=e69]:
+        - text: 由
+        - link "Odoo" [ref=e70] [cursor=pointer]:
+          - /url: http://www.odoo.com?utm_source=db&utm_medium=portal
+          - img "Odoo" [ref=e71]
+        - text: 驅動
