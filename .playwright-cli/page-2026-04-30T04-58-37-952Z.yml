@@ -1,0 +1,61 @@
+- generic [ref=e2]:
+  - link "跳至內容" [ref=e3] [cursor=pointer]:
+    - /url: "#wrap"
+  - banner [ref=e4]:
+    - navigation [ref=e5]:
+      - generic [ref=e6]:
+        - link "Logo of YourCompany" [ref=e7] [cursor=pointer]:
+          - /url: /
+          - img "Logo of YourCompany" [ref=e8]
+        - list [ref=e9]:
+          - listitem [ref=e10]:
+            - button "Joel Willis" [ref=e11] [cursor=pointer]
+            - text:  
+  - main [ref=e12]:
+    - generic [ref=e15]:
+      - generic [ref=e16]:
+        - link "" [ref=e17] [cursor=pointer]:
+          - /url: /my/
+          - generic [ref=e18]: 
+        - heading "連線及保安" [level=3] [ref=e19]
+      - generic [ref=e20]:
+        - heading "更改密碼" [level=4] [ref=e21]
+        - generic [ref=e22]:
+          - generic [ref=e23]:
+            - generic [ref=e24]: "密碼:"
+            - textbox "密碼:" [ref=e25]
+          - generic [ref=e26]:
+            - generic [ref=e27]: "新密碼:"
+            - textbox "新密碼:" [ref=e28]
+          - generic [ref=e29]:
+            - generic [ref=e30]: "驗證新密碼:"
+            - textbox "驗證新密碼:" [ref=e31]
+          - button "更改密碼" [ref=e32] [cursor=pointer]
+      - generic [ref=e33]:
+        - heading "兩步驟驗證 " [level=4] [ref=e34]:
+          - text: 兩步驟驗證
+          - link "" [ref=e35] [cursor=pointer]:
+            - /url: https://www.odoo.com/documentation/master/applications/general/auth/2fa.html
+            - generic "系統使用說明" [ref=e36]: 
+        - status [ref=e37]:
+          - generic [ref=e38]: 
+          - text: 未啟用兩步驟驗證
+        - button "啟用兩步驟驗證" [ref=e39] [cursor=pointer]
+      - generic [ref=e40]:
+        - heading "撤銷所有時段" [level=4] [ref=e41]
+        - button "登出所有裝置" [ref=e42] [cursor=pointer]
+      - generic [ref=e43]:
+        - heading "刪除帳戶" [level=4] [ref=e44]
+        - button "刪除帳戶" [ref=e45] [cursor=pointer]
+        - text: 
+  - contentinfo [ref=e46]:
+    - generic [ref=e49]:
+      - generic [ref=e50]:
+        - generic [ref=e51]: 版權所有 © YourCompany
+        - button "繁體中文" [expanded] [ref=e53] [cursor=pointer]
+      - generic [ref=e55]:
+        - text: 由
+        - link "Odoo" [ref=e56] [cursor=pointer]:
+          - /url: http://www.odoo.com?utm_source=db&utm_medium=portal
+          - img "Odoo" [ref=e57]
+        - text: 驅動

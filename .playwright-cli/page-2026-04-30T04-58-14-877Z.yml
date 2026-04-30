@@ -1,0 +1,124 @@
+- generic [ref=e2]:
+  - link "跳至內容" [ref=e3] [cursor=pointer]:
+    - /url: "#wrap"
+  - banner [ref=e4]:
+    - navigation [ref=e5]:
+      - generic [ref=e6]:
+        - link "Logo of YourCompany" [ref=e7] [cursor=pointer]:
+          - /url: /
+          - img "Logo of YourCompany" [ref=e8]
+        - list [ref=e9]:
+          - listitem [ref=e10]:
+            - button "Joel Willis" [ref=e11] [cursor=pointer]
+            - text:  
+  - main [ref=e12]:
+    - generic [ref=e15]:
+      - generic [ref=e18]:
+        - generic [ref=e19]: 󱣺
+        - generic [ref=e20]:
+          - heading "我的借用" [level=2] [ref=e21]
+          - paragraph [ref=e22]: 追蹤您的借用請求與歸還狀態
+      - navigation [ref=e23]:
+        - list [ref=e24]:
+          - listitem [ref=e25]:
+            - link "首頁" [ref=e26] [cursor=pointer]:
+              - /url: /my/home
+              - generic [ref=e27]: 
+        - text: 
+        - generic [ref=e29]:
+          - generic [ref=e30]:
+            - text: 排列依據：
+            - button "申請日期" [ref=e32] [cursor=pointer]
+          - generic [ref=e33]:
+            - text: 篩選依據：
+            - button "全部" [ref=e35] [cursor=pointer]
+      - table [ref=e38]:
+        - rowgroup [ref=e39]:
+          - row "工具 申請日期 狀態 操作" [ref=e40]:
+            - columnheader "工具" [ref=e41]
+            - columnheader "申請日期" [ref=e42]
+            - columnheader "狀態" [ref=e43]
+            - columnheader "操作" [ref=e44]
+        - rowgroup [ref=e45]:
+          - row "噪音計 SNDWAY SW-524 TL-011 2026年03月26日 已歸還 查看 󰁔" [ref=e46]:
+            - cell "噪音計 SNDWAY SW-524 TL-011" [ref=e47]:
+              - link "噪音計 SNDWAY SW-524" [ref=e49] [cursor=pointer]:
+                - /url: /my/loans/7
+              - generic [ref=e50]: TL-011
+            - cell "2026年03月26日" [ref=e51]:
+              - generic [ref=e52]: 2026年03月26日
+            - cell "已歸還" [ref=e53]:
+              - generic [ref=e54]: 已歸還
+            - cell "查看 󰁔" [ref=e55]:
+              - link "查看 󰁔" [ref=e56] [cursor=pointer]:
+                - /url: /my/loans/7
+                - text: 查看
+                - generic [ref=e57]: 󰁔
+          - row "扭力扳手 Topeak T-25 TL-012 2026年03月26日 已拒絕 查看 󰁔" [ref=e58]:
+            - cell "扭力扳手 Topeak T-25 TL-012" [ref=e59]:
+              - link "扭力扳手 Topeak T-25" [ref=e61] [cursor=pointer]:
+                - /url: /my/loans/8
+              - generic [ref=e62]: TL-012
+            - cell "2026年03月26日" [ref=e63]:
+              - generic [ref=e64]: 2026年03月26日
+            - cell "已拒絕" [ref=e65]:
+              - generic [ref=e66]: 已拒絕
+            - cell "查看 󰁔" [ref=e67]:
+              - link "查看 󰁔" [ref=e68] [cursor=pointer]:
+                - /url: /my/loans/8
+                - text: 查看
+                - generic [ref=e69]: 󰁔
+          - row "示波器 Rigol DS1054Z TL-008 2026年03月26日 待審核 查看 󰁔" [ref=e70]:
+            - cell "示波器 Rigol DS1054Z TL-008" [ref=e71]:
+              - link "示波器 Rigol DS1054Z" [ref=e73] [cursor=pointer]:
+                - /url: /my/loans/4
+              - generic [ref=e74]: TL-008
+            - cell "2026年03月26日" [ref=e75]:
+              - generic [ref=e76]: 2026年03月26日
+            - cell "待審核" [ref=e77]:
+              - generic [ref=e78]: 待審核
+            - cell "查看 󰁔" [ref=e79]:
+              - link "查看 󰁔" [ref=e80] [cursor=pointer]:
+                - /url: /my/loans/4
+                - text: 查看
+                - generic [ref=e81]: 󰁔
+          - row "鉗式電流錶 Hioki 3280-10F TL-009 2026年03月26日 已批准 查看 󰁔" [ref=e82]:
+            - cell "鉗式電流錶 Hioki 3280-10F TL-009" [ref=e83]:
+              - link "鉗式電流錶 Hioki 3280-10F" [ref=e85] [cursor=pointer]:
+                - /url: /my/loans/5
+              - generic [ref=e86]: TL-009
+            - cell "2026年03月26日" [ref=e87]:
+              - generic [ref=e88]: 2026年03月26日
+            - cell "已批准" [ref=e89]:
+              - generic [ref=e90]: 已批准
+            - cell "查看 󰁔" [ref=e91]:
+              - link "查看 󰁔" [ref=e92] [cursor=pointer]:
+                - /url: /my/loans/5
+                - text: 查看
+                - generic [ref=e93]: 󰁔
+          - row "手持式焊接機 TS100 TL-010 2026年03月26日 已借出 查看 󰁔" [ref=e94]:
+            - cell "手持式焊接機 TS100 TL-010" [ref=e95]:
+              - link "手持式焊接機 TS100" [ref=e97] [cursor=pointer]:
+                - /url: /my/loans/6
+              - generic [ref=e98]: TL-010
+            - cell "2026年03月26日" [ref=e99]:
+              - generic [ref=e100]: 2026年03月26日
+            - cell "已借出" [ref=e101]:
+              - generic [ref=e102]: 已借出
+            - cell "查看 󰁔" [ref=e103]:
+              - link "查看 󰁔" [ref=e104] [cursor=pointer]:
+                - /url: /my/loans/6
+                - text: 查看
+                - generic [ref=e105]: 󰁔
+      - text: 󰅂 󰅂 󰅂 󰅂 󰅂
+  - contentinfo [ref=e106]:
+    - generic [ref=e109]:
+      - generic [ref=e110]:
+        - generic [ref=e111]: 版權所有 © YourCompany
+        - button "繁體中文" [expanded] [ref=e113] [cursor=pointer]
+      - generic [ref=e115]:
+        - text: 由
+        - link "Odoo" [ref=e116] [cursor=pointer]:
+          - /url: http://www.odoo.com?utm_source=db&utm_medium=portal
+          - img "Odoo" [ref=e117]
+        - text: 驅動
