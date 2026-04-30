@@ -35,28 +35,70 @@
         </div>
     </template>
 
-    <!-- Portal Home — Tool Equipment Section -->
-    <template id="portal_my_home_tool_borrow" name="Tool Equipment" inherit_id="portal.portal_my_home" customize_show="True" priority="30">
+    <!-- Portal Home — Equipment Borrowing entry card -->
+    <template id="portal_my_home_tool_borrow" name="Equipment Borrowing" inherit_id="portal.portal_my_home" customize_show="True" priority="30">
         <xpath expr="//div[hasclass('o_portal_docs')]" position="before">
             <t t-set="portal_client_category_enable" t-value="True"/>
         </xpath>
         <xpath expr="//div[@id='portal_client_category']" position="inside">
             <t t-call="portal.portal_docs_entry">
-                <t t-set="icon" t-value="'/tool_borrow/static/src/img/tools.svg'"/>
-                <t t-set="title">Tools</t>
-                <t t-set="url" t-value="'/my/tools'"/>
-                <t t-set="text">Browse available tool equipment</t>
-                <t t-set="placeholder_count" t-value="'tool_count'"/>
+                <t t-set="icon" t-value="'/tool_borrow/static/src/img/equipment.svg'"/>
+                <t t-set="title">Equipment Borrowing</t>
+                <t t-set="url" t-value="'/my/equipment'"/>
+                <t t-set="text">Browse equipment and manage borrowing</t>
                 <t t-set="config_card" t-value="True"/>
             </t>
-            <t t-call="portal.portal_docs_entry">
-                <t t-set="icon" t-value="'/tool_borrow/static/src/img/loans.svg'"/>
-                <t t-set="title">My Loans</t>
-                <t t-set="url" t-value="'/my/loans'"/>
-                <t t-set="text">View and manage loan records</t>
-                <t t-set="placeholder_count" t-value="'loan_count'"/>
-                <t t-set="config_card" t-value="True"/>
-            </t>
+        </xpath>
+    </template>
+
+    <!-- ============================================================
+         Equipment Hub — sub-portal with Equipment Tools + My Loans
+         ============================================================ -->
+    <template id="portal_my_equipment" name="Equipment Hub">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="False"/>
+
+            <div class="o_portal_my_home">
+                <!-- Page title -->
+                <h3 class="page-header mt-3">Equipment Borrowing</h3>
+
+                <!-- Cards row, same style as portal home -->
+                <div class="o_portal_category row g-2 mt-3">
+                    <t t-call="portal.portal_docs_entry">
+                        <t t-set="icon" t-value="'/tool_borrow/static/src/img/tools.svg'"/>
+                        <t t-set="title">Equipment Tools</t>
+                        <t t-set="url" t-value="'/my/tools'"/>
+                        <t t-set="text">Browse available tool equipment</t>
+                        <t t-set="placeholder_count" t-value="'tool_count'"/>
+                        <t t-set="config_card" t-value="True"/>
+                    </t>
+                    <t t-call="portal.portal_docs_entry">
+                        <t t-set="icon" t-value="'/tool_borrow/static/src/img/loans.svg'"/>
+                        <t t-set="title">My Loans</t>
+                        <t t-set="url" t-value="'/my/loans'"/>
+                        <t t-set="text">View and manage loan records</t>
+                        <t t-set="placeholder_count" t-value="'loan_count'"/>
+                        <t t-set="config_card" t-value="True"/>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Breadcrumbs for Equipment / Tools / Loans pages -->
+    <template id="portal_breadcrumbs_tool_borrow" name="Tool Borrow Breadcrumbs" inherit_id="portal.portal_breadcrumbs">
+        <xpath expr="//ol" position="inside">
+            <li t-if="page_name == 'equipment'" class="breadcrumb-item active">Equipment Borrowing</li>
+            <li t-if="page_name == 'tools'" class="breadcrumb-item"><a href="/my/equipment">Equipment Borrowing</a></li>
+            <li t-if="page_name == 'tools'" class="breadcrumb-item active">Equipment Tools</li>
+            <li t-if="page_name == 'tool_detail'" class="breadcrumb-item"><a href="/my/equipment">Equipment Borrowing</a></li>
+            <li t-if="page_name == 'tool_detail'" class="breadcrumb-item"><a href="/my/tools">Equipment Tools</a></li>
+            <li t-if="page_name == 'tool_detail'" class="breadcrumb-item active" t-esc="tool.name"/>
+            <li t-if="page_name == 'loans'" class="breadcrumb-item"><a href="/my/equipment">Equipment Borrowing</a></li>
+            <li t-if="page_name == 'loans'" class="breadcrumb-item active">My Loans</li>
+            <li t-if="page_name == 'loan_detail'" class="breadcrumb-item"><a href="/my/equipment">Equipment Borrowing</a></li>
+            <li t-if="page_name == 'loan_detail'" class="breadcrumb-item"><a href="/my/loans">My Loans</a></li>
+            <li t-if="page_name == 'loan_detail'" class="breadcrumb-item active">Loan Request</li>
         </xpath>
     </template>
 
@@ -78,7 +120,7 @@
                         <div class="d-flex align-items-center gap-3">
                             <i class="mdi mdi-tools tb-header-icon" style="color: rgba(255,255,255,0.9);"/>
                             <div>
-                                <h2>Tools Overview</h2>
+                                <h2>Equipment Tools</h2>
                                 <p>Browse all available tools, click to view details or request to borrow</p>
                             </div>
                         </div>
@@ -86,7 +128,7 @@
                 </div>
 
                 <t t-call="portal.portal_searchbar">
-                    <t t-set="title">Tools</t>
+                    <t t-set="title">Equipment Tools</t>
                 </t>
 
                 <!-- Empty State -->
@@ -251,7 +293,7 @@
 
                 <!-- Back Link -->
                 <a href="/my/tools" class="tb-back-link">
-                    <i class="mdi mdi-arrow-left"/> Back to Tools
+                    <i class="mdi mdi-arrow-left"/> Back to Equipment Tools
                 </a>
             </div>
         </t>

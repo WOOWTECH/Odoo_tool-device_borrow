@@ -23,9 +23,12 @@ class ToolBorrowPortal(CustomerPortal):
             ])
         return values
 
-    # Routes with website=True - required when website module is installed
-    # The module itself doesn't depend on website, but if website is installed,
-    # the portal templates require website context
+    @http.route(['/my/equipment'], type='http', auth='user', website=True)
+    def portal_my_equipment(self, **kw):
+        values = self._prepare_portal_layout_values()
+        values.update(self._prepare_home_portal_values(['tool_count', 'loan_count']))
+        values['page_name'] = 'equipment'
+        return request.render('tool_borrow.portal_my_equipment', values)
 
     @http.route(['/my/tools', '/my/tools/page/<int:page>'], type='http', auth='user', website=True)
     def portal_my_tools(self, page=1, sortby=None, **kw):
