@@ -1,0 +1,20 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+<!-- Shadow ellipse -->
+<ellipse cx="32" cy="58" rx="14" ry="4" fill="#C1DBF6"/>
+<!-- Wrench body fill -->
+<path d="M20.5 43.5L38.5 25.5L42.5 21.5C40.5 17.5 41 13 44 10C44.8 9.2 45.7 8.6 46.7 8.1L40 14.8L40.5 20L45.2 23.5L51.9 16.8C51.4 17.8 50.8 18.7 50 19.5C47 22.5 42.5 23 38.5 21L20.5 39L16.5 43C18.5 45 20.5 45.5 20.5 43.5Z" fill="white"/>
+<!-- Wrench head - top jaw -->
+<path d="M46.7 8.1C49.5 7.2 52.5 7.9 54.5 10C56.6 12.1 57.3 15 56.4 17.3L51.9 16.8L45.2 23.5L40.5 20L40 14.8L46.7 8.1Z" fill="#C1DBF6"/>
+<!-- Wrench head - bottom jaw -->
+<path d="M7.5 53.4C5.9 51.8 5.9 49.2 7.5 47.6L16.5 43L20.5 39L20.5 43.5L16.5 47.5L11.9 52.1C10.3 53.7 9.1 55 7.5 53.4Z" fill="#FBDBD0"/>
+<!-- Wrench shaft -->
+<path d="M38.5 25.5L20.5 43.5L16.5 47.5L16.5 43L20.5 39L38.5 21L42.5 21.5L38.5 25.5Z" fill="#FBDBD0" opacity="0.5"/>
+<!-- Gear wheel behind -->
+<path d="M44.5 5L46 8.5L49.5 7L48.5 10.5L52 11.5L49 13.5L51 17L47.5 16L46.5 19.5L44.5 16.5L41.5 18.5L42.5 15L39 14L42 12L40.5 8.5L44 9.5L44.5 5Z" fill="#C1DBF6"/>
+<circle cx="45.5" cy="12" r="4" fill="white"/>
+<!-- Wrench full outline -->
+<path d="M46.7 8.1C49.5 7.2 52.5 7.9 54.5 10C56.6 12.1 57.3 15 56.4 17.3L51.9 16.8L45.2 23.5L40.5 20L40 14.8L46.7 8.1Z" stroke="#374874" stroke-width="1.2" stroke-linejoin="round"/>
+<path d="M45.2 23.5L38.5 25.5L20.5 43.5L16.5 47.5L11.9 52.1C10.3 53.7 8.1 53.7 7.5 53.4C5.9 51.8 5.9 49.2 7.5 47.6L16.5 43L20.5 39L38.5 21L40.5 20" stroke="#374874" stroke-width="1.2" stroke-linejoin="round"/>
+<!-- Handle grip lines -->
+<path d="M10.5 48.5L14.5 44.5M9 50L13 46M11 52L15 48" stroke="#374874" stroke-width="0.8" stroke-linecap="round" opacity="0.6"/>
+</svg>

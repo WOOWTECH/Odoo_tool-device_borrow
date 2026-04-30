@@ -781,8 +781,8 @@ msgstr "待審核"
 
 #. module: tool_borrow
 #: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_home_tool_borrow
-msgid "Browse available tools"
-msgstr "瀏覽可用工具"
+msgid "Browse available tool equipment"
+msgstr "瀏覽可用的工具設備"
 
 #. module: tool_borrow
 #: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_loans
@@ -791,8 +791,8 @@ msgstr "<i class=\"mdi mdi-magnify\"/> 瀏覽可用工具"
 
 #. module: tool_borrow
 #: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_home_tool_borrow
-msgid "View your loan requests"
-msgstr "查看您的借用請求"
+msgid "View and manage loan records"
+msgstr "查看與管理借用紀錄"
 
 #. module: tool_borrow
 #: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_tools

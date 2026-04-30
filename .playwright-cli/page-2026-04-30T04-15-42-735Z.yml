@@ -1,0 +1,70 @@
+- generic [ref=e2]:
+  - link "跳至內容" [ref=e3] [cursor=pointer]:
+    - /url: "#wrap"
+  - banner [ref=e4]:
+    - navigation [ref=e5]:
+      - generic [ref=e6]:
+        - link "Logo of YourCompany" [ref=e7] [cursor=pointer]:
+          - /url: /
+          - img "Logo of YourCompany" [ref=e8]
+        - list [ref=e9]:
+          - listitem [ref=e10]:
+            - button "Joel Willis" [ref=e11] [cursor=pointer]
+            - text:  
+  - main [ref=e12]:
+    - generic [ref=e14]:
+      - heading "我的帳戶" [level=3] [ref=e16]
+      - generic [ref=e17]:
+        - generic [ref=e20]:
+          - generic [ref=e21]:
+            - link "工具 Browse available tool equipment" [ref=e23] [cursor=pointer]:
+              - /url: /my/tools
+              - img [ref=e25]
+              - generic [ref=e26]:
+                - generic [ref=e28]: 工具
+                - generic [ref=e29]: Browse available tool equipment
+            - link "我的借用 View and manage loan records" [ref=e31] [cursor=pointer]:
+              - /url: /my/loans
+              - img [ref=e33]
+              - generic [ref=e34]:
+                - generic [ref=e36]: 我的借用
+                - generic [ref=e37]: View and manage loan records
+          - link "連線及保安 配置您的連線參數" [ref=e40] [cursor=pointer]:
+            - /url: /my/security
+            - img [ref=e42]
+            - generic [ref=e43]:
+              - generic [ref=e44]: 連線及保安
+              - generic [ref=e45]: 配置您的連線參數
+        - generic [ref=e48]:
+          - generic [ref=e49]:
+            - img "聯絡人" [ref=e50]
+            - generic [ref=e51]:
+              - heading "Joel Willis" [level=5] [ref=e52]
+              - paragraph [ref=e53]: YourCompany
+          - generic [ref=e57]:
+            - generic [ref=e58]:
+              - img "地址" [ref=e59]: 
+              - generic [ref=e60]:
+                - text: 858 Lynn Street
+                - text: Bayonne NJ 07002
+                - text: 美國
+            - generic [ref=e61]:
+              - img "電話" [ref=e62]: 
+              - generic [ref=e63]: (683)-556-5104
+            - generic [ref=e64]:
+              - img "電郵地址" [ref=e65]: 
+              - generic [ref=e66]: joel.willis63@example.com
+          - button " 編輯資料" [ref=e67] [cursor=pointer]:
+            - generic [ref=e68]: 
+            - text: 編輯資料
+  - contentinfo [ref=e69]:
+    - generic [ref=e72]:
+      - generic [ref=e73]:
+        - generic [ref=e74]: 版權所有 © YourCompany
+        - button "繁體中文" [expanded] [ref=e76] [cursor=pointer]
+      - generic [ref=e78]:
+        - text: 由
+        - link "Odoo" [ref=e79] [cursor=pointer]:
+          - /url: http://www.odoo.com?utm_source=db&utm_medium=portal
+          - img "Odoo" [ref=e80]
+        - text: 驅動
