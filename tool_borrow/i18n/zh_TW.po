@@ -362,14 +362,8 @@ msgid "Available"
 msgstr "可借用"
 
 #. module: tool_borrow
-#: model:ir.model.fields.selection,name:tool_borrow.selection__tool_tool__state__unavailable
-#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_tool_detail
-#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_loan_detail
-msgid "Unavailable"
-msgstr "不可用"
-
-#. module: tool_borrow
 #. odoo-python
+#: model:ir.model.fields.selection,name:tool_borrow.selection__tool_tool__state__borrowed
 #: model:ir.model.fields.selection,name:tool_borrow.selection__tool_loan__state__borrowed
 #: model_terms:ir.ui.view,arch_db:tool_borrow.tool_tool_view_search
 #: model_terms:ir.ui.view,arch_db:tool_borrow.tool_loan_view_search
@@ -780,10 +774,6 @@ msgstr "全部"
 
 #. module: tool_borrow
 #. odoo-python
-#: model:ir.model.fields.selection,name:tool_borrow.selection__tool_loan__state__pending
-#: model_terms:ir.ui.view,arch_db:tool_borrow.tool_loan_view_search
-#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_loans
-#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_loan_detail
 #: code:addons/tool_borrow/controllers/portal.py:0
 #, python-format
 msgid "Pending"
@@ -791,8 +781,28 @@ msgstr "待審核"
 
 #. module: tool_borrow
 #: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_home_tool_borrow
-msgid "Browse available tools"
-msgstr "瀏覽可用工具"
+msgid "Equipment Borrowing"
+msgstr "設備借用"
+
+#. module: tool_borrow
+#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_home_tool_borrow
+msgid "Browse equipment and manage borrowing"
+msgstr "瀏覽設備工具及借還管理"
+
+#. module: tool_borrow
+#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_equipment
+msgid "Equipment Tools"
+msgstr "設備工具"
+
+#. module: tool_borrow
+#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_equipment
+msgid "Browse available tool equipment"
+msgstr "瀏覽可用的工具設備"
+
+#. module: tool_borrow
+#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_equipment
+msgid "View and manage loan records"
+msgstr "查看與管理借用紀錄"
 
 #. module: tool_borrow
 #: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_loans
@@ -800,14 +810,9 @@ msgid "<i class=\"mdi mdi-magnify\"/> Browse available tools"
 msgstr "<i class=\"mdi mdi-magnify\"/> 瀏覽可用工具"
 
 #. module: tool_borrow
-#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_home_tool_borrow
-msgid "View your loan requests"
-msgstr "查看您的借用請求"
-
-#. module: tool_borrow
 #: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_tools
-msgid "Tools Overview"
-msgstr "工具總覽"
+msgid "Equipment Tools"
+msgstr "設備工具"
 
 #. module: tool_borrow
 #: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_tools
@@ -823,6 +828,12 @@ msgstr "目前沒有可供您使用的工具。"
 #: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_tools
 msgid "View Details <i class=\"mdi mdi-arrow-right\"/>"
 msgstr "查看詳情 <i class=\"mdi mdi-arrow-right\"/>"
+
+#. module: tool_borrow
+#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_tool_detail
+#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_loan_detail
+msgid "Unavailable"
+msgstr "不可用"
 
 #. module: tool_borrow
 #: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_tool_detail
@@ -863,8 +874,8 @@ msgstr "<i class=\"mdi mdi-comment-text-outline\"/> 評論留言"
 
 #. module: tool_borrow
 #: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_tool_detail
-msgid "<i class=\"mdi mdi-arrow-left\"/> Back to Tools"
-msgstr "<i class=\"mdi mdi-arrow-left\"/> 返回工具列表"
+msgid "<i class=\"mdi mdi-arrow-left\"/> Back to Equipment Tools"
+msgstr "<i class=\"mdi mdi-arrow-left\"/> 返回設備工具"
 
 #. module: tool_borrow
 #: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_loans
@@ -912,27 +923,32 @@ msgid "<i class=\"mdi mdi-arrow-left\"/> Back to My Loans"
 msgstr "<i class=\"mdi mdi-arrow-left\"/> 返回我的借用"
 
 #. module: tool_borrow
-#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_home_tool_borrow
-msgid "Security &amp; Connection"
-msgstr "連線及保安"
+#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_breadcrumbs_tool_borrow
+msgid "Loan Request"
+msgstr "借用請求"
 
 #. module: tool_borrow
-#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_home_tool_borrow
-msgid "Configure your connection settings"
-msgstr "配置您的連線參數"
+#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_equipment
+msgid "Equipment Borrowing"
+msgstr "設備借用"
 
 #. module: tool_borrow
-#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_loan_detail
-msgid "Approver"
-msgstr "批准人"
+#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_breadcrumbs_tool_borrow
+msgid "Equipment Borrowing"
+msgstr "設備借用"
 
 #. module: tool_borrow
-#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_loans
-msgid "You have no loan requests."
-msgstr "您目前沒有借用請求。"
+#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_equipment
+msgid "My Loans"
+msgstr "我的借用"
 
 #. module: tool_borrow
-#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_tool_detail
-msgid "Add your request notes..."
-msgstr "新增您的請求備註..."
+#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_breadcrumbs_tool_borrow
+msgid "Equipment Tools"
+msgstr "設備工具"
+
+#. module: tool_borrow
+#: model_terms:ir.ui.view,arch_db:tool_borrow.portal_breadcrumbs_tool_borrow
+msgid "My Loans"
+msgstr "我的借用"
 
