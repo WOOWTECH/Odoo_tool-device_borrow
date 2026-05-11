@@ -14,15 +14,11 @@
 
 /* --- CSS Custom Properties (Design Tokens) --- */
 :root {
-    /* Brand Primary — follows odoo_color_customizer if installed */
-    --tb-primary: var(--custom-primary, #714B67);
-    --tb-primary-dark: var(--custom-primary-active, #5a3c52);
-    --tb-primary-light: var(--custom-primary-hover, #8e6584);
-    --tb-primary-lighter: var(--custom-primary-light, #f3edf2);
-
-    /* Text-safe brand color: used for links/titles on white background.
-       Uses the darkest brand shade so bright primary colors stay readable. */
-    --tb-primary-text: var(--custom-primary-active, #5a3c52);
+    /* Brand Primary */
+    --tb-primary: #714B67;
+    --tb-primary-light: #8e6584;
+    --tb-primary-lighter: #f3edf2;
+    --tb-primary-dark: #5a3c52;
 
     /* Woowtech Identity */
     --tb-brand-blue: #6183FC;
@@ -79,11 +75,11 @@
     --tb-radius-xl: 20px;
     --tb-radius-full: 50px;
 
-    /* Shadows — use neutral tones for cross-theme compatibility */
-    --tb-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
-    --tb-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
-    --tb-shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.10);
-    --tb-shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.14);
+    /* Shadows */
+    --tb-shadow-sm: 0 1px 3px rgba(113, 75, 103, 0.06);
+    --tb-shadow-md: 0 4px 12px rgba(113, 75, 103, 0.08);
+    --tb-shadow-lg: 0 8px 24px rgba(113, 75, 103, 0.12);
+    --tb-shadow-xl: 0 16px 48px rgba(113, 75, 103, 0.16);
 
     /* Transitions */
     --tb-transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
@@ -168,12 +164,12 @@
 /* --- Portal Home Cards --- */
 .o_portal_icon .mdi {
     font-size: 2.5rem;
-    color: var(--tb-primary-text) !important;
+    color: var(--tb-primary) !important;
     transition: var(--tb-transition);
 }
 
 .o_portal_index_card a:hover .o_portal_icon .mdi {
-    color: var(--tb-primary) !important;
+    color: var(--tb-primary-dark) !important;
     transform: scale(1.1);
 }
 
@@ -198,7 +194,7 @@
 .tb-tool-card {
     background: var(--tb-white);
     border-radius: var(--tb-radius-lg);
-    border: 1px solid rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(113, 75, 103, 0.08);
     overflow: hidden;
     transition: var(--tb-transition);
     display: flex;
@@ -229,7 +225,7 @@
     justify-content: center;
     flex-shrink: 0;
     background: var(--tb-primary-lighter);
-    color: var(--tb-primary-text);
+    color: var(--tb-primary);
     font-size: 1.5rem;
 }
 
@@ -253,7 +249,7 @@
 }
 
 .tb-tool-card-title a:hover {
-    color: var(--tb-primary-text);
+    color: var(--tb-primary);
 }
 
 .tb-tool-card-code {
@@ -361,7 +357,7 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    color: var(--tb-primary-text);
+    color: var(--tb-primary);
     font-size: 0.85rem;
     font-weight: 500;
     text-decoration: none;
@@ -369,7 +365,7 @@
 }
 
 .tb-view-link:hover {
-    color: var(--tb-primary);
+    color: var(--tb-primary-dark);
     gap: 10px;
 }
 
@@ -382,7 +378,7 @@
 .tb-detail-card {
     background: var(--tb-white);
     border-radius: var(--tb-radius-lg);
-    border: 1px solid rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(113, 75, 103, 0.08);
     overflow: hidden;
     box-shadow: var(--tb-shadow-sm);
 }
@@ -444,7 +440,7 @@
     align-items: center;
     justify-content: center;
     background: var(--tb-white);
-    color: var(--tb-primary-text);
+    color: var(--tb-primary);
     font-size: 1.2rem;
     flex-shrink: 0;
     box-shadow: var(--tb-shadow-sm);
@@ -466,7 +462,7 @@
 }
 
 .tb-info-value a {
-    color: var(--tb-primary-text);
+    color: var(--tb-primary);
     text-decoration: none;
 }
 
@@ -505,7 +501,7 @@
     background: var(--tb-bg-light);
     border-radius: var(--tb-radius-lg);
     padding: var(--tb-space-xl);
-    border: 2px dashed rgba(0, 0, 0, 0.10);
+    border: 2px dashed rgba(113, 75, 103, 0.15);
     margin-top: var(--tb-space-xl);
 }
 
@@ -519,12 +515,12 @@
 }
 
 .tb-request-form h5 .mdi {
-    color: var(--tb-primary-text);
+    color: var(--tb-primary);
     font-size: 1.4rem;
 }
 
 .tb-request-form textarea {
-    border: 1px solid rgba(0, 0, 0, 0.10);
+    border: 1px solid rgba(113, 75, 103, 0.15);
     border-radius: var(--tb-radius-md);
     padding: var(--tb-space-md);
     font-family: 'Outfit', sans-serif;
@@ -536,7 +532,7 @@
 
 .tb-request-form textarea:focus {
     border-color: var(--tb-primary);
-    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 0 0 3px rgba(113, 75, 103, 0.1);
     outline: none;
 }
 
@@ -556,12 +552,12 @@
     cursor: pointer;
     transition: var(--tb-transition);
     text-decoration: none !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 2px 8px rgba(113, 75, 103, 0.2);
 }
 
 .tb-btn-primary:hover {
     transform: translateY(-1px);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+    box-shadow: 0 4px 16px rgba(113, 75, 103, 0.3);
     color: var(--tb-white) !important;
 }
 
@@ -596,7 +592,7 @@
 .tb-loans-table {
     background: var(--tb-white);
     border-radius: var(--tb-radius-lg);
-    border: 1px solid rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(113, 75, 103, 0.08);
     overflow: hidden;
     box-shadow: var(--tb-shadow-sm);
 }
@@ -615,7 +611,7 @@
     text-transform: uppercase;
     letter-spacing: 0.06em;
     color: var(--tb-gray);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    border-bottom: 1px solid rgba(113, 75, 103, 0.08);
     white-space: nowrap;
 }
 
@@ -632,7 +628,7 @@
 }
 
 .tb-loans-table tbody tr:hover {
-    background: rgba(0, 0, 0, 0.02);
+    background: rgba(113, 75, 103, 0.02);
 }
 
 .tb-loans-table tbody tr:last-child td {
@@ -650,7 +646,7 @@
 }
 
 .tb-loan-tool-name a:hover {
-    color: var(--tb-primary-text);
+    color: var(--tb-primary);
 }
 
 .tb-loan-tool-code {
@@ -717,8 +713,8 @@
 
 .tb-timeline-dot-active {
     background: var(--tb-primary-lighter);
-    color: var(--tb-primary-text);
-    box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.08);
+    color: var(--tb-primary);
+    box-shadow: 0 0 0 4px rgba(113, 75, 103, 0.1);
 }
 
 .tb-timeline-dot-pending {
@@ -780,7 +776,7 @@
 }
 
 .tb-notes-section h5 .mdi {
-    color: var(--tb-primary-text);
+    color: var(--tb-primary);
 }
 
 .tb-notes-content {
@@ -795,7 +791,7 @@
     padding: var(--tb-space-2xl) var(--tb-space-xl);
     background: var(--tb-white);
     border-radius: var(--tb-radius-lg);
-    border: 2px dashed rgba(0, 0, 0, 0.08);
+    border: 2px dashed rgba(113, 75, 103, 0.12);
 }
 
 .tb-empty-state .mdi {
@@ -812,7 +808,7 @@
 }
 
 .tb-empty-state a {
-    color: var(--tb-primary-text);
+    color: var(--tb-primary);
     font-weight: 500;
 }
 
@@ -830,15 +826,15 @@
 }
 
 .tb-back-link:hover {
-    color: var(--tb-primary-text);
+    color: var(--tb-primary);
 }
 
 /* --- Pagination Override --- */
 .tb-portal-page .pagination .page-link {
     border-radius: var(--tb-radius-sm);
     margin: 0 2px;
-    color: var(--tb-primary-text);
-    border-color: rgba(0, 0, 0, 0.10);
+    color: var(--tb-primary);
+    border-color: rgba(113, 75, 103, 0.15);
     font-family: 'Outfit', sans-serif;
     font-size: 0.85rem;
 }
@@ -868,7 +864,7 @@
     .tb-loan-card-item {
         background: var(--tb-white);
         border-radius: var(--tb-radius-md);
-        border: 1px solid rgba(0, 0, 0, 0.06);
+        border: 1px solid rgba(113, 75, 103, 0.08);
         padding: var(--tb-space-md);
         display: flex;
         align-items: center;
@@ -935,7 +931,7 @@
 .tb-portal-page .o_portal_search_panel {
     background: var(--tb-white);
     border-radius: var(--tb-radius-lg);
-    border: 1px solid rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(113, 75, 103, 0.08);
     padding: var(--tb-space-md);
     margin-bottom: var(--tb-space-lg);
     box-shadow: var(--tb-shadow-sm);
@@ -955,7 +951,7 @@
 }
 
 .tb-section-title .mdi {
-    color: var(--tb-primary-text);
+    color: var(--tb-primary);
     font-size: 1.3rem;
 }
 
@@ -963,7 +959,7 @@
 .tb-counter {
     font-weight: 700;
     font-size: 1.5rem;
-    color: var(--tb-primary-text);
+    color: var(--tb-primary);
     line-height: 1;
 }
 
@@ -984,12 +980,12 @@
     background: var(--tb-bg-light);
     border-radius: var(--tb-radius-md);
     padding: var(--tb-space-lg);
-    border: 1px solid rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(113, 75, 103, 0.08);
     margin-bottom: var(--tb-space-lg);
 }
 
 .tb-chatter-section .o_portal_chatter_composer textarea {
-    border: 1px solid rgba(0, 0, 0, 0.10);
+    border: 1px solid rgba(113, 75, 103, 0.15);
     border-radius: var(--tb-radius-md);
     font-family: 'Outfit', sans-serif;
     font-size: 0.9rem;
@@ -998,7 +994,7 @@
 
 .tb-chatter-section .o_portal_chatter_composer textarea:focus {
     border-color: var(--tb-primary);
-    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 0 0 3px rgba(113, 75, 103, 0.1);
 }
 
 .tb-chatter-section .o_portal_chatter_composer .btn-primary {
@@ -1087,9 +1083,12 @@
     border-color: var(--tb-primary) !important;
 }
 
-/* --- Portal home card text — specificity (1,4,1) --- */
-#wrapwrap .o_portal_wrap .container .o_portal_my_home .o_portal_index_card a {
-    color: inherit !important;
+/* --- Portal home card text — specificity (1,5,1) --- */
+#wrapwrap .o_portal_wrap .container .o_portal_my_home .o_portal_category .o_portal_index_card a {
+    color: var(--tb-deep-gray, #212529) !important;
+}
+#wrapwrap .o_portal_wrap .container .o_portal_my_home .o_portal_category .o_portal_index_card a:hover {
+    color: var(--tb-primary-text, #5a3c52) !important;
 }
 
 /* --- Breadcrumb links — covers both list and detail page layouts --- */
