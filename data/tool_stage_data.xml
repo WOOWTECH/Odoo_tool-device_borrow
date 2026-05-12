@@ -32,7 +32,8 @@
         <!-- Default Tool Category -->
         <record id="tool_category_general" model="tool.category">
             <field name="name">General Tools</field>
-            <field name="description">General purpose tools without specific category</field>
+            <field name="note">&lt;p&gt;General purpose tools without specific category&lt;/p&gt;</field>
+            <field name="company_id" ref="base.main_company"/>
         </record>
     </data>
 </odoo>

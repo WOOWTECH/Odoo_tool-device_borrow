@@ -199,4 +199,12 @@
         <field name="perm_create" eval="False"/>
         <field name="perm_unlink" eval="False"/>
     </record>
+
+    <!-- Multi-company rule for tool.category -->
+    <record id="tool_category_comp_rule" model="ir.rule">
+        <field name="name">Category: multi-company</field>
+        <field name="model_id" ref="model_tool_category"/>
+        <field name="domain_force">[('company_id', 'in', company_ids + [False])]</field>
+        <field name="global" eval="True"/>
+    </record>
 </odoo>

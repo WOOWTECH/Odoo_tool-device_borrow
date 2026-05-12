@@ -23,23 +23,73 @@ class ToolStage(models.Model):
 
 
 class ToolCategory(models.Model):
-    """Tool Category - holds property definitions for tools"""
+    """Tool Category - mirrors maintenance.equipment.category pattern"""
     _name = 'tool.category'
+    _inherit = ['mail.thread']
     _description = 'Tool Category'
     _order = 'name'
 
     name = fields.Char(string='Category Name', required=True, translate=True)
-    description = fields.Text(string='Description', translate=True)
-    tool_ids = fields.One2many('tool.tool', 'category_id', string='Tools')
+    company_id = fields.Many2one(
+        'res.company', string='Company',
+        required=True, default=lambda self: self.env.company,
+    )
+    technician_user_id = fields.Many2one(
+        'res.users', string='Responsible',
+        tracking=True, default=lambda self: self.env.uid,
+    )
+    color = fields.Integer(string='Color')
+    note = fields.Html(string='Comments', translate=True)
+
+    tool_ids = fields.One2many('tool.tool', 'category_id', string='Tools', copy=False)
     tool_count = fields.Integer(string='Tool Count', compute='_compute_tool_count')
+    loan_count = fields.Integer(string='Loan Count', compute='_compute_loan_count')
+    maintenance_count = fields.Integer(string='Maintenance Count', compute='_compute_maintenance_count')
+    fold = fields.Boolean(string='Folded', compute='_compute_fold', store=True)
 
     # Properties Definition for tools in this category
     tool_properties_definition = fields.PropertiesDefinition('Tool Properties')
 
     @api.depends('tool_ids')
-    def _compute_tool_count(self):
+    def _compute_fold(self):
         for category in self:
-            category.tool_count = len(category.tool_ids)
+            category.fold = not bool(category.tool_ids)
+
+    @api.depends('tool_ids')
+    def _compute_tool_count(self):
+        data = self.env['tool.tool']._read_group(
+            [('category_id', 'in', self.ids)],
+            ['category_id'], ['__count'],
+        )
+        mapped = {cat.id: count for cat, count in data}
+        for category in self:
+            category.tool_count = mapped.get(category.id, 0)
+
+    def _compute_loan_count(self):
+        for category in self:
+            category.loan_count = self.env['tool.loan'].search_count([
+                ('tool_id.category_id', '=', category.id),
+                ('state', 'in', ('draft', 'pending', 'approved', 'borrowed')),
+            ])
+
+    def _compute_maintenance_count(self):
+        data = self.env['tool.tool']._read_group(
+            [('category_id', 'in', self.ids),
+             ('stage_id.is_closed', '=', True)],
+            ['category_id'], ['__count'],
+        )
+        mapped = {cat.id: count for cat, count in data}
+        for category in self:
+            category.maintenance_count = mapped.get(category.id, 0)
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_except_contains_tools(self):
+        for category in self:
+            if category.tool_ids:
+                raise UserError(
+                    _('You cannot delete a tool category containing tools. '
+                      'Please reassign or remove the tools first.')
+                )
 
 
 class ToolTool(models.Model):
