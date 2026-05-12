@@ -208,6 +208,11 @@ msgid "Loan Count"
 msgstr "借用數量"
 
 #. module: tool_borrow
+#: model_terms:ir.ui.view,arch_db:tool_borrow.tool_category_view_form
+msgid "Loans"
+msgstr "借用"
+
+#. module: tool_borrow
 #: model:ir.model.fields,field_description:tool_borrow.field_tool_category__maintenance_count
 msgid "Maintenance Count"
 msgstr "維護數量"
@@ -236,6 +241,7 @@ msgstr "新增工具類別"
 
 #. module: tool_borrow
 #: model:ir.actions.act_window,name:tool_borrow.tool_maintenance_action_from_category
+#: model_terms:ir.ui.view,arch_db:tool_borrow.tool_category_view_form
 msgid "Maintenance"
 msgstr "維護"
 
@@ -253,6 +259,7 @@ msgstr "類別名稱"
 #. module: tool_borrow
 #: model:ir.model.fields,field_description:tool_borrow.field_tool_category__tool_ids
 #: model:ir.actions.act_window,name:tool_borrow.tool_tool_action
+#: model:ir.actions.act_window,name:tool_borrow.tool_tool_action_from_category
 #: model:ir.ui.menu,name:tool_borrow.menu_tool_tools
 #: model_terms:ir.ui.view,arch_db:tool_borrow.tool_category_view_form
 #: model_terms:ir.ui.view,arch_db:tool_borrow.portal_my_home_tool_borrow
@@ -502,6 +509,7 @@ msgstr "屬性值"
 
 #. module: tool_borrow
 #: model:ir.actions.act_window,name:tool_borrow.tool_loan_action
+#: model:ir.actions.act_window,name:tool_borrow.tool_loan_action_from_category
 #: model:ir.ui.menu,name:tool_borrow.menu_tool_loans
 msgid "Loan Requests"
 msgstr "借用請求"
