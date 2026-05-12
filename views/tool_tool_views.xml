@@ -120,8 +120,8 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="action_set_maintenance" type="object" string="Set to Maintenance" class="btn-secondary" invisible="state != 'available'" groups="tool_borrow.group_tool_admin"/>
-                    <button name="action_set_available" type="object" string="Set to Available" class="btn-primary" invisible="state != 'maintenance'" groups="tool_borrow.group_tool_admin"/>
+                    <button name="action_set_maintenance" type="object" string="Set to Maintenance" class="btn-secondary" invisible="state != 'available'" groups="tool_borrow.group_tool_manager"/>
+                    <button name="action_set_available" type="object" string="Set to Available" class="btn-primary" invisible="state != 'maintenance'" groups="tool_borrow.group_tool_manager"/>
                 </header>
                 <sheet>
                     <div class="oe_title">

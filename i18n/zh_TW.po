@@ -19,7 +19,6 @@ msgstr ""
 #. module: tool_borrow
 #: model:ir.module.category,name:tool_borrow.module_category_tool_borrow
 #: model:ir.ui.menu,name:tool_borrow.menu_tool_borrow_root
-#: model_terms:ir.ui.view,arch_db:tool_borrow.res_users_view_form_tool_borrow
 msgid "Tool Borrow"
 msgstr "工具借用"
 
@@ -29,52 +28,24 @@ msgid "Manage tool borrowing permissions"
 msgstr "管理工具借用權限"
 
 #. module: tool_borrow
-#: model:res.groups,name:tool_borrow.group_tool_user
-#: model:ir.model.fields.selection,name:tool_borrow.selection__res_users__tool_borrow_access__user
-msgid "User"
-msgstr "使用者"
-
-#. module: tool_borrow
 #: model:res.groups,name:tool_borrow.group_tool_manager
-#: model:ir.model.fields.selection,name:tool_borrow.selection__res_users__tool_borrow_access__manager
-msgid "Manager"
-msgstr "管理員"
-
-#. module: tool_borrow
-#: model:res.groups,name:tool_borrow.group_tool_admin
-#: model:ir.model.fields.selection,name:tool_borrow.selection__res_users__tool_borrow_access__admin
-msgid "Admin"
-msgstr "系統管理員"
-
-#. module: tool_borrow
-#: model:res.groups,comment:tool_borrow.group_tool_user
-msgid "Can browse tools and create/view own loan requests"
-msgstr "可以瀏覽工具並建立/查看自己的借用請求"
+msgid "Equipment Manager"
+msgstr "設備管理員"
 
 #. module: tool_borrow
 #: model:res.groups,comment:tool_borrow.group_tool_manager
-msgid "Can approve/reject loan requests and view all loans"
-msgstr "可以批准/拒絕借用請求並查看所有借用記錄"
-
-#. module: tool_borrow
-#: model:res.groups,comment:tool_borrow.group_tool_admin
-msgid "Full access to manage tools and loans"
-msgstr "完整的工具和借用管理權限"
+msgid "Full access to manage tools, approve/reject loans, and configure settings"
+msgstr "完整的工具管理、借用審批和系統設定權限"
 
 #. module: tool_borrow
 #: model:ir.rule,name:tool_borrow.tool_tool_rule_internal
-msgid "Tool: Internal users full access"
-msgstr "工具：內部使用者完整存取"
+msgid "Tool: Internal users read all"
+msgstr "工具：內部使用者可讀取全部"
 
 #. module: tool_borrow
-#: model:ir.rule,name:tool_borrow.tool_tool_rule_user
-msgid "Tool: User can read all"
-msgstr "工具：使用者可讀取全部"
-
-#. module: tool_borrow
-#: model:ir.rule,name:tool_borrow.tool_tool_rule_admin
-msgid "Tool: Admin full access"
-msgstr "工具：管理員完整存取"
+#: model:ir.rule,name:tool_borrow.tool_tool_rule_manager
+msgid "Tool: Equipment Manager full access"
+msgstr "工具：設備管理員完整存取"
 
 #. module: tool_borrow
 #: model:ir.rule,name:tool_borrow.tool_tool_rule_portal
@@ -82,14 +53,14 @@ msgid "Tool: Portal can read all tools"
 msgstr "工具：入口網站可讀取所有工具"
 
 #. module: tool_borrow
-#: model:ir.rule,name:tool_borrow.tool_property_rule_user
-msgid "Property: User can read all"
-msgstr "屬性：使用者可讀取全部"
+#: model:ir.rule,name:tool_borrow.tool_property_rule_internal
+msgid "Property: Internal users read all"
+msgstr "屬性：內部使用者可讀取全部"
 
 #. module: tool_borrow
-#: model:ir.rule,name:tool_borrow.tool_property_rule_admin
-msgid "Property: Admin full access"
-msgstr "屬性：管理員完整存取"
+#: model:ir.rule,name:tool_borrow.tool_property_rule_manager
+msgid "Property: Equipment Manager full access"
+msgstr "屬性：設備管理員完整存取"
 
 #. module: tool_borrow
 #: model:ir.rule,name:tool_borrow.tool_property_rule_portal
@@ -97,39 +68,29 @@ msgid "Property: Portal can read all tool properties"
 msgstr "屬性：入口網站可讀取所有工具屬性"
 
 #. module: tool_borrow
-#: model:ir.rule,name:tool_borrow.tool_loan_rule_user_read_own
-msgid "Loan: User can read own"
-msgstr "借用：使用者可讀取自己的記錄"
-
-#. module: tool_borrow
-#: model:ir.rule,name:tool_borrow.tool_loan_rule_user_create
-msgid "Loan: User can create own"
-msgstr "借用：使用者可建立自己的記錄"
+#: model:ir.rule,name:tool_borrow.tool_loan_rule_internal
+msgid "Loan: Internal users own loans"
+msgstr "借用：內部使用者自己的借用記錄"
 
 #. module: tool_borrow
 #: model:ir.rule,name:tool_borrow.tool_loan_rule_manager
-msgid "Loan: Manager full read/write"
-msgstr "借用：管理員完整讀寫"
-
-#. module: tool_borrow
-#: model:ir.rule,name:tool_borrow.tool_loan_rule_admin
-msgid "Loan: Admin full access"
-msgstr "借用：管理員完整存取"
+msgid "Loan: Equipment Manager full access"
+msgstr "借用：設備管理員完整存取"
 
 #. module: tool_borrow
 #: model:ir.rule,name:tool_borrow.tool_loan_rule_portal
-msgid "Loan: Portal can read/create own"
-msgstr "借用：入口網站可讀取/建立自己的記錄"
+msgid "Loan: Portal own loans"
+msgstr "借用：入口網站自己的借用記錄"
 
 #. module: tool_borrow
-#: model:ir.rule,name:tool_borrow.tool_stage_rule_user
-msgid "Stage: User can read all"
-msgstr "階段：使用者可讀取全部"
+#: model:ir.rule,name:tool_borrow.tool_stage_rule_internal
+msgid "Stage: Internal users read all"
+msgstr "階段：內部使用者可讀取全部"
 
 #. module: tool_borrow
-#: model:ir.rule,name:tool_borrow.tool_stage_rule_admin
-msgid "Stage: Admin full access"
-msgstr "階段：管理員完整存取"
+#: model:ir.rule,name:tool_borrow.tool_stage_rule_manager
+msgid "Stage: Equipment Manager full access"
+msgstr "階段：設備管理員完整存取"
 
 #. module: tool_borrow
 #: model:ir.rule,name:tool_borrow.tool_stage_rule_portal
@@ -137,14 +98,14 @@ msgid "Stage: Portal can read all"
 msgstr "階段：入口網站可讀取全部"
 
 #. module: tool_borrow
-#: model:ir.rule,name:tool_borrow.tool_category_rule_user
-msgid "Category: User can read all"
-msgstr "類別：使用者可讀取全部"
+#: model:ir.rule,name:tool_borrow.tool_category_rule_internal
+msgid "Category: Internal users read all"
+msgstr "類別：內部使用者可讀取全部"
 
 #. module: tool_borrow
-#: model:ir.rule,name:tool_borrow.tool_category_rule_admin
-msgid "Category: Admin full access"
-msgstr "類別：管理員完整存取"
+#: model:ir.rule,name:tool_borrow.tool_category_rule_manager
+msgid "Category: Equipment Manager full access"
+msgstr "類別：設備管理員完整存取"
 
 #. module: tool_borrow
 #: model:ir.rule,name:tool_borrow.tool_category_rule_portal
@@ -481,16 +442,6 @@ msgstr "屬性名稱"
 msgid "Property Value"
 msgstr "屬性值"
 
-#. module: tool_borrow
-#: model:ir.model.fields,field_description:tool_borrow.field_res_users__tool_borrow_access
-#: model_terms:ir.ui.view,arch_db:tool_borrow.res_users_view_form_tool_borrow
-msgid "Tool Borrow Access"
-msgstr "工具借用權限"
-
-#. module: tool_borrow
-#: model:ir.model.fields.selection,name:tool_borrow.selection__res_users__tool_borrow_access__no_access
-msgid "No Access"
-msgstr "無存取權"
 
 #. module: tool_borrow
 #: model:ir.actions.act_window,name:tool_borrow.tool_loan_action
