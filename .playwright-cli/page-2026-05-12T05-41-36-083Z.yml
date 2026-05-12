@@ -1,0 +1,101 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - navigation [ref=e3]:
+      - button "" [ref=e5] [cursor=pointer]:
+        - generic [ref=e6]: 
+      - menuitem "工具借用" [ref=e7] [cursor=pointer]
+      - menu [ref=e8]:
+        - menuitem "工具" [ref=e9] [cursor=pointer]
+        - menuitem "借用請求" [ref=e10] [cursor=pointer]
+        - menuitem "我的借用" [ref=e11] [cursor=pointer]
+        - button "設定" [ref=e12] [cursor=pointer]:
+          - generic [ref=e13]: 設定
+      - menu [ref=e14]:
+        - button "訊息 7" [ref=e16] [cursor=pointer]:
+          - img "訊息" [ref=e17]: 
+          - generic [ref=e18]: "7"
+        - button "活動" [ref=e19] [cursor=pointer]:
+          - img "活動" [ref=e20]: 
+        - button "YourCompany" [disabled] [ref=e22]:
+          - text: 
+          - generic [ref=e23]: YourCompany
+        - button "使用者" [ref=e25] [cursor=pointer]:
+          - img "使用者" [ref=e26]
+          - text: 
+  - generic [ref=e29]:
+    - generic [ref=e31]:
+      - generic [ref=e32]:
+        - button "新增" [ref=e35] [cursor=pointer]
+        - generic [ref=e36]:
+          - list [ref=e37]:
+            - listitem [ref=e38]:
+              - link "工具類別" [ref=e39] [cursor=pointer]:
+                - /url: /odoo/action-168
+          - generic [ref=e40]:
+            - generic [ref=e42]: 手工具
+            - button "" [ref=e46] [cursor=pointer]:
+              - generic [ref=e47]: 
+      - generic [ref=e50]:
+        - button " 3 工具" [ref=e51] [cursor=pointer]:
+          - generic [ref=e52]: 
+          - generic [ref=e53]:
+            - generic [ref=e54]: "3"
+            - generic [ref=e55]: 工具
+        - button " 1 Loans" [ref=e56] [cursor=pointer]:
+          - generic [ref=e57]: 
+          - generic [ref=e58]:
+            - generic [ref=e59]: "1"
+            - generic [ref=e60]: Loans
+        - button " 0 Maintenance" [ref=e61] [cursor=pointer]:
+          - generic [ref=e62]: 
+          - generic [ref=e63]:
+            - generic [ref=e64]: "0"
+            - generic [ref=e65]: Maintenance
+      - search [ref=e67]:
+        - navigation "頁面工具" [ref=e68]:
+          - generic [ref=e69]:
+            - generic [ref=e70]: "1"
+            - text: / 1
+          - generic [ref=e71]:
+            - button "上一頁" [disabled]:
+              - generic: 
+            - button "下一頁" [disabled]:
+              - generic: 
+    - generic [ref=e73]:
+      - generic [ref=e75]:
+        - generic [ref=e76]:
+          - generic [ref=e77]: 類別名稱
+          - heading "手工具" [level=1] [ref=e137]:
+            - textbox "類別名稱" [ref=e80]:
+              - /placeholder: e.g. Hand Tools
+              - text: 手工具
+        - generic [ref=e85]:
+          - generic [ref=e87]: 負責人
+          - combobox "負責人" [ref=e93]: OdooBot
+        - generic [ref=e95]:
+          - generic [ref=e97]: 備註
+          - generic [ref=e101]:
+            - generic:
+              - generic:        
+            - generic [ref=e104]: Add comments...
+        - list [ref=e107]:
+          - listitem [ref=e108] [cursor=pointer]:
+            - tab "屬性定義" [ref=e109]
+          - listitem [ref=e110] [cursor=pointer]:
+            - tab "工具" [ref=e111]
+      - generic [ref=e115]:
+        - generic [ref=e117]:
+          - button "發送訊息" [ref=e118] [cursor=pointer]
+          - button "備註" [ref=e119] [cursor=pointer]
+          - button "搜尋訊息" [ref=e121] [cursor=pointer]:
+            - img [ref=e122]: 
+          - button "附加檔案" [ref=e124] [cursor=pointer]:
+            - generic [ref=e125]: 
+          - button "0" [ref=e127] [cursor=pointer]:
+            - img [ref=e128]: 
+            - superscript: "0"
+          - button "訂閱" [ref=e129] [cursor=pointer]:
+            - generic [ref=e131]: 訂閱
+        - generic [ref=e134]:
+          - generic [ref=e135]: 😶
+          - generic [ref=e136]: 對話空白。

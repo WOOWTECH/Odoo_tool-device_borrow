@@ -1,0 +1,234 @@
+- generic:
+  - banner:
+    - navigation:
+      - generic:
+        - button "":
+          - generic: 
+      - menuitem "工具借用"
+      - menu:
+        - menuitem "工具"
+        - menuitem "借用請求"
+        - menuitem "我的借用"
+        - button "設定":
+          - generic: 設定
+      - menu:
+        - generic:
+          - button "訊息 7":
+            - img "訊息": 
+            - generic: "7"
+        - button "活動":
+          - img "活動": 
+        - generic:
+          - button "YourCompany" [disabled]:
+            - text: 
+            - generic: YourCompany
+        - generic:
+          - button "使用者":
+            - img "使用者"
+            - text: 
+  - generic:
+    - generic:
+      - generic:
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - button "新增"
+            - generic:
+              - list:
+                - listitem:
+                  - link "工具類別":
+                    - /url: /odoo/action-168
+                - listitem:
+                  - text: /
+                  - link "量測儀器":
+                    - /url: /odoo/action-168/3
+              - generic:
+                - generic:
+                  - generic: Tools
+                - generic:
+                  - generic:
+                    - generic:
+                      - button "":
+                        - generic: 
+          - generic:
+            - search:
+              - search:
+                - button "搜尋⋯":
+                  - img: 
+                - generic:
+                  - listitem "搜尋":
+                    - button "類別 ":
+                      - text: 類別
+                      - generic:
+                        - generic: 
+                    - generic:
+                      - generic "量測儀器"
+                      - button "移除": 
+                  - searchbox "搜尋⋯" [active]
+              - button ""
+          - generic:
+            - search:
+              - navigation "頁面工具":
+                - generic:
+                  - generic: 1-7
+                  - text: / 7
+                - generic:
+                  - button "上一頁" [disabled]:
+                    - generic: 
+                  - button "下一頁" [disabled]:
+                    - generic: 
+      - generic:
+        - generic:
+          - table:
+            - rowgroup:
+              - row "編號  名稱  階段  入口網站使用者 目前借用人  ":
+                - columnheader:
+                  - generic:
+                    - checkbox
+                - columnheader "編號 ":
+                  - generic:
+                    - generic: 編號
+                    - generic: 
+                - columnheader "名稱 ":
+                  - generic:
+                    - generic: 名稱
+                    - generic: 
+                - columnheader "階段 ":
+                  - generic:
+                    - generic: 階段
+                    - generic: 
+                - columnheader "入口網站使用者":
+                  - generic:
+                    - generic: 入口網站使用者
+                    - text: 
+                - columnheader "目前借用人 ":
+                  - generic:
+                    - generic: 目前借用人
+                    - generic: 
+                - columnheader "":
+                  - generic:
+                    - button "":
+                      - generic: 
+            - rowgroup:
+              - row "TL-011 噪音計 SNDWAY SW-524 Joel Willis 王小明":
+                - cell:
+                  - generic:
+                    - checkbox
+                - cell "TL-011"
+                - cell "噪音計 SNDWAY SW-524"
+                - cell
+                - cell "Joel Willis 王小明":
+                  - generic:
+                    - generic:
+                      - generic "Joel Willis":
+                        - generic: Joel Willis
+                      - generic "王小明":
+                        - generic: 王小明
+                - cell
+                - cell
+              - row "TL-003 熱感應相機 FLIR C5 Joel Willis 王小明":
+                - cell:
+                  - generic:
+                    - checkbox
+                - cell "TL-003"
+                - cell "熱感應相機 FLIR C5"
+                - cell
+                - cell "Joel Willis 王小明":
+                  - generic:
+                    - generic:
+                      - generic "Joel Willis":
+                        - generic: Joel Willis
+                      - generic "王小明":
+                        - generic: 王小明
+                - cell
+                - cell
+              - row "TL-008 示波器 Rigol DS1054Z Joel Willis 王小明":
+                - cell:
+                  - generic:
+                    - checkbox
+                - cell "TL-008"
+                - cell "示波器 Rigol DS1054Z"
+                - cell
+                - cell "Joel Willis 王小明":
+                  - generic:
+                    - generic:
+                      - generic "Joel Willis":
+                        - generic: Joel Willis
+                      - generic "王小明":
+                        - generic: 王小明
+                - cell
+                - cell
+              - row "TL-006 空氣品質偵測器 Aranet4 Joel Willis 王小明":
+                - cell:
+                  - generic:
+                    - checkbox
+                - cell "TL-006"
+                - cell "空氣品質偵測器 Aranet4"
+                - cell
+                - cell "Joel Willis 王小明":
+                  - generic:
+                    - generic:
+                      - generic "Joel Willis":
+                        - generic: Joel Willis
+                      - generic "王小明":
+                        - generic: 王小明
+                - cell
+                - cell
+              - row "TL-004 萬用電表 Fluke 87V Joel Willis 王小明":
+                - cell:
+                  - generic:
+                    - checkbox
+                - cell "TL-004"
+                - cell "萬用電表 Fluke 87V"
+                - cell
+                - cell "Joel Willis 王小明":
+                  - generic:
+                    - generic:
+                      - generic "Joel Willis":
+                        - generic: Joel Willis
+                      - generic "王小明":
+                        - generic: 王小明
+                - cell
+                - cell
+              - row "TL-009 鉗式電流錶 Hioki 3280-10F Joel Willis 王小明 Joel Willis":
+                - cell:
+                  - generic:
+                    - checkbox
+                - cell "TL-009"
+                - cell "鉗式電流錶 Hioki 3280-10F"
+                - cell
+                - cell "Joel Willis 王小明":
+                  - generic:
+                    - generic:
+                      - generic "Joel Willis":
+                        - generic: Joel Willis
+                      - generic "王小明":
+                        - generic: 王小明
+                - cell "Joel Willis"
+                - cell
+              - row "TL-002 雷射測距儀 Leica D2 Joel Willis 王小明":
+                - cell:
+                  - generic:
+                    - checkbox
+                - cell "TL-002"
+                - cell "雷射測距儀 Leica D2"
+                - cell
+                - cell "Joel Willis 王小明":
+                  - generic:
+                    - generic:
+                      - generic "Joel Willis":
+                        - generic: Joel Willis
+                      - generic "王小明":
+                        - generic: 王小明
+                - cell
+                - cell
+            - rowgroup:
+              - row:
+                - cell
+                - cell
+                - cell
+                - cell
+                - cell
+                - cell
+                - cell

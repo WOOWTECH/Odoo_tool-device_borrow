@@ -1,0 +1,23 @@
+- banner [ref=e2]:
+  - navigation [ref=e3]:
+    - button "" [ref=e5] [cursor=pointer]:
+      - generic [ref=e6]: 
+    - menuitem "工具借用" [ref=e7] [cursor=pointer]
+    - menu [ref=e8]:
+      - menuitem "工具" [ref=e9] [cursor=pointer]
+      - menuitem "借用請求" [ref=e10] [cursor=pointer]
+      - menuitem "我的借用" [ref=e11] [cursor=pointer]
+      - button "設定" [ref=e12] [cursor=pointer]:
+        - generic [ref=e13]: 設定
+    - menu [ref=e14]:
+      - button "訊息 1" [ref=e16] [cursor=pointer]:
+        - img "訊息" [ref=e17]: 
+        - generic [ref=e18]: "1"
+      - button "活動" [ref=e19] [cursor=pointer]:
+        - img "活動" [ref=e20]: 
+      - button "YourCompany" [disabled] [ref=e22]:
+        - text: 
+        - generic [ref=e23]: YourCompany
+      - button "使用者" [ref=e25] [cursor=pointer]:
+        - img "使用者" [ref=e26]
+        - text: 

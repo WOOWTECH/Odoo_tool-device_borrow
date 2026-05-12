@@ -1,0 +1,108 @@
+- generic [ref=e1]:
+  - banner [ref=e2]:
+    - navigation [ref=e3]:
+      - button "" [ref=e5] [cursor=pointer]:
+        - generic [ref=e6]: 
+      - menuitem "Tool Borrow" [ref=e7] [cursor=pointer]
+      - menu [ref=e8]:
+        - menuitem "Tools" [ref=e9] [cursor=pointer]
+        - menuitem "Loan Requests" [ref=e10] [cursor=pointer]
+        - menuitem "My Loans" [ref=e11] [cursor=pointer]
+        - button "Configuration" [ref=e12] [cursor=pointer]:
+          - generic [ref=e13]: Configuration
+      - menu [ref=e14]:
+        - button "Messages 3" [ref=e28] [cursor=pointer]:
+          - img "Messages" [ref=e17]: 
+          - generic [ref=e18]: "3"
+        - button "Activities" [ref=e19] [cursor=pointer]:
+          - img "Activities" [ref=e20]: 
+        - button "YourCompany" [disabled] [ref=e22]:
+          - text: 
+          - generic [ref=e23]: YourCompany
+        - button "User" [ref=e25] [cursor=pointer]:
+          - img "User" [ref=e26]
+          - text: 
+  - generic [ref=e30]:
+    - generic [ref=e32]:
+      - generic [ref=e33]:
+        - button "New" [ref=e36] [cursor=pointer]
+        - generic [ref=e37]:
+          - list [ref=e38]:
+            - listitem [ref=e39]:
+              - link "Tool Categories" [ref=e40] [cursor=pointer]:
+                - /url: /odoo/action-168
+          - generic [ref=e41]:
+            - generic [ref=e43]: 量測儀器
+            - button "" [expanded] [active] [ref=e47] [cursor=pointer]:
+              - generic [ref=e48]: 
+      - generic [ref=e51]:
+        - button " 7 Tools" [ref=e52] [cursor=pointer]:
+          - generic [ref=e53]: 
+          - generic [ref=e54]:
+            - generic [ref=e55]: "7"
+            - generic [ref=e56]: Tools
+        - button " 4 Loans" [ref=e57] [cursor=pointer]:
+          - generic [ref=e58]: 
+          - generic [ref=e59]:
+            - generic [ref=e60]: "4"
+            - generic [ref=e61]: Loans
+        - button " 0 Maintenance" [ref=e62] [cursor=pointer]:
+          - generic [ref=e63]: 
+          - generic [ref=e64]:
+            - generic [ref=e65]: "0"
+            - generic [ref=e66]: Maintenance
+      - search [ref=e68]:
+        - navigation "Pager" [ref=e69]:
+          - generic [ref=e70]:
+            - generic [ref=e71]: "1"
+            - text: / 1
+          - generic [ref=e72]:
+            - button "Previous" [disabled]:
+              - generic: 
+            - button "Next" [disabled]:
+              - generic: 
+    - generic [ref=e74]:
+      - generic [ref=e76]:
+        - generic [ref=e77]:
+          - generic [ref=e78]: Category Name
+          - heading "量測儀器" [level=1] [ref=e79]:
+            - textbox "Category Name" [ref=e81]:
+              - /placeholder: e.g. Hand Tools
+              - text: 量測儀器
+        - generic [ref=e84]:
+          - generic [ref=e86]: Responsible
+          - combobox "Responsible" [ref=e92]: OdooBot
+        - generic [ref=e94]:
+          - generic [ref=e96]: Comments
+          - generic [ref=e100]:
+            - generic:
+              - generic:        
+            - generic [ref=e103]: Add comments...
+        - list [ref=e106]:
+          - listitem [ref=e107] [cursor=pointer]:
+            - tab "Properties Definition" [ref=e108]
+          - listitem [ref=e109] [cursor=pointer]:
+            - tab "Tools" [ref=e110]
+      - generic [ref=e114]:
+        - generic [ref=e116]:
+          - button "Send message" [ref=e117] [cursor=pointer]
+          - button "Log note" [ref=e118] [cursor=pointer]
+          - button "Search Messages" [ref=e120] [cursor=pointer]:
+            - img [ref=e121]: 
+          - button "Attach files" [ref=e123] [cursor=pointer]:
+            - generic [ref=e124]: 
+          - button "0" [ref=e126] [cursor=pointer]:
+            - img [ref=e127]: 
+            - superscript: "0"
+          - button "Follow" [ref=e128] [cursor=pointer]:
+            - generic [ref=e130]: Follow
+        - generic [ref=e133]:
+          - generic [ref=e134]: 😶
+          - generic [ref=e135]: The conversation is empty.
+  - menu [ref=e137]:
+    - menuitem " Duplicate" [ref=e138] [cursor=pointer]:
+      - generic [ref=e139]: 
+      - text: Duplicate
+    - menuitem " Delete" [ref=e140] [cursor=pointer]:
+      - generic [ref=e141]: 
+      - text: Delete

@@ -1,0 +1,93 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - navigation [ref=e3]:
+      - button "" [ref=e5] [cursor=pointer]:
+        - generic [ref=e6]: 
+      - menuitem "討論" [ref=e7] [cursor=pointer]
+      - menu [ref=e8]:
+        - button "配置" [ref=e9] [cursor=pointer]:
+          - generic [ref=e10]: 配置
+      - menu [ref=e11]:
+        - button "訊息 7" [ref=e13] [cursor=pointer]:
+          - img "訊息" [ref=e14]: 
+          - generic [ref=e15]: "7"
+        - button "活動" [ref=e16] [cursor=pointer]:
+          - img "活動" [ref=e17]: 
+        - button "YourCompany" [disabled] [ref=e19]:
+          - text: 
+          - generic [ref=e20]: YourCompany
+        - button "使用者" [ref=e22] [cursor=pointer]:
+          - img "使用者" [ref=e23]
+          - text: 
+  - generic [ref=e25]:
+    - generic [ref=e31]: 收件箱
+    - generic [ref=e32]:
+      - generic [ref=e33]:
+        - generic [ref=e35]:
+          - button "" [ref=e36] [cursor=pointer]:
+            - generic [ref=e37]: 
+          - button " 開始會議" [ref=e38] [cursor=pointer]:
+            - generic [ref=e39]: 
+            - generic [ref=e40]: 開始會議
+        - generic [ref=e41]:
+          - button " 收件箱" [ref=e42] [cursor=pointer]:
+            - generic "收件箱" [ref=e44]: 
+            - generic [ref=e45]: 收件箱
+          - button " 星標信件" [ref=e46] [cursor=pointer]:
+            - generic "最愛" [ref=e48]: 
+            - generic [ref=e49]: 星標信件
+          - button " 歷史" [ref=e50] [cursor=pointer]:
+            - generic "歷史" [ref=e52]: 
+            - generic [ref=e53]: 歷史
+        - generic [ref=e54]:
+          - button " 頻道" [ref=e55] [cursor=pointer]:
+            - generic [ref=e56]: 
+            - generic [ref=e57]: 頻道
+          - generic [ref=e59]:
+            - button "檢視或加入頻道" [ref=e60] [cursor=pointer]:
+              - img [ref=e61]: 
+            - button "添加或加入頻道" [ref=e62] [cursor=pointer]:
+              - img [ref=e63]: 
+        - button "線程圖像 Administrators" [ref=e65] [cursor=pointer]:
+          - generic "Administrators" [ref=e66]:
+            - img "線程圖像" [ref=e68]
+            - generic [ref=e69]: Administrators
+          - text: 
+        - generic [ref=e70]:
+          - button "線程圖像 general " [ref=e71] [cursor=pointer]:
+            - generic "general" [ref=e72]:
+              - img "線程圖像" [ref=e74]
+              - generic [ref=e75]: general
+            - text: 
+            - generic "對話串有未讀訊息" [ref=e76]:
+              - generic [ref=e77]: 
+          - list [ref=e78]:
+            - listitem [ref=e79]:
+              - img [ref=e80]
+              - button "Ideas & Suggestions" [ref=e81] [cursor=pointer]:
+                - generic [ref=e82]: Ideas & Suggestions
+                - text: 
+              - generic "對話串有未讀訊息" [ref=e83]:
+                - generic [ref=e84]: 
+        - generic [ref=e85]:
+          - button " 直接訊息" [ref=e86] [cursor=pointer]:
+            - generic [ref=e87]: 
+            - generic [ref=e88]: 直接訊息
+          - button "開始對話" [ref=e91] [cursor=pointer]:
+            - img [ref=e92]: 
+        - button "線程圖像  OdooBot 1" [ref=e94] [cursor=pointer]:
+          - generic "OdooBot" [ref=e95]:
+            - generic [ref=e96]:
+              - img "線程圖像" [ref=e97]
+              - generic "Bot" [ref=e99]: 
+            - generic [ref=e100]: OdooBot
+          - generic [ref=e101]: "1"
+      - generic [ref=e103]:
+        - generic "收件箱" [ref=e105]: 
+        - textbox "收件箱" [disabled] [ref=e107]:
+          - /placeholder: ""
+        - generic [ref=e108]:
+          - generic [ref=e109]:
+            - button "標記全部為已讀" [disabled]
+          - button "" [ref=e111] [cursor=pointer]:
+            - generic [ref=e112]: 

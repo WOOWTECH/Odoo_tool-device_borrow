@@ -1,0 +1,84 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - navigation [ref=e3]:
+      - button "" [ref=e5] [cursor=pointer]:
+        - generic [ref=e6]: 
+      - menuitem "Discuss" [ref=e7] [cursor=pointer]
+      - menu [ref=e8]:
+        - button "Configuration" [ref=e9] [cursor=pointer]:
+          - generic [ref=e10]: Configuration
+      - menu [ref=e11]:
+        - button "Messages 3" [ref=e13] [cursor=pointer]:
+          - img "Messages" [ref=e14]: 
+          - generic [ref=e15]: "3"
+        - button "Activities" [ref=e16] [cursor=pointer]:
+          - img "Activities" [ref=e17]: 
+        - button "YourCompany" [disabled] [ref=e19]:
+          - text: 
+          - generic [ref=e20]: YourCompany
+        - button "User" [ref=e22] [cursor=pointer]:
+          - img "User" [ref=e23]
+          - text: 
+  - generic [ref=e25]:
+    - generic [ref=e31]: Inbox
+    - generic [ref=e32]:
+      - generic [ref=e33]:
+        - generic [ref=e35]:
+          - button "" [ref=e36] [cursor=pointer]:
+            - generic [ref=e37]: 
+          - button " Start a meeting" [ref=e38] [cursor=pointer]:
+            - generic [ref=e39]: 
+            - generic [ref=e40]: Start a meeting
+        - generic [ref=e41]:
+          - button " Inbox" [ref=e42] [cursor=pointer]:
+            - generic "Inbox" [ref=e44]: 
+            - generic [ref=e45]: Inbox
+          - button " Starred" [ref=e46] [cursor=pointer]:
+            - generic "Favorites" [ref=e48]: 
+            - generic [ref=e49]: Starred
+          - button " History" [ref=e50] [cursor=pointer]:
+            - generic "History" [ref=e52]: 
+            - generic [ref=e53]: History
+        - generic [ref=e54]:
+          - button " Channels" [ref=e55] [cursor=pointer]:
+            - generic [ref=e56]: 
+            - generic [ref=e57]: Channels
+          - generic [ref=e59]:
+            - button "View or join channels" [ref=e60] [cursor=pointer]:
+              - img [ref=e61]: 
+            - button "Add or join a channel" [ref=e62] [cursor=pointer]:
+              - img [ref=e63]: 
+        - button "Thread Image general " [ref=e65] [cursor=pointer]:
+          - generic "general" [ref=e66]:
+            - img "Thread Image" [ref=e68]
+            - generic [ref=e69]: general
+          - text: 
+          - generic "Thread has unread messages" [ref=e70]:
+            - generic [ref=e71]: 
+        - generic [ref=e72]:
+          - button " Direct messages" [ref=e73] [cursor=pointer]:
+            - generic [ref=e74]: 
+            - generic [ref=e75]: Direct messages
+          - button "Start a conversation" [ref=e78] [cursor=pointer]:
+            - img [ref=e79]: 
+        - button "Thread Image  OdooBot 1" [ref=e81] [cursor=pointer]:
+          - generic "OdooBot" [ref=e82]:
+            - generic [ref=e83]:
+              - img "Thread Image" [ref=e84]
+              - generic "Bot" [ref=e86]: 
+            - generic [ref=e87]: OdooBot
+          - generic [ref=e88]: "1"
+      - generic [ref=e89]:
+        - generic [ref=e90]:
+          - generic "Inbox" [ref=e92]: 
+          - textbox "Inbox" [disabled] [ref=e94]:
+            - /placeholder: ""
+          - generic [ref=e95]:
+            - generic [ref=e96]:
+              - button "Mark all read" [disabled]
+            - button "" [ref=e98] [cursor=pointer]:
+              - generic [ref=e99]: 
+        - generic [ref=e105]:
+          - heading "Your inbox is empty" [level=4] [ref=e106]
+          - button "Change your preferences" [ref=e107] [cursor=pointer]
+          - text: to receive new notifications in your inbox.

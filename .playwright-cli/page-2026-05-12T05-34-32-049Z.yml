@@ -1,0 +1,113 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - navigation [ref=e3]:
+      - button "" [ref=e5] [cursor=pointer]:
+        - generic [ref=e6]: 
+      - menuitem "工具借用" [ref=e7] [cursor=pointer]
+      - menu [ref=e8]:
+        - menuitem "工具" [ref=e9] [cursor=pointer]
+        - menuitem "借用請求" [ref=e10] [cursor=pointer]
+        - menuitem "我的借用" [ref=e11] [cursor=pointer]
+        - button "設定" [ref=e12] [cursor=pointer]:
+          - generic [ref=e13]: 設定
+      - menu [ref=e14]:
+        - button "訊息 7" [ref=e28] [cursor=pointer]:
+          - img "訊息" [ref=e17]: 
+          - generic [ref=e18]: "7"
+        - button "活動" [ref=e19] [cursor=pointer]:
+          - img "活動" [ref=e20]: 
+        - button "YourCompany" [disabled] [ref=e22]:
+          - text: 
+          - generic [ref=e23]: YourCompany
+        - button "使用者" [ref=e25] [cursor=pointer]:
+          - img "使用者" [ref=e26]
+          - text: 
+  - generic [ref=e305]:
+    - generic [ref=e307]:
+      - generic [ref=e308]:
+        - button "新增" [ref=e311] [cursor=pointer]
+        - generic [ref=e312]:
+          - list [ref=e313]:
+            - listitem [ref=e314]:
+              - link "工具類別" [ref=e315] [cursor=pointer]:
+                - /url: /odoo/action-168
+          - generic [ref=e316]:
+            - generic [ref=e318]: Playwright 測試類別
+            - button "" [ref=e322] [cursor=pointer]:
+              - generic [ref=e323]: 
+      - generic [ref=e331]:
+        - button " 0 工具" [ref=e332] [cursor=pointer]:
+          - generic [ref=e333]: 
+          - generic [ref=e334]:
+            - generic [ref=e335]: "0"
+            - generic [ref=e336]: 工具
+        - button " 0 Loans" [ref=e337] [cursor=pointer]:
+          - generic [ref=e338]: 
+          - generic [ref=e339]:
+            - generic [ref=e340]: "0"
+            - generic [ref=e341]: Loans
+        - button " 0 Maintenance" [ref=e342] [cursor=pointer]:
+          - generic [ref=e343]: 
+          - generic [ref=e344]:
+            - generic [ref=e345]: "0"
+            - generic [ref=e346]: Maintenance
+      - search [ref=e443]:
+        - navigation "頁面工具" [ref=e444]:
+          - generic [ref=e445]:
+            - generic [ref=e446]: "1"
+            - text: / 1
+          - generic [ref=e447]:
+            - button "上一頁" [disabled]:
+              - generic: 
+            - button "下一頁" [disabled]:
+              - generic: 
+    - generic [ref=e348]:
+      - generic [ref=e350]:
+        - generic [ref=e351]:
+          - generic [ref=e352]: 類別名稱
+          - heading "Playwright 測試類別" [level=1] [ref=e428]:
+            - textbox "類別名稱" [ref=e355]:
+              - /placeholder: e.g. Hand Tools
+              - text: Playwright 測試類別
+        - generic [ref=e360]:
+          - generic [ref=e362]: 負責人
+          - combobox "負責人" [ref=e368]: Mitchell Admin
+        - generic [ref=e370]:
+          - generic [ref=e372]: 備註
+          - generic [ref=e448]:
+            - generic:
+              - generic:        
+            - generic [ref=e451]: 這是Playwright自動測試建立的類別
+        - list [ref=e382]:
+          - listitem [ref=e383] [cursor=pointer]:
+            - tab "屬性定義" [ref=e384]
+          - listitem [ref=e385] [cursor=pointer]:
+            - tab "工具" [ref=e386]
+      - generic [ref=e390]:
+        - generic [ref=e392]:
+          - button "發送訊息" [ref=e393] [cursor=pointer]
+          - button "備註" [ref=e394] [cursor=pointer]
+          - button "搜尋訊息" [ref=e396] [cursor=pointer]:
+            - img [ref=e397]: 
+          - button "附加檔案" [ref=e452] [cursor=pointer]:
+            - generic [ref=e453]: 
+          - button "1" [ref=e454] [cursor=pointer]:
+            - img [ref=e455]: 
+            - superscript: "1"
+          - button "關注中" [ref=e456] [cursor=pointer]:
+            - generic [ref=e458]: 關注中
+        - generic [ref=e460]:
+          - generic [ref=e462]:
+            - separator [ref=e463]
+            - generic [ref=e464]: 今天
+            - separator [ref=e465]
+          - group "系統通知" [ref=e466]:
+            - generic [ref=e467]:
+              - generic "開啟卡" [ref=e469] [cursor=pointer]:
+                - img [ref=e470]
+              - generic [ref=e471]:
+                - generic [ref=e472]:
+                  - generic "開啟卡" [ref=e473] [cursor=pointer]:
+                    - strong [ref=e474]: Mitchell Admin
+                  - generic "2026/5/12 下午1:34:30" [ref=e475]: 今天 下午1:34
+                - paragraph [ref=e482]: 工具類別 建立
