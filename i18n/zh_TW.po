@@ -177,6 +177,11 @@ msgid "Tools in this stage are considered closed/unavailable."
 msgstr "此階段的工具視為已關閉/不可用。"
 
 #. module: tool_borrow
+#: model:ir.model.fields,field_description:tool_borrow.field_tool_stage__color
+msgid "Color"
+msgstr "顏色"
+
+#. module: tool_borrow
 #: model:ir.model.fields,field_description:tool_borrow.field_tool_stage__description
 #: model:ir.model.fields,field_description:tool_borrow.field_tool_category__description
 msgid "Description"

@@ -14,6 +14,7 @@ class ToolStage(models.Model):
         help='This stage is folded in the kanban view when there are no records in that stage to display.')
     is_closed = fields.Boolean(string='Is Closed Stage',
         help='Tools in this stage are considered closed/unavailable.')
+    color = fields.Integer(string='Color')
     description = fields.Text(string='Description', translate=True)
 
     _sql_constraints = [
