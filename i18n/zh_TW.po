@@ -157,26 +157,6 @@ msgid "Sequence"
 msgstr "順序"
 
 #. module: tool_borrow
-#: model:ir.model.fields,field_description:tool_borrow.field_tool_stage__fold
-msgid "Folded in Kanban"
-msgstr "在看板中摺疊"
-
-#. module: tool_borrow
-#: model:ir.model.fields,help:tool_borrow.field_tool_stage__fold
-msgid "This stage is folded in the kanban view when there are no records in that stage to display."
-msgstr "當此階段沒有記錄可顯示時，在看板檢視中會被摺疊。"
-
-#. module: tool_borrow
-#: model:ir.model.fields,field_description:tool_borrow.field_tool_stage__is_closed
-msgid "Is Closed Stage"
-msgstr "是否已關閉階段"
-
-#. module: tool_borrow
-#: model:ir.model.fields,help:tool_borrow.field_tool_stage__is_closed
-msgid "Tools in this stage are considered closed/unavailable."
-msgstr "此階段的工具視為已關閉/不可用。"
-
-#. module: tool_borrow
 #: model:ir.model.fields,field_description:tool_borrow.field_tool_stage__color
 #: model:ir.model.fields,field_description:tool_borrow.field_tool_category__color
 msgid "Color"
@@ -212,15 +192,6 @@ msgstr "借用數量"
 msgid "Loans"
 msgstr "借用"
 
-#. module: tool_borrow
-#: model:ir.model.fields,field_description:tool_borrow.field_tool_category__maintenance_count
-msgid "Maintenance Count"
-msgstr "維護數量"
-
-#. module: tool_borrow
-#: model:ir.model.fields,field_description:tool_borrow.field_tool_category__fold
-msgid "Folded"
-msgstr "摺疊"
 
 #. module: tool_borrow
 #: model:ir.rule,name:tool_borrow.tool_category_comp_rule
@@ -239,11 +210,6 @@ msgstr "無法刪除包含工具的工具類別。請先重新指派或移除工
 msgid "Add a new tool category"
 msgstr "新增工具類別"
 
-#. module: tool_borrow
-#: model:ir.actions.act_window,name:tool_borrow.tool_maintenance_action_from_category
-#: model_terms:ir.ui.view,arch_db:tool_borrow.tool_category_view_form
-msgid "Maintenance"
-msgstr "維護"
 
 #. module: tool_borrow
 #: model:ir.model.constraint,message:tool_borrow.constraint_tool_stage_name_uniq

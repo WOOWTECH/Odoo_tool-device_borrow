@@ -10,10 +10,6 @@ class ToolStage(models.Model):
 
     name = fields.Char(string='Stage Name', required=True, translate=True)
     sequence = fields.Integer(string='Sequence', default=10)
-    fold = fields.Boolean(string='Folded in Kanban',
-        help='This stage is folded in the kanban view when there are no records in that stage to display.')
-    is_closed = fields.Boolean(string='Is Closed Stage',
-        help='Tools in this stage are considered closed/unavailable.')
     color = fields.Integer(string='Color')
     description = fields.Text(string='Description', translate=True)
 
@@ -44,16 +40,9 @@ class ToolCategory(models.Model):
     tool_ids = fields.One2many('tool.tool', 'category_id', string='Tools', copy=False)
     tool_count = fields.Integer(string='Tool Count', compute='_compute_tool_count')
     loan_count = fields.Integer(string='Loan Count', compute='_compute_loan_count')
-    maintenance_count = fields.Integer(string='Maintenance Count', compute='_compute_maintenance_count')
-    fold = fields.Boolean(string='Folded', compute='_compute_fold', store=True)
 
     # Properties Definition for tools in this category
     tool_properties_definition = fields.PropertiesDefinition('Tool Properties')
-
-    @api.depends('tool_ids')
-    def _compute_fold(self):
-        for category in self:
-            category.fold = not bool(category.tool_ids)
 
     @api.depends('tool_ids')
     def _compute_tool_count(self):
@@ -71,16 +60,6 @@ class ToolCategory(models.Model):
                 ('tool_id.category_id', '=', category.id),
                 ('state', 'in', ('draft', 'pending', 'approved', 'borrowed')),
             ])
-
-    def _compute_maintenance_count(self):
-        data = self.env['tool.tool']._read_group(
-            [('category_id', 'in', self.ids),
-             ('stage_id.is_closed', '=', True)],
-            ['category_id'], ['__count'],
-        )
-        mapped = {cat.id: count for cat, count in data}
-        for category in self:
-            category.maintenance_count = mapped.get(category.id, 0)
 
     @api.ondelete(at_uninstall=False)
     def _unlink_except_contains_tools(self):
@@ -175,13 +154,18 @@ class ToolTool(models.Model):
         """Return all stages for group_expand in kanban view"""
         return stages.search([])
 
-    @api.depends('stage_id', 'stage_id.is_closed', 'current_loan_id', 'current_loan_id.state')
+    @api.depends('stage_id', 'current_loan_id', 'current_loan_id.state')
     def _compute_state(self):
         """Compute state based on stage and borrowing status"""
+        maintenance_stages = self.env['tool.stage']
+        for xmlid in ('tool_borrow.tool_stage_maintenance', 'tool_borrow.tool_stage_retired'):
+            stage = self.env.ref(xmlid, raise_if_not_found=False)
+            if stage:
+                maintenance_stages |= stage
         for tool in self:
             if tool.current_loan_id and tool.current_loan_id.state == 'borrowed':
                 tool.state = 'borrowed'
-            elif tool.stage_id and tool.stage_id.is_closed:
+            elif tool.stage_id and tool.stage_id in maintenance_stages:
                 tool.state = 'maintenance'
             else:
                 tool.state = 'available'
@@ -197,8 +181,7 @@ class ToolTool(models.Model):
         self.ensure_one()
         if self.state == 'borrowed':
             raise UserError(_('Cannot set tool to maintenance while it is borrowed.'))
-        # Find maintenance stage
-        maintenance_stage = self.env['tool.stage'].search([('is_closed', '=', True)], limit=1)
+        maintenance_stage = self.env.ref('tool_borrow.tool_stage_maintenance', raise_if_not_found=False)
         if maintenance_stage:
             self.stage_id = maintenance_stage
 
@@ -206,8 +189,7 @@ class ToolTool(models.Model):
         self.ensure_one()
         if self.state == 'borrowed':
             raise UserError(_('Cannot set tool to available while it is borrowed. Please confirm return first.'))
-        # Find available stage
-        available_stage = self.env['tool.stage'].search([('is_closed', '=', False)], limit=1)
+        available_stage = self.env.ref('tool_borrow.tool_stage_in_service', raise_if_not_found=False)
         if available_stage:
             self.stage_id = available_stage
 
