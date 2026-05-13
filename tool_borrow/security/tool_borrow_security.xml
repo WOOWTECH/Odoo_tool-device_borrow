@@ -7,64 +7,41 @@
         <field name="sequence">50</field>
     </record>
 
-    <!-- Security Groups -->
-    <record id="group_tool_user" model="res.groups">
-        <field name="name">User</field>
-        <field name="category_id" ref="module_category_tool_borrow"/>
-        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
-        <field name="comment">Can browse tools and create/view own loan requests</field>
-    </record>
-
+    <!-- Security Group: Equipment Manager (single elevated role, like maintenance module) -->
     <record id="group_tool_manager" model="res.groups">
-        <field name="name">Manager</field>
+        <field name="name">Equipment Manager</field>
         <field name="category_id" ref="module_category_tool_borrow"/>
-        <field name="implied_ids" eval="[(4, ref('group_tool_user'))]"/>
-        <field name="comment">Can approve/reject loan requests and view all loans</field>
+        <field name="comment">Full access to manage tools, approve/reject loans, and configure settings</field>
     </record>
 
-    <record id="group_tool_admin" model="res.groups">
-        <field name="name">Admin</field>
-        <field name="category_id" ref="module_category_tool_borrow"/>
-        <field name="implied_ids" eval="[(4, ref('group_tool_manager'))]"/>
-        <field name="comment">Full access to manage tools and loans</field>
-    </record>
-
-    <!-- Record Rules -->
-    <!-- Manager - read/write access to all tool records -->
-    <record id="tool_tool_rule_manager" model="ir.rule">
-        <field name="name">Tool: Manager read/write access</field>
+    <!-- ============================================================
+         Record Rules — tool.tool
+         ============================================================ -->
+    <!-- Internal users: read-only all tools -->
+    <record id="tool_tool_rule_internal" model="ir.rule">
+        <field name="name">Tool: Internal users read all</field>
         <field name="model_id" ref="model_tool_tool"/>
         <field name="domain_force">[(1, '=', 1)]</field>
-        <field name="groups" eval="[(4, ref('group_tool_manager'))]"/>
-        <field name="perm_read" eval="True"/>
-        <field name="perm_write" eval="True"/>
-        <field name="perm_create" eval="False"/>
-        <field name="perm_unlink" eval="False"/>
-    </record>
-
-    <!-- Tool Rules -->
-    <record id="tool_tool_rule_user" model="ir.rule">
-        <field name="name">Tool: User can read all</field>
-        <field name="model_id" ref="model_tool_tool"/>
-        <field name="domain_force">[(1, '=', 1)]</field>
-        <field name="groups" eval="[(4, ref('group_tool_user'))]"/>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
         <field name="perm_read" eval="True"/>
         <field name="perm_write" eval="False"/>
         <field name="perm_create" eval="False"/>
         <field name="perm_unlink" eval="False"/>
     </record>
 
-    <record id="tool_tool_rule_admin" model="ir.rule">
-        <field name="name">Tool: Admin full access</field>
+    <!-- Equipment Manager: full access all tools -->
+    <record id="tool_tool_rule_manager" model="ir.rule">
+        <field name="name">Tool: Equipment Manager full access</field>
         <field name="model_id" ref="model_tool_tool"/>
         <field name="domain_force">[(1, '=', 1)]</field>
-        <field name="groups" eval="[(4, ref('group_tool_admin'))]"/>
+        <field name="groups" eval="[(4, ref('group_tool_manager'))]"/>
         <field name="perm_read" eval="True"/>
         <field name="perm_write" eval="True"/>
         <field name="perm_create" eval="True"/>
         <field name="perm_unlink" eval="True"/>
     </record>
 
+    <!-- Portal: read-only all tools -->
     <record id="tool_tool_rule_portal" model="ir.rule">
         <field name="name">Tool: Portal can read all tools</field>
         <field name="model_id" ref="model_tool_tool"/>
@@ -76,23 +53,64 @@
         <field name="perm_unlink" eval="False"/>
     </record>
 
-    <!-- Tool Property Rules -->
-    <record id="tool_property_rule_user" model="ir.rule">
-        <field name="name">Property: User can read all</field>
+    <!-- ============================================================
+         Record Rules — tool.loan
+         ============================================================ -->
+    <!-- Internal users: own loans only -->
+    <record id="tool_loan_rule_internal" model="ir.rule">
+        <field name="name">Loan: Internal users own loans</field>
+        <field name="model_id" ref="model_tool_loan"/>
+        <field name="domain_force">[('user_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <!-- Equipment Manager: full access all loans -->
+    <record id="tool_loan_rule_manager" model="ir.rule">
+        <field name="name">Loan: Equipment Manager full access</field>
+        <field name="model_id" ref="model_tool_loan"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_tool_manager'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <!-- Portal: own loans only -->
+    <record id="tool_loan_rule_portal" model="ir.rule">
+        <field name="name">Loan: Portal own loans</field>
+        <field name="model_id" ref="model_tool_loan"/>
+        <field name="domain_force">[('user_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <!-- ============================================================
+         Record Rules — tool.property
+         ============================================================ -->
+    <record id="tool_property_rule_internal" model="ir.rule">
+        <field name="name">Property: Internal users read all</field>
         <field name="model_id" ref="model_tool_property"/>
         <field name="domain_force">[(1, '=', 1)]</field>
-        <field name="groups" eval="[(4, ref('group_tool_user'))]"/>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
         <field name="perm_read" eval="True"/>
         <field name="perm_write" eval="False"/>
         <field name="perm_create" eval="False"/>
         <field name="perm_unlink" eval="False"/>
     </record>
 
-    <record id="tool_property_rule_admin" model="ir.rule">
-        <field name="name">Property: Admin full access</field>
+    <record id="tool_property_rule_manager" model="ir.rule">
+        <field name="name">Property: Equipment Manager full access</field>
         <field name="model_id" ref="model_tool_property"/>
         <field name="domain_force">[(1, '=', 1)]</field>
-        <field name="groups" eval="[(4, ref('group_tool_admin'))]"/>
+        <field name="groups" eval="[(4, ref('group_tool_manager'))]"/>
         <field name="perm_read" eval="True"/>
         <field name="perm_write" eval="True"/>
         <field name="perm_create" eval="True"/>
@@ -100,7 +118,7 @@
     </record>
 
     <record id="tool_property_rule_portal" model="ir.rule">
-        <field name="name">Property: Portal can read all tool properties</field>
+        <field name="name">Property: Portal can read all</field>
         <field name="model_id" ref="model_tool_property"/>
         <field name="domain_force">[(1, '=', 1)]</field>
         <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
@@ -110,79 +128,61 @@
         <field name="perm_unlink" eval="False"/>
     </record>
 
-    <!-- Loan Rules -->
-    <record id="tool_loan_rule_user_read_own" model="ir.rule">
-        <field name="name">Loan: User can read own</field>
-        <field name="model_id" ref="model_tool_loan"/>
-        <field name="domain_force">[('user_id', '=', user.id)]</field>
-        <field name="groups" eval="[(4, ref('group_tool_user'))]"/>
+    <!-- ============================================================
+         Record Rules — tool.stage
+         ============================================================ -->
+    <record id="tool_stage_rule_internal" model="ir.rule">
+        <field name="name">Stage: Internal users read all</field>
+        <field name="model_id" ref="model_tool_stage"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
         <field name="perm_read" eval="True"/>
         <field name="perm_write" eval="False"/>
         <field name="perm_create" eval="False"/>
         <field name="perm_unlink" eval="False"/>
     </record>
 
-    <record id="tool_loan_rule_user_create" model="ir.rule">
-        <field name="name">Loan: User can create own</field>
-        <field name="model_id" ref="model_tool_loan"/>
-        <field name="domain_force">[('user_id', '=', user.id)]</field>
-        <field name="groups" eval="[(4, ref('group_tool_user'))]"/>
-        <field name="perm_read" eval="False"/>
-        <field name="perm_write" eval="True"/>
-        <field name="perm_create" eval="True"/>
-        <field name="perm_unlink" eval="False"/>
-    </record>
-
-    <record id="tool_loan_rule_manager" model="ir.rule">
-        <field name="name">Loan: Manager full read/write</field>
-        <field name="model_id" ref="model_tool_loan"/>
+    <record id="tool_stage_rule_manager" model="ir.rule">
+        <field name="name">Stage: Equipment Manager full access</field>
+        <field name="model_id" ref="model_tool_stage"/>
         <field name="domain_force">[(1, '=', 1)]</field>
         <field name="groups" eval="[(4, ref('group_tool_manager'))]"/>
-        <field name="perm_read" eval="True"/>
-        <field name="perm_write" eval="True"/>
-        <field name="perm_create" eval="True"/>
-        <field name="perm_unlink" eval="False"/>
-    </record>
-
-    <record id="tool_loan_rule_admin" model="ir.rule">
-        <field name="name">Loan: Admin full access</field>
-        <field name="model_id" ref="model_tool_loan"/>
-        <field name="domain_force">[(1, '=', 1)]</field>
-        <field name="groups" eval="[(4, ref('group_tool_admin'))]"/>
         <field name="perm_read" eval="True"/>
         <field name="perm_write" eval="True"/>
         <field name="perm_create" eval="True"/>
         <field name="perm_unlink" eval="True"/>
     </record>
 
-    <record id="tool_loan_rule_portal" model="ir.rule">
-        <field name="name">Loan: Portal can read/create own</field>
-        <field name="model_id" ref="model_tool_loan"/>
-        <field name="domain_force">[('user_id', '=', user.id)]</field>
-        <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
-        <field name="perm_read" eval="True"/>
-        <field name="perm_write" eval="True"/>
-        <field name="perm_create" eval="True"/>
-        <field name="perm_unlink" eval="False"/>
-    </record>
-
-    <!-- Tool Category Rules -->
-    <record id="tool_category_rule_user" model="ir.rule">
-        <field name="name">Category: User can read all</field>
-        <field name="model_id" ref="model_tool_category"/>
+    <record id="tool_stage_rule_portal" model="ir.rule">
+        <field name="name">Stage: Portal can read all</field>
+        <field name="model_id" ref="model_tool_stage"/>
         <field name="domain_force">[(1, '=', 1)]</field>
-        <field name="groups" eval="[(4, ref('group_tool_user'))]"/>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
         <field name="perm_read" eval="True"/>
         <field name="perm_write" eval="False"/>
         <field name="perm_create" eval="False"/>
         <field name="perm_unlink" eval="False"/>
     </record>
 
-    <record id="tool_category_rule_admin" model="ir.rule">
-        <field name="name">Category: Admin full access</field>
+    <!-- ============================================================
+         Record Rules — tool.category
+         ============================================================ -->
+    <record id="tool_category_rule_internal" model="ir.rule">
+        <field name="name">Category: Internal users read all</field>
         <field name="model_id" ref="model_tool_category"/>
         <field name="domain_force">[(1, '=', 1)]</field>
-        <field name="groups" eval="[(4, ref('group_tool_admin'))]"/>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="tool_category_rule_manager" model="ir.rule">
+        <field name="name">Category: Equipment Manager full access</field>
+        <field name="model_id" ref="model_tool_category"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_tool_manager'))]"/>
         <field name="perm_read" eval="True"/>
         <field name="perm_write" eval="True"/>
         <field name="perm_create" eval="True"/>
@@ -198,5 +198,13 @@
         <field name="perm_write" eval="False"/>
         <field name="perm_create" eval="False"/>
         <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <!-- Multi-company rule for tool.category -->
+    <record id="tool_category_comp_rule" model="ir.rule">
+        <field name="name">Category: multi-company</field>
+        <field name="model_id" ref="model_tool_category"/>
+        <field name="domain_force">[('company_id', 'in', company_ids + [False])]</field>
+        <field name="global" eval="True"/>
     </record>
 </odoo>

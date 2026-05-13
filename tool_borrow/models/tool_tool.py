@@ -2,18 +2,73 @@ from odoo import api, fields, models, _
 from odoo.exceptions import UserError
 
 
+class ToolStage(models.Model):
+    """Tool Stage - similar to project.task.type for managing tool states"""
+    _name = 'tool.stage'
+    _description = 'Tool Stage'
+    _order = 'sequence, id'
+
+    name = fields.Char(string='Stage Name', required=True, translate=True)
+    sequence = fields.Integer(string='Sequence', default=10)
+    color = fields.Integer(string='Color')
+    description = fields.Text(string='Description', translate=True)
+
+    _sql_constraints = [
+        ('name_uniq', 'unique(name)', 'Stage name must be unique!'),
+    ]
+
+
 class ToolCategory(models.Model):
-    """Tool Category - holds property definitions for tools"""
+    """Tool Category - mirrors maintenance.equipment.category pattern"""
     _name = 'tool.category'
+    _inherit = ['mail.thread']
     _description = 'Tool Category'
     _order = 'name'
 
     name = fields.Char(string='Category Name', required=True, translate=True)
-    description = fields.Text(string='Description', translate=True)
-    tool_ids = fields.One2many('tool.tool', 'category_id', string='Tools')
+    company_id = fields.Many2one(
+        'res.company', string='Company',
+        required=True, default=lambda self: self.env.company,
+    )
+    technician_user_id = fields.Many2one(
+        'res.users', string='Responsible',
+        tracking=True, default=lambda self: self.env.uid,
+    )
+    color = fields.Integer(string='Color')
+    note = fields.Html(string='Comments', translate=True)
+
+    tool_ids = fields.One2many('tool.tool', 'category_id', string='Tools', copy=False)
+    tool_count = fields.Integer(string='Tool Count', compute='_compute_tool_count')
+    loan_count = fields.Integer(string='Loan Count', compute='_compute_loan_count')
 
     # Properties Definition for tools in this category
     tool_properties_definition = fields.PropertiesDefinition('Tool Properties')
+
+    @api.depends('tool_ids')
+    def _compute_tool_count(self):
+        data = self.env['tool.tool']._read_group(
+            [('category_id', 'in', self.ids)],
+            ['category_id'], ['__count'],
+        )
+        mapped = {cat.id: count for cat, count in data}
+        for category in self:
+            category.tool_count = mapped.get(category.id, 0)
+
+    def _compute_loan_count(self):
+        for category in self:
+            category.loan_count = self.env['tool.loan'].search_count([
+                ('tool_id.category_id', '=', category.id),
+                ('state', 'in', ('draft', 'pending', 'approved', 'borrowed')),
+            ])
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_except_contains_tools(self):
+        for category in self:
+            if category.tool_ids:
+                raise UserError(
+                    _('You cannot delete a tool category containing tools. '
+                      'Please reassign or remove the tools first.')
+                )
 
 
 class ToolTool(models.Model):
@@ -23,13 +78,25 @@ class ToolTool(models.Model):
     _order = 'name'
 
     name = fields.Char(string='Name', required=True, tracking=True)
-    code = fields.Char(string='Code', required=True, default='New', copy=False, tracking=True)
+    code = fields.Char(string='Code', required=True, copy=False, tracking=True)
 
+    # Stage-based state (like Project tasks)
+    stage_id = fields.Many2one(
+        'tool.stage',
+        string='Stage',
+        tracking=True,
+        default=lambda self: self._get_default_stage_id(),
+        group_expand='_read_group_stage_ids',
+        copy=False,
+        index=True,
+    )
+
+    # Keep state as computed field based on stage for compatibility
     state = fields.Selection([
         ('available', 'Available'),
-        ('unavailable', 'Unavailable'),
+        ('borrowed', 'Borrowed'),
         ('maintenance', 'Under Maintenance'),
-    ], string='Status', default='available', required=True, tracking=True)
+    ], string='Status', compute='_compute_state', store=True, tracking=True)
 
     # Category for property definitions
     category_id = fields.Many2one(
@@ -45,15 +112,15 @@ class ToolTool(models.Model):
         copy=True,
     )
 
-    # Allowed users who can see/request this tool (internal + portal with a tool_borrow role)
-    allowed_user_ids = fields.Many2many(
+    # Changed from boolean to many2many for portal users
+    portal_user_ids = fields.Many2many(
         'res.users',
         'tool_tool_portal_user_rel',
         'tool_id',
         'user_id',
-        string='Allowed Users',
-        domain=[('tool_borrow_access', 'in', ['user', 'manager', 'admin'])],
-        help='Select users who can request to borrow this tool',
+        string='Portal Users',
+        domain=[('share', '=', True)],
+        help='Select portal users who can request to borrow this tool',
     )
 
     loan_ids = fields.One2many('tool.loan', 'tool_id', string='Loan History')
@@ -78,49 +145,53 @@ class ToolTool(models.Model):
         ('code_uniq', 'unique(code)', 'Tool code must be unique!'),
     ]
 
-    @api.model_create_multi
-    def create(self, vals_list):
-        for vals in vals_list:
-            if not vals.get('code') or vals['code'] == 'New':
-                vals['code'] = self.env['ir.sequence'].next_by_code('tool.tool') or 'New'
-        return super().create(vals_list)
+    def _get_default_stage_id(self):
+        """Get default stage (first available stage)"""
+        return self.env['tool.stage'].search([], limit=1).id
+
+    @api.model
+    def _read_group_stage_ids(self, stages, domain):
+        """Return all stages for group_expand in kanban view"""
+        return stages.search([])
+
+    @api.depends('stage_id', 'current_loan_id', 'current_loan_id.state')
+    def _compute_state(self):
+        """Compute state based on stage and borrowing status"""
+        maintenance_stages = self.env['tool.stage']
+        for xmlid in ('tool_borrow.tool_stage_maintenance', 'tool_borrow.tool_stage_retired'):
+            stage = self.env.ref(xmlid, raise_if_not_found=False)
+            if stage:
+                maintenance_stages |= stage
+        for tool in self:
+            if tool.current_loan_id and tool.current_loan_id.state == 'borrowed':
+                tool.state = 'borrowed'
+            elif tool.stage_id and tool.stage_id in maintenance_stages:
+                tool.state = 'maintenance'
+            else:
+                tool.state = 'available'
 
     @api.depends('loan_ids', 'loan_ids.state')
     def _compute_current_loan(self):
         for tool in self:
-            current_loan = tool.loan_ids.filtered(lambda l: l.state in ('approved', 'borrowed'))[:1]
+            current_loan = tool.loan_ids.filtered(lambda l: l.state == 'borrowed')[:1]
             tool.current_loan_id = current_loan
             tool.current_borrower_id = current_loan.user_id if current_loan else False
 
     def action_set_maintenance(self):
         self.ensure_one()
-        if self.state == 'unavailable':
-            raise UserError(_('Cannot set tool to maintenance while it is unavailable. Please confirm return first.'))
-        self.state = 'maintenance'
+        if self.state == 'borrowed':
+            raise UserError(_('Cannot set tool to maintenance while it is borrowed.'))
+        maintenance_stage = self.env.ref('tool_borrow.tool_stage_maintenance', raise_if_not_found=False)
+        if maintenance_stage:
+            self.stage_id = maintenance_stage
 
     def action_set_available(self):
         self.ensure_one()
-        if self.state == 'unavailable':
-            raise UserError(_('Cannot set tool to available while it is unavailable. Please confirm return first.'))
-        self.state = 'available'
-
-    def _export_rows(self, fields, *, _is_toplevel_call=True):
-        """Export allowed_user_ids as comma-separated in a single cell.
-
-        By default Odoo expands many2many fields into separate rows.
-        Setting import_compat=True triggers the built-in comma-separation
-        logic (models.py line 1204). Within _export_rows, import_compat
-        only affects reference fields and m2m serialization — column
-        headers and field filtering happen earlier in the export pipeline.
-        """
-        has_allowed_users = any(
-            f and f[0] == 'allowed_user_ids' for f in fields
-        )
-        if has_allowed_users and not self.env.context.get('import_compat'):
-            return super().with_context(import_compat=True)._export_rows(
-                fields, _is_toplevel_call=_is_toplevel_call,
-            )
-        return super()._export_rows(fields, _is_toplevel_call=_is_toplevel_call)
+        if self.state == 'borrowed':
+            raise UserError(_('Cannot set tool to available while it is borrowed. Please confirm return first.'))
+        available_stage = self.env.ref('tool_borrow.tool_stage_in_service', raise_if_not_found=False)
+        if available_stage:
+            self.stage_id = available_stage
 
 
 class ToolProperty(models.Model):
