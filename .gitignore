@@ -1,10 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+*.egg
+dist/
+build/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Claude Code / AI tooling
 .claude/
-/screenshots/
-odoo_server_info.md
-user_prompt.md
 .playwright-mcp/
+
+# Working files (not for repo)
 backup_files/
 log.log
+odoo_server_info.md
+user_prompt.md
 non_functional_sensitive_files.md
-__pycache__/
-*.pyc
+
+# OS
+.DS_Store
+Thumbs.db
