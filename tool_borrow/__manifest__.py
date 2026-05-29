@@ -20,8 +20,6 @@ This module provides functionality to manage internal tool/device lending:
     'data': [
         'security/tool_borrow_security.xml',
         'security/ir.model.access.csv',
-        'data/tool_sequence_data.xml',
-        'data/tool_category_data.xml',
         'data/tool_stage_data.xml',
         'views/tool_tool_views.xml',
         'views/tool_loan_views.xml',
@@ -29,7 +27,6 @@ This module provides functionality to manage internal tool/device lending:
         'views/menu_views.xml',
         'views/portal_templates.xml',
     ],
-    'post_init_hook': '_post_init_hook',
     'installable': True,
     'application': True,
     'license': 'LGPL-3',
