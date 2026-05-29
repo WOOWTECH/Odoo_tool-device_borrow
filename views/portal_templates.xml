@@ -28,7 +28,6 @@
             <t t-set="breadcrumbs_searchbar" t-value="False"/>
 
             <div class="o_portal_my_home">
-                <h3 class="page-header mt-3">Equipment Borrowing</h3>
                 <div class="o_portal_category row g-2 mt-3">
                     <t t-call="portal.portal_docs_entry">
                         <t t-set="icon" t-value="'/tool_borrow/static/src/img/tools.svg'"/>
