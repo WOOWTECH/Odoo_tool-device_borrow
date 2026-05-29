@@ -3,14 +3,6 @@ from odoo.http import request
 from odoo.addons.portal.controllers.portal import CustomerPortal, pager as portal_pager
 
 
-def _website_installed():
-    """Check if website module is installed in the current database."""
-    try:
-        return 'website' in request.env.registry._init_modules
-    except Exception:
-        return False
-
-
 class ToolBorrowPortal(CustomerPortal):
 
     def _prepare_home_portal_values(self, counters):
@@ -31,13 +23,13 @@ class ToolBorrowPortal(CustomerPortal):
         return request.render('tool_borrow.portal_my_equipment', values)
 
     @http.route(['/my/tools', '/my/tools/page/<int:page>'], type='http', auth='user', website=True)
-    def portal_my_tools(self, page=1, sortby=None, **kw):
+    def portal_my_tools(self, page=1, sortby=None, search=None, search_in='all', **kw):
         values = self._prepare_portal_layout_values()
         Tool = request.env['tool.tool']
 
         domain = []
 
-        # Default sort by name
+        # Sorting
         searchbar_sortings = {
             'name': {'label': _('Name'), 'order': 'name'},
             'code': {'label': _('Code'), 'order': 'code'},
@@ -47,13 +39,33 @@ class ToolBorrowPortal(CustomerPortal):
             sortby = 'name'
         order = searchbar_sortings[sortby]['order']
 
+        # Search inputs
+        searchbar_inputs = {
+            'all': {'input': 'all', 'label': _('Search in All')},
+            'name': {'input': 'name', 'label': _('Name')},
+            'code': {'input': 'code', 'label': _('Code')},
+        }
+
+        # Apply search
+        if search and search_in:
+            search_domain = []
+            if search_in in ('name', 'all'):
+                search_domain = [('name', 'ilike', search)]
+            if search_in in ('code', 'all'):
+                code_domain = [('code', 'ilike', search)]
+                if search_domain:
+                    search_domain = ['|'] + search_domain + code_domain
+                else:
+                    search_domain = code_domain
+            domain += search_domain
+
         # Count for pager
         tool_count = Tool.search_count(domain)
 
         # Pager
         pager = portal_pager(
             url='/my/tools',
-            url_args={'sortby': sortby},
+            url_args={'sortby': sortby, 'search_in': search_in, 'search': search},
             total=tool_count,
             page=page,
             step=self._items_per_page
@@ -74,6 +86,9 @@ class ToolBorrowPortal(CustomerPortal):
             'default_url': '/my/tools',
             'searchbar_sortings': searchbar_sortings,
             'sortby': sortby,
+            'searchbar_inputs': searchbar_inputs,
+            'search_in': search_in,
+            'search': search,
         })
         return request.render('tool_borrow.portal_my_tools', values)
 
@@ -83,15 +98,26 @@ class ToolBorrowPortal(CustomerPortal):
         if not tool.exists():
             return request.redirect('/my/tools')
 
+        # Record pager (prev/next)
+        tool_ids = request.env['tool.tool'].search([]).ids
+        try:
+            tool_index = tool_ids.index(tool_id)
+        except ValueError:
+            tool_index = 0
+        prev_record = '/my/tools/%d' % tool_ids[tool_index - 1] if tool_index > 0 else None
+        next_record = '/my/tools/%d' % tool_ids[tool_index + 1] if tool_index < len(tool_ids) - 1 else None
+
         values = self._prepare_portal_layout_values()
         values.update({
             'tool': tool,
             'page_name': 'tool_detail',
+            'prev_record': prev_record,
+            'next_record': next_record,
         })
         return request.render('tool_borrow.portal_my_tool_detail', values)
 
     @http.route(['/my/loans', '/my/loans/page/<int:page>'], type='http', auth='user', website=True)
-    def portal_my_loans(self, page=1, sortby=None, filterby=None, **kw):
+    def portal_my_loans(self, page=1, sortby=None, filterby=None, search=None, search_in='all', **kw):
         values = self._prepare_portal_layout_values()
         Loan = request.env['tool.loan']
 
@@ -119,13 +145,24 @@ class ToolBorrowPortal(CustomerPortal):
             filterby = 'all'
         domain += searchbar_filters[filterby]['domain']
 
+        # Search inputs
+        searchbar_inputs = {
+            'all': {'input': 'all', 'label': _('Search in All')},
+            'tool': {'input': 'tool', 'label': _('Tool Name')},
+        }
+
+        # Apply search
+        if search and search_in:
+            if search_in in ('tool', 'all'):
+                domain += [('tool_id.name', 'ilike', search)]
+
         # Count for pager
         loan_count = Loan.search_count(domain)
 
         # Pager
         pager = portal_pager(
             url='/my/loans',
-            url_args={'sortby': sortby, 'filterby': filterby},
+            url_args={'sortby': sortby, 'filterby': filterby, 'search_in': search_in, 'search': search},
             total=loan_count,
             page=page,
             step=self._items_per_page
@@ -148,6 +185,9 @@ class ToolBorrowPortal(CustomerPortal):
             'sortby': sortby,
             'searchbar_filters': searchbar_filters,
             'filterby': filterby,
+            'searchbar_inputs': searchbar_inputs,
+            'search_in': search_in,
+            'search': search,
         })
         return request.render('tool_borrow.portal_my_loans', values)
 
@@ -157,10 +197,23 @@ class ToolBorrowPortal(CustomerPortal):
         if not loan.exists() or loan.user_id != request.env.user:
             return request.redirect('/my/loans')
 
+        # Record pager (prev/next)
+        loan_ids = request.env['tool.loan'].search([
+            ('user_id', '=', request.env.user.id)
+        ]).ids
+        try:
+            loan_index = loan_ids.index(loan_id)
+        except ValueError:
+            loan_index = 0
+        prev_record = '/my/loans/%d' % loan_ids[loan_index - 1] if loan_index > 0 else None
+        next_record = '/my/loans/%d' % loan_ids[loan_index + 1] if loan_index < len(loan_ids) - 1 else None
+
         values = self._prepare_portal_layout_values()
         values.update({
             'loan': loan,
             'page_name': 'loan_detail',
+            'prev_record': prev_record,
+            'next_record': next_record,
         })
         return request.render('tool_borrow.portal_my_loan_detail', values)
 

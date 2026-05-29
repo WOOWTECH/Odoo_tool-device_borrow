@@ -1,42 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
     <!-- ============================================================
-         Woowtech Smart Space Solution — Tool Borrow Portal
-         Brand-aligned portal templates with design system
+         Portal Home — Equipment Borrowing entry card
          ============================================================ -->
-
-    <!-- Add Material Design Icons CDN + Brand CSS -->
-    <template id="portal_mdi_assets" inherit_id="web.frontend_layout" name="Tool Borrow MDI Assets">
-        <xpath expr="//head" position="inside">
-            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css"/>
-            <link rel="stylesheet" href="/tool_borrow/static/src/css/portal_brand.css"/>
-        </xpath>
-    </template>
-
-    <!-- Custom portal entry with MDI icon support -->
-    <template id="portal_docs_entry_mdi" name="Portal Docs Entry with MDI Icon">
-        <t t-set="force_show" t-value="placeholder_count and request.session.get('portal_counters', {}).get(placeholder_count) and not show_count"/>
-        <div t-att-class="'o_portal_index_card ' +  ('' if force_show or config_card else 'd-none ') + ('col-12 order-0' if show_count else 'col-md-6 order-2')">
-            <a t-att-href="url" t-att-title="title" t-attf-class="d-flex gap-2 gap-md-3 py-3 pe-2 px-md-3 h-100 rounded text-decoration-none #{bg_color if bg_color else 'bg-100'}">
-                <div t-if="icon_class" class="o_portal_icon d-block align-self-start">
-                    <i t-att-class="icon_class"/>
-                </div>
-                <div t-att-class="'alert-link' if bg_color else ''">
-                    <div t-attf-class="mt-0 mb-1 fs-5 fw-normal lh-1 #{'d-flex gap-2' if placeholder_count or count else ''}">
-                        <t t-out="count"/>
-                        <span t-if="placeholder_count and not force_show" t-att-class="'fw-bold' if show_count else 'd-none'" t-att-data-placeholder_count="placeholder_count"/>
-                        <span t-out="title"/>
-                    </div>
-                    <div class="opacity-75">
-                        <t t-out="text"/>
-                    </div>
-                </div>
-            </a>
-        </div>
-    </template>
-
-    <!-- Portal Home — Equipment Borrowing entry card -->
-    <template id="portal_my_home_tool_borrow" name="Equipment Borrowing" inherit_id="portal.portal_my_home" customize_show="True" priority="30">
+    <template id="portal_my_home_tool_borrow" name="Equipment Borrowing"
+              inherit_id="portal.portal_my_home" customize_show="True" priority="30">
         <xpath expr="//div[hasclass('o_portal_docs')]" position="before">
             <t t-set="portal_client_category_enable" t-value="True"/>
         </xpath>
@@ -59,17 +28,13 @@
             <t t-set="breadcrumbs_searchbar" t-value="False"/>
 
             <div class="o_portal_my_home">
-                <!-- Page title -->
                 <h3 class="page-header mt-3">Equipment Borrowing</h3>
-
-                <!-- Cards row, same style as portal home -->
                 <div class="o_portal_category row g-2 mt-3">
                     <t t-call="portal.portal_docs_entry">
                         <t t-set="icon" t-value="'/tool_borrow/static/src/img/tools.svg'"/>
                         <t t-set="title">Equipment Tools</t>
                         <t t-set="url" t-value="'/my/tools'"/>
                         <t t-set="text">Browse available tool equipment</t>
-                        <t t-set="placeholder_count" t-value="'tool_count'"/>
                         <t t-set="config_card" t-value="True"/>
                     </t>
                     <t t-call="portal.portal_docs_entry">
@@ -77,7 +42,6 @@
                         <t t-set="title">My Loans</t>
                         <t t-set="url" t-value="'/my/loans'"/>
                         <t t-set="text">View and manage loan records</t>
-                        <t t-set="placeholder_count" t-value="'loan_count'"/>
                         <t t-set="config_card" t-value="True"/>
                     </t>
                 </div>
@@ -85,8 +49,11 @@
         </t>
     </template>
 
-    <!-- Breadcrumbs for Equipment / Tools / Loans pages -->
-    <template id="portal_breadcrumbs_tool_borrow" name="Tool Borrow Breadcrumbs" inherit_id="portal.portal_breadcrumbs">
+    <!-- ============================================================
+         Breadcrumbs for Equipment / Tools / Loans pages
+         ============================================================ -->
+    <template id="portal_breadcrumbs_tool_borrow" name="Tool Borrow Breadcrumbs"
+              inherit_id="portal.portal_breadcrumbs">
         <xpath expr="//ol" position="inside">
             <li t-if="page_name == 'equipment'" class="breadcrumb-item active">Equipment Borrowing</li>
             <li t-if="page_name == 'tools'" class="breadcrumb-item"><a href="/my/equipment">Equipment Borrowing</a></li>
@@ -102,545 +69,438 @@
         </xpath>
     </template>
 
-    <!-- Note: Invoice and Project MDI templates only load when account/project modules are installed.
-         They are kept in the git repo but removed here since account/project are not installed. -->
-
     <!-- ============================================================
-         Portal Tools List — Brand Redesign
-         Card grid with status badges, category tags, hover effects
+         Portal Tools List — Native Odoo Table
          ============================================================ -->
     <template id="portal_my_tools" name="My Tools">
         <t t-call="portal.portal_layout">
             <t t-set="breadcrumbs_searchbar" t-value="True"/>
 
-            <div class="tb-portal-page">
-                <!-- Page Header -->
-                <div class="tb-page-header">
-                    <div class="container">
-                        <div class="d-flex align-items-center gap-3">
-                            <i class="mdi mdi-tools tb-header-icon" style="color: rgba(255,255,255,0.9);"/>
-                            <div>
-                                <h2>Equipment Tools</h2>
-                                <p>Browse all available tools, click to view details or request to borrow</p>
-                            </div>
-                        </div>
-                    </div>
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Equipment Tools</t>
+            </t>
+
+            <t t-if="not tools">
+                <div class="alert alert-warning" role="alert">
+                    There are no tools available for you.
                 </div>
+            </t>
 
-                <t t-call="portal.portal_searchbar">
-                    <t t-set="title">Equipment Tools</t>
+            <t t-if="tools">
+                <t t-call="portal.portal_table">
+                    <thead>
+                        <tr class="active">
+                            <th>Name</th>
+                            <th>Code</th>
+                            <th class="d-none d-md-table-cell">Category</th>
+                            <th class="text-end">Status</th>
+                        </tr>
+                    </thead>
+                    <t t-foreach="tools" t-as="tool">
+                        <tr>
+                            <td>
+                                <a t-attf-href="/my/tools/#{tool.id}">
+                                    <t t-esc="tool.name"/>
+                                </a>
+                            </td>
+                            <td><t t-esc="tool.code"/></td>
+                            <td class="d-none d-md-table-cell">
+                                <t t-if="tool.category_id"><t t-esc="tool.category_id.name"/></t>
+                            </td>
+                            <td class="text-end">
+                                <span t-if="tool.state == 'available'"
+                                      class="badge rounded-pill text-bg-success">Available</span>
+                                <span t-if="tool.state in ['borrowed', 'unavailable']"
+                                      class="badge rounded-pill text-bg-warning">Borrowed</span>
+                                <span t-if="tool.state == 'maintenance'"
+                                      class="badge rounded-pill text-bg-danger">Under Maintenance</span>
+                            </td>
+                        </tr>
+                    </t>
                 </t>
-
-                <!-- Empty State -->
-                <t t-if="not tools">
-                    <div class="tb-empty-state">
-                        <i class="mdi mdi-tools"/>
-                        <p>There are no tools available for you.</p>
-                    </div>
-                </t>
-
-                <!-- Tools Grid -->
-                <t t-if="tools">
-                    <div class="tb-tools-grid">
-                        <t t-foreach="tools" t-as="tool">
-                            <div class="tb-tool-card">
-                                <div class="tb-tool-card-header">
-                                    <div class="tb-tool-card-icon">
-                                        <i class="mdi mdi-wrench-outline"/>
-                                    </div>
-                                    <div class="tb-tool-card-info">
-                                        <h5 class="tb-tool-card-title">
-                                            <a t-attf-href="/my/tools/#{tool.id}">
-                                                <t t-esc="tool.name"/>
-                                            </a>
-                                        </h5>
-                                        <div class="tb-tool-card-code">
-                                            <i class="mdi mdi-barcode" style="font-size: 0.85rem; margin-right: 2px;"/> <t t-esc="tool.code"/>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="tb-tool-card-body">
-                                    <t t-if="tool.category_id">
-                                        <span class="tb-tool-card-category">
-                                            <i class="mdi mdi-tag-outline" style="font-size: 0.85rem;"/>
-                                            <t t-esc="tool.category_id.name"/>
-                                        </span>
-                                    </t>
-                                </div>
-                                <div class="tb-tool-card-footer">
-                                    <span t-if="tool.state == 'available'" class="tb-badge tb-badge-available">Available</span>
-                                    <span t-if="tool.state in ['borrowed', 'unavailable']" class="tb-badge tb-badge-borrowed">Borrowed</span>
-                                    <span t-if="tool.state == 'maintenance'" class="tb-badge tb-badge-maintenance">Under Maintenance</span>
-                                    <a t-attf-href="/my/tools/#{tool.id}" class="tb-view-link">
-                                        View Details <i class="mdi mdi-arrow-right"/>
-                                    </a>
-                                </div>
-                            </div>
-                        </t>
-                    </div>
-
-                    <div class="d-flex justify-content-center mt-4">
-                        <t t-call="portal.pager"/>
-                    </div>
-                </t>
-            </div>
+            </t>
         </t>
     </template>
 
     <!-- ============================================================
-         Portal Tool Detail — Brand Redesign
-         Gradient header, info grid, branded borrow form
+         Portal Tool Detail — Sidebar + Chatter + Record Pager
          ============================================================ -->
-    <template id="portal_my_tool_detail" name="Tool Detail">
-        <t t-call="portal.portal_layout">
-            <div class="tb-portal-page">
-                <div class="tb-detail-card">
-                    <!-- Gradient Header -->
-                    <div class="tb-detail-header">
-                        <div class="d-flex align-items-start justify-content-between flex-wrap gap-2">
-                            <div>
-                                <h3><t t-esc="tool.name"/></h3>
-                                <span class="tb-code-tag">
-                                    <i class="mdi mdi-barcode" style="font-size: 0.85rem; margin-right: 4px;"/><t t-esc="tool.code"/>
-                                </span>
+    <template id="portal_my_tool_detail" name="Tool Detail"
+              inherit_id="portal.portal_sidebar" primary="True">
+        <xpath expr="//div[hasclass('o_portal_sidebar')]" position="inside">
+
+            <div class="row">
+                <!-- Sidebar -->
+                <t t-call="portal.portal_record_sidebar">
+                    <t t-set="classes" t-value="'col-lg-4 col-xxl-3 d-print-none'"/>
+
+                    <t t-set="entries">
+                        <div class="d-flex flex-wrap flex-column gap-4">
+                            <!-- Navigation -->
+                            <div class="d-flex align-items-center flex-grow-1 p-0" t-ignore="true" role="complementary">
+                                <ul class="nav flex-column">
+                                    <li class="nav-item">
+                                        <a class="nav-link p-0" href="#card_header">Tool Details</a>
+                                    </li>
+                                    <li t-if="tool.state == 'available'" class="nav-item">
+                                        <a class="nav-link p-0" href="#request_form">Request to Borrow</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link p-0" href="#tool_chat">History</a>
+                                    </li>
+                                </ul>
                             </div>
-                            <div style="position: relative; z-index: 1;">
-                                <span t-if="tool.state == 'available'" class="tb-badge tb-badge-available">Available</span>
-                                <span t-if="tool.state in ['borrowed', 'unavailable']" class="tb-badge tb-badge-borrowed">Borrowed</span>
-                                <span t-if="tool.state == 'maintenance'" class="tb-badge tb-badge-maintenance">Under Maintenance</span>
+
+                            <!-- Tool Info -->
+                            <div class="d-flex flex-column gap-2">
+                                <div>
+                                    <small class="text-muted">Status</small><br/>
+                                    <span t-if="tool.state == 'available'"
+                                          class="badge rounded-pill text-bg-success">Available</span>
+                                    <span t-if="tool.state in ['borrowed', 'unavailable']"
+                                          class="badge rounded-pill text-bg-warning">Borrowed</span>
+                                    <span t-if="tool.state == 'maintenance'"
+                                          class="badge rounded-pill text-bg-danger">Under Maintenance</span>
+                                </div>
+                                <div t-if="tool.category_id">
+                                    <small class="text-muted">Category</small><br/>
+                                    <span t-esc="tool.category_id.name"/>
+                                </div>
+                                <div t-if="tool.code">
+                                    <small class="text-muted">Code</small><br/>
+                                    <span t-esc="tool.code"/>
+                                </div>
+                                <div t-if="tool.current_borrower_id">
+                                    <small class="text-muted">Current Borrower</small><br/>
+                                    <span t-esc="tool.current_borrower_id.name"/>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </t>
+                </t>
 
-                    <!-- Detail Body -->
-                    <div class="tb-detail-body">
-                        <!-- Info Grid -->
-                        <div class="tb-info-grid">
-                            <div class="tb-info-item">
-                                <div class="tb-info-icon">
-                                    <i class="mdi mdi-information-outline"/>
+                <!-- Main Content -->
+                <div id="tool_content" class="o_portal_content col-12 col-lg-8 col-xxl-9">
+                    <div id="card">
+                        <div id="card_header" data-anchor="true">
+                            <div class="row justify-content-between mb-3">
+                                <div class="col-12 col-md-9">
+                                    <h3 class="my-0">
+                                        <span t-field="tool.name"/>
+                                        <small class="text-muted d-none d-md-inline">(<t t-esc="tool.code"/>)</small>
+                                    </h3>
                                 </div>
-                                <div>
-                                    <div class="tb-info-label">Status</div>
-                                    <div class="tb-info-value">
-                                        <span t-if="tool.state == 'available'" class="tb-badge tb-badge-available">Available</span>
-                                        <span t-if="tool.state in ['borrowed', 'unavailable']" class="tb-badge tb-badge-borrowed">Borrowed</span>
-                                        <span t-if="tool.state == 'unavailable'" class="tb-badge tb-badge-maintenance">Unavailable</span>
-                                        <span t-if="tool.state == 'maintenance'" class="tb-badge tb-badge-maintenance">Under Maintenance</span>
+                                <div class="col-auto">
+                                    <span t-if="tool.state == 'available'"
+                                          class="badge rounded-pill text-bg-success">Available</span>
+                                    <span t-if="tool.state in ['borrowed', 'unavailable']"
+                                          class="badge rounded-pill text-bg-warning">Borrowed</span>
+                                    <span t-if="tool.state == 'maintenance'"
+                                          class="badge rounded-pill text-bg-danger">Under Maintenance</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="card_body">
+                            <!-- Tool Information -->
+                            <div class="row mb-4">
+                                <div class="col-12 col-md-6">
+                                    <div t-if="tool.category_id">
+                                        <strong>Category:</strong>
+                                        <span t-esc="tool.category_id.name"/>
                                     </div>
                                 </div>
                             </div>
-                            <div class="tb-info-item">
-                                <div class="tb-info-icon">
-                                    <i class="mdi mdi-tag-outline"/>
-                                </div>
-                                <div>
-                                    <div class="tb-info-label">Category</div>
-                                    <div class="tb-info-value">
-                                        <t t-if="tool.category_id"><t t-esc="tool.category_id.name"/></t>
-                                        <t t-else="">—</t>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
-                        <!-- Current Borrower Alert -->
-                        <t t-if="tool.current_borrower_id">
-                            <div class="tb-borrower-alert">
-                                <i class="mdi mdi-account-clock-outline"/>
-                                <div class="tb-borrower-alert-text">
-                                    <strong>Currently borrowed by:</strong> <t t-esc="tool.current_borrower_id.name"/>
-                                </div>
+                            <!-- Current Borrower Alert -->
+                            <div t-if="tool.current_borrower_id" class="alert alert-warning" role="alert">
+                                <strong>Currently borrowed by:</strong> <t t-esc="tool.current_borrower_id.name"/>
                             </div>
-                        </t>
 
-                        <!-- Notes -->
-                        <t t-if="tool.notes">
-                            <div class="tb-notes-section">
-                                <h5><i class="mdi mdi-text-box-outline"/> Notes</h5>
-                                <div class="tb-notes-content" t-field="tool.notes"/>
+                            <!-- Notes -->
+                            <div t-if="not is_html_empty(tool.notes)" class="mb-4">
+                                <h5 class="mb-1">Notes</h5>
+                                <hr class="mt-1 mb-2"/>
+                                <div class="py-1 px-2 bg-100 small" t-field="tool.notes"/>
                             </div>
-                        </t>
 
-                        <!-- Request to Borrow Form -->
-                        <t t-if="tool.state == 'available'">
-                            <div class="tb-request-form">
-                                <h5><i class="mdi mdi-hand-extended-outline"/> Request to Borrow</h5>
+                            <!-- Request to Borrow Form -->
+                            <div t-if="tool.state == 'available'" id="request_form" data-anchor="true" class="mb-4">
+                                <h5 class="mb-1">Request to Borrow</h5>
+                                <hr class="mt-1 mb-2"/>
                                 <form t-attf-action="/my/tools/#{tool.id}/request" method="POST">
                                     <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                                     <div class="mb-3">
-                                        <label for="notes" class="form-label" style="font-size: 0.85rem; color: #646262; font-weight: 500;">Notes (optional)</label>
-                                        <textarea name="notes" id="notes" class="form-control" rows="3" placeholder="Add any notes for your request..."></textarea>
+                                        <label for="notes" class="form-label">Notes (optional)</label>
+                                        <textarea name="notes" id="notes" class="form-control" rows="3"
+                                                  placeholder="Add any notes for your request..."/>
                                     </div>
-                                    <button type="submit" class="tb-btn-primary">
-                                        <i class="mdi mdi-send-outline"/> Submit Borrow Request
+                                    <button type="submit" class="btn btn-primary">
+                                        Submit Borrow Request
                                     </button>
                                 </form>
                             </div>
+                        </div>
+                    </div>
+
+                    <hr/>
+                    <!-- Chatter -->
+                    <div id="tool_chat" data-anchor="true">
+                        <h3>Communication history</h3>
+                        <t t-call="portal.message_thread">
+                            <t t-set="object" t-value="tool"/>
                         </t>
                     </div>
                 </div>
-
-                <!-- Message / Chatter Section -->
-                <div class="tb-chatter-section mt-4">
-                    <div class="tb-section-title">
-                        <i class="mdi mdi-comment-text-outline"/> Comments
-                    </div>
-                    <t t-call="portal.message_thread">
-                        <t t-set="object" t-value="tool"/>
-                    </t>
-                </div>
-
-                <!-- Back Link -->
-                <a href="/my/tools" class="tb-back-link">
-                    <i class="mdi mdi-arrow-left"/> Back to Equipment Tools
-                </a>
             </div>
-        </t>
+
+            <!-- Record Pager (prev/next) -->
+            <t t-call="portal.record_pager"/>
+        </xpath>
     </template>
 
     <!-- ============================================================
-         Portal Loans List — Brand Redesign
-         Modern table + mobile card layout
+         Portal Loans List — Native Odoo Table
          ============================================================ -->
     <template id="portal_my_loans" name="My Loans">
         <t t-call="portal.portal_layout">
             <t t-set="breadcrumbs_searchbar" t-value="True"/>
 
-            <div class="tb-portal-page">
-                <!-- Page Header -->
-                <div class="tb-page-header">
-                    <div class="container">
-                        <div class="d-flex align-items-center gap-3">
-                            <i class="mdi mdi-clipboard-text-clock-outline tb-header-icon" style="color: rgba(255,255,255,0.9);"/>
-                            <div>
-                                <h2>My Loans</h2>
-                                <p>Track your loan requests and return status</p>
-                            </div>
-                        </div>
-                    </div>
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">My Loans</t>
+            </t>
+
+            <t t-if="not loans">
+                <div class="alert alert-warning" role="alert">
+                    You have no loan requests yet.
+                    <a href="/my/tools">Browse available tools</a>
                 </div>
+            </t>
 
-                <t t-call="portal.portal_searchbar">
-                    <t t-set="title">My Loans</t>
+            <t t-if="loans">
+                <t t-call="portal.portal_table">
+                    <thead>
+                        <tr class="active">
+                            <th>Tool</th>
+                            <th class="d-none d-md-table-cell">Request Date</th>
+                            <th class="text-center">Status</th>
+                            <th class="text-end"/>
+                        </tr>
+                    </thead>
+                    <t t-foreach="loans" t-as="loan">
+                        <tr>
+                            <td>
+                                <a t-attf-href="/my/loans/#{loan.id}">
+                                    <t t-esc="loan.tool_id.name"/>
+                                </a>
+                                <div class="small text-muted"><t t-esc="loan.tool_id.code"/></div>
+                            </td>
+                            <td class="d-none d-md-table-cell">
+                                <t t-if="loan.request_date">
+                                    <span t-field="loan.request_date" t-options="{'widget': 'date'}"/>
+                                </t>
+                                <t t-else="">—</t>
+                            </td>
+                            <td class="text-center">
+                                <span t-if="loan.state == 'draft'" class="badge rounded-pill text-bg-secondary">Draft</span>
+                                <span t-if="loan.state == 'pending'" class="badge rounded-pill text-bg-info">Pending Approval</span>
+                                <span t-if="loan.state == 'approved'" class="badge rounded-pill text-bg-primary">Approved</span>
+                                <span t-if="loan.state == 'rejected'" class="badge rounded-pill text-bg-danger">Rejected</span>
+                                <span t-if="loan.state == 'borrowed'" class="badge rounded-pill text-bg-warning">Borrowed</span>
+                                <span t-if="loan.state == 'returned'" class="badge rounded-pill text-bg-success">Returned</span>
+                            </td>
+                            <td class="text-end">
+                                <a t-attf-href="/my/loans/#{loan.id}">View</a>
+                            </td>
+                        </tr>
+                    </t>
                 </t>
-
-                <!-- Empty State -->
-                <t t-if="not loans">
-                    <div class="tb-empty-state">
-                        <i class="mdi mdi-clipboard-text-clock-outline"/>
-                        <p>You have no loan requests yet.</p>
-                        <a href="/my/tools" class="tb-btn-primary">
-                            <i class="mdi mdi-magnify"/> Browse available tools
-                        </a>
-                    </div>
-                </t>
-
-                <!-- Loans Table (Desktop) -->
-                <t t-if="loans">
-                    <div class="tb-loans-table">
-                        <div class="table-responsive">
-                            <table class="table mb-0">
-                                <thead>
-                                    <tr>
-                                        <th>Tool</th>
-                                        <th>Request Date</th>
-                                        <th>Status</th>
-                                        <th style="text-align: right;">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <t t-foreach="loans" t-as="loan">
-                                        <tr>
-                                            <td>
-                                                <div class="tb-loan-tool-name">
-                                                    <a t-attf-href="/my/loans/#{loan.id}">
-                                                        <t t-esc="loan.tool_id.name"/>
-                                                    </a>
-                                                </div>
-                                                <div class="tb-loan-tool-code">
-                                                    <t t-esc="loan.tool_id.code"/>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="tb-loan-date">
-                                                    <t t-if="loan.request_date">
-                                                        <t t-esc="loan.request_date" t-options="{'widget': 'date'}"/>
-                                                    </t>
-                                                    <t t-else="">—</t>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <span t-if="loan.state == 'draft'" class="tb-badge tb-badge-draft">Draft</span>
-                                                <span t-if="loan.state == 'pending'" class="tb-badge tb-badge-pending">Pending Approval</span>
-                                                <span t-if="loan.state == 'approved'" class="tb-badge tb-badge-approved">Approved</span>
-                                                <span t-if="loan.state == 'rejected'" class="tb-badge tb-badge-rejected">Rejected</span>
-                                                <span t-if="loan.state == 'borrowed'" class="tb-badge tb-badge-borrowed">Borrowed</span>
-                                                <span t-if="loan.state == 'returned'" class="tb-badge tb-badge-returned">Returned</span>
-                                            </td>
-                                            <td style="text-align: right;">
-                                                <a t-attf-href="/my/loans/#{loan.id}" class="tb-view-link">
-                                                    View <i class="mdi mdi-arrow-right"/>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    </t>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <!-- Loans Cards (Mobile) -->
-                    <div class="tb-loan-cards">
-                        <t t-foreach="loans" t-as="loan">
-                            <a t-attf-href="/my/loans/#{loan.id}" class="tb-loan-card-item">
-                                <div class="tb-loan-card-item-info">
-                                    <div class="tb-loan-card-item-tool"><t t-esc="loan.tool_id.name"/></div>
-                                    <div class="tb-loan-card-item-meta">
-                                        <t t-esc="loan.tool_id.code"/>
-                                        <t t-if="loan.request_date"> · <t t-esc="loan.request_date" t-options="{'widget': 'date'}"/></t>
-                                    </div>
-                                    <div style="margin-top: 6px;">
-                                        <span t-if="loan.state == 'draft'" class="tb-badge tb-badge-draft">Draft</span>
-                                        <span t-if="loan.state == 'pending'" class="tb-badge tb-badge-pending">Pending Approval</span>
-                                        <span t-if="loan.state == 'approved'" class="tb-badge tb-badge-approved">Approved</span>
-                                        <span t-if="loan.state == 'rejected'" class="tb-badge tb-badge-rejected">Rejected</span>
-                                        <span t-if="loan.state == 'borrowed'" class="tb-badge tb-badge-borrowed">Borrowed</span>
-                                        <span t-if="loan.state == 'returned'" class="tb-badge tb-badge-returned">Returned</span>
-                                    </div>
-                                </div>
-                                <div class="tb-loan-card-item-arrow">
-                                    <i class="mdi mdi-chevron-right"/>
-                                </div>
-                            </a>
-                        </t>
-                    </div>
-
-                    <div class="d-flex justify-content-center mt-4">
-                        <t t-call="portal.pager"/>
-                    </div>
-                </t>
-            </div>
+            </t>
         </t>
     </template>
 
     <!-- ============================================================
-         Portal Loan Detail — Brand Redesign
-         Gradient header, info grid, visual timeline
+         Portal Loan Detail — Sidebar + Chatter + Record Pager
          ============================================================ -->
-    <template id="portal_my_loan_detail" name="Loan Detail">
-        <t t-call="portal.portal_layout">
-            <div class="tb-portal-page">
-                <div class="tb-detail-card">
-                    <!-- Gradient Header -->
-                    <div class="tb-detail-header">
-                        <div class="d-flex align-items-start justify-content-between flex-wrap gap-2">
-                            <div>
-                                <h3>Loan Request</h3>
-                                <span class="tb-code-tag">
-                                    <i class="mdi mdi-wrench-outline" style="font-size: 0.85rem; margin-right: 4px;"/><t t-esc="loan.tool_id.name"/>
-                                </span>
-                            </div>
-                            <div style="position: relative; z-index: 1;">
-                                <span t-if="loan.state == 'draft'" class="tb-badge tb-badge-draft">Draft</span>
-                                <span t-if="loan.state == 'pending'" class="tb-badge tb-badge-pending">Pending Approval</span>
-                                <span t-if="loan.state == 'approved'" class="tb-badge tb-badge-approved">Approved</span>
-                                <span t-if="loan.state == 'rejected'" class="tb-badge tb-badge-rejected">Rejected</span>
-                                <span t-if="loan.state == 'borrowed'" class="tb-badge tb-badge-borrowed">Borrowed</span>
-                                <span t-if="loan.state == 'returned'" class="tb-badge tb-badge-returned">Returned</span>
-                            </div>
-                        </div>
-                    </div>
+    <template id="portal_my_loan_detail" name="Loan Detail"
+              inherit_id="portal.portal_sidebar" primary="True">
+        <xpath expr="//div[hasclass('o_portal_sidebar')]" position="inside">
 
-                    <!-- Detail Body -->
-                    <div class="tb-detail-body">
-                        <!-- Info Grid -->
-                        <div class="tb-info-grid">
-                            <div class="tb-info-item">
-                                <div class="tb-info-icon">
-                                    <i class="mdi mdi-wrench-outline"/>
+            <div class="row">
+                <!-- Sidebar -->
+                <t t-call="portal.portal_record_sidebar">
+                    <t t-set="classes" t-value="'col-lg-4 col-xxl-3 d-print-none'"/>
+
+                    <t t-set="entries">
+                        <div class="d-flex flex-wrap flex-column gap-4">
+                            <!-- Navigation -->
+                            <div class="d-flex align-items-center flex-grow-1 p-0" t-ignore="true" role="complementary">
+                                <ul class="nav flex-column">
+                                    <li class="nav-item">
+                                        <a class="nav-link p-0" href="#card_header">Loan Details</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link p-0" href="#loan_timeline">Status Timeline</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link p-0" href="#loan_chat">History</a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <!-- Loan Status -->
+                            <div class="d-flex flex-column gap-2">
+                                <div>
+                                    <small class="text-muted">Status</small><br/>
+                                    <span t-if="loan.state == 'draft'" class="badge rounded-pill text-bg-secondary">Draft</span>
+                                    <span t-if="loan.state == 'pending'" class="badge rounded-pill text-bg-info">Pending Approval</span>
+                                    <span t-if="loan.state == 'approved'" class="badge rounded-pill text-bg-primary">Approved</span>
+                                    <span t-if="loan.state == 'rejected'" class="badge rounded-pill text-bg-danger">Rejected</span>
+                                    <span t-if="loan.state == 'borrowed'" class="badge rounded-pill text-bg-warning">Borrowed</span>
+                                    <span t-if="loan.state == 'returned'" class="badge rounded-pill text-bg-success">Returned</span>
                                 </div>
                                 <div>
-                                    <div class="tb-info-label">Tool</div>
-                                    <div class="tb-info-value">
+                                    <small class="text-muted">Tool</small><br/>
+                                    <a t-attf-href="/my/tools/#{loan.tool_id.id}">
+                                        <t t-esc="loan.tool_id.name"/>
+                                    </a>
+                                </div>
+                                <div>
+                                    <small class="text-muted">Borrower</small><br/>
+                                    <span t-esc="loan.user_id.name"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+
+                <!-- Main Content -->
+                <div id="loan_content" class="o_portal_content col-12 col-lg-8 col-xxl-9">
+                    <div id="card">
+                        <div id="card_header" data-anchor="true">
+                            <div class="row justify-content-between mb-3">
+                                <div class="col-12 col-md-9">
+                                    <h3 class="my-0">
+                                        Loan Request
+                                        <small class="text-muted"> — <t t-esc="loan.tool_id.name"/></small>
+                                    </h3>
+                                </div>
+                                <div class="col-auto">
+                                    <span t-if="loan.state == 'draft'" class="badge rounded-pill text-bg-secondary">Draft</span>
+                                    <span t-if="loan.state == 'pending'" class="badge rounded-pill text-bg-info">Pending Approval</span>
+                                    <span t-if="loan.state == 'approved'" class="badge rounded-pill text-bg-primary">Approved</span>
+                                    <span t-if="loan.state == 'rejected'" class="badge rounded-pill text-bg-danger">Rejected</span>
+                                    <span t-if="loan.state == 'borrowed'" class="badge rounded-pill text-bg-warning">Borrowed</span>
+                                    <span t-if="loan.state == 'returned'" class="badge rounded-pill text-bg-success">Returned</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="card_body">
+                            <!-- Loan Details -->
+                            <div class="row mb-4">
+                                <div class="col-12 col-md-6">
+                                    <div><strong>Tool:</strong>
                                         <a t-attf-href="/my/tools/#{loan.tool_id.id}">
                                             <t t-esc="loan.tool_id.name"/>
                                         </a>
-                                        <span style="color: #646262; font-size: 0.8rem; margin-left: 4px;">(<t t-esc="loan.tool_id.code"/>)</span>
+                                        <span class="text-muted small">(<t t-esc="loan.tool_id.code"/>)</span>
                                     </div>
+                                    <div><strong>Borrower:</strong> <span t-esc="loan.user_id.name"/></div>
+                                    <div t-if="loan.approved_by"><strong>Approved By:</strong> <span t-esc="loan.approved_by.name"/></div>
                                 </div>
-                            </div>
-                            <div class="tb-info-item">
-                                <div class="tb-info-icon">
-                                    <i class="mdi mdi-account-outline"/>
-                                </div>
-                                <div>
-                                    <div class="tb-info-label">Borrower</div>
-                                    <div class="tb-info-value"><t t-esc="loan.user_id.name"/></div>
-                                </div>
-                            </div>
-                            <div class="tb-info-item">
-                                <div class="tb-info-icon">
-                                    <i class="mdi mdi-calendar-edit-outline"/>
-                                </div>
-                                <div>
-                                    <div class="tb-info-label">Request Date</div>
-                                    <div class="tb-info-value">
-                                        <t t-if="loan.request_date"><t t-esc="loan.request_date" t-options="{'widget': 'date'}"/></t>
+                                <div class="col-12 col-md-6">
+                                    <div><strong>Request Date:</strong>
+                                        <t t-if="loan.request_date"><span t-field="loan.request_date" t-options="{'widget': 'date'}"/></t>
+                                        <t t-else="">—</t>
+                                    </div>
+                                    <div><strong>Approved Date:</strong>
+                                        <t t-if="loan.approved_date"><span t-field="loan.approved_date" t-options="{'widget': 'date'}"/></t>
+                                        <t t-else="">—</t>
+                                    </div>
+                                    <div><strong>Borrow Date:</strong>
+                                        <t t-if="loan.borrow_date"><span t-field="loan.borrow_date" t-options="{'widget': 'date'}"/></t>
+                                        <t t-else="">—</t>
+                                    </div>
+                                    <div><strong>Return Date:</strong>
+                                        <t t-if="loan.return_date"><span t-field="loan.return_date" t-options="{'widget': 'date'}"/></t>
                                         <t t-else="">—</t>
                                     </div>
                                 </div>
                             </div>
-                            <div class="tb-info-item">
-                                <div class="tb-info-icon">
-                                    <i class="mdi mdi-calendar-check-outline"/>
-                                </div>
-                                <div>
-                                    <div class="tb-info-label">Approved Date</div>
-                                    <div class="tb-info-value">
-                                        <t t-if="loan.approved_date"><t t-esc="loan.approved_date" t-options="{'widget': 'date'}"/></t>
-                                        <t t-else="">—</t>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tb-info-item">
-                                <div class="tb-info-icon">
-                                    <i class="mdi mdi-hand-extended-outline"/>
-                                </div>
-                                <div>
-                                    <div class="tb-info-label">Borrow Date</div>
-                                    <div class="tb-info-value">
-                                        <t t-if="loan.borrow_date"><t t-esc="loan.borrow_date" t-options="{'widget': 'date'}"/></t>
-                                        <t t-else="">—</t>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tb-info-item">
-                                <div class="tb-info-icon">
-                                    <i class="mdi mdi-keyboard-return"/>
-                                </div>
-                                <div>
-                                    <div class="tb-info-label">Return Date</div>
-                                    <div class="tb-info-value">
-                                        <t t-if="loan.return_date"><t t-esc="loan.return_date" t-options="{'widget': 'date'}"/></t>
-                                        <t t-else="">—</t>
-                                    </div>
-                                </div>
-                            </div>
-                            <t t-if="loan.approved_by">
-                                <div class="tb-info-item">
-                                    <div class="tb-info-icon">
-                                        <i class="mdi mdi-account-check-outline"/>
-                                    </div>
-                                    <div>
-                                        <div class="tb-info-label">Approved By</div>
-                                        <div class="tb-info-value"><t t-esc="loan.approved_by.name"/></div>
-                                    </div>
-                                </div>
-                            </t>
-                        </div>
 
-                        <!-- Notes -->
-                        <t t-if="loan.notes">
-                            <div class="tb-notes-section">
-                                <h5><i class="mdi mdi-text-box-outline"/> Notes</h5>
-                                <div class="tb-notes-content"><t t-esc="loan.notes"/></div>
-                            </div>
-                        </t>
-
-                        <!-- Status Timeline -->
-                        <div style="margin-top: 32px;">
-                            <div class="tb-section-title">
-                                <i class="mdi mdi-timeline-clock-outline"/> Status Timeline
+                            <!-- Notes -->
+                            <div t-if="loan.notes" class="mb-4">
+                                <h5 class="mb-1">Notes</h5>
+                                <hr class="mt-1 mb-2"/>
+                                <div class="py-1 px-2 bg-100 small"><t t-esc="loan.notes"/></div>
                             </div>
 
-                            <div class="tb-timeline">
-                                <!-- Step 1: Draft / Submitted -->
-                                <div t-attf-class="tb-timeline-item #{'tb-step-completed' if loan.state in ['pending', 'approved', 'borrowed', 'returned'] else ''}">
-                                    <div t-attf-class="tb-timeline-dot #{'tb-timeline-dot-completed' if loan.state in ['pending', 'approved', 'borrowed', 'returned'] else ('tb-timeline-dot-active' if loan.state == 'draft' else 'tb-timeline-dot-pending')}">
-                                        <i t-attf-class="mdi #{'mdi-check' if loan.state in ['pending', 'approved', 'borrowed', 'returned'] else 'mdi-file-edit-outline'}"/>
-                                    </div>
-                                    <div class="tb-timeline-content">
-                                        <div t-attf-class="tb-timeline-title #{'tb-timeline-title-muted' if loan.state == 'draft' and False else ''}">Draft / Submitted</div>
-                                        <t t-if="loan.request_date">
-                                            <div class="tb-timeline-date"><t t-esc="loan.request_date" t-options="{'widget': 'datetime'}"/></div>
-                                        </t>
-                                    </div>
-                                </div>
-
-                                <!-- Step 2: Approved / Rejected -->
-                                <div t-attf-class="tb-timeline-item #{'tb-step-completed' if loan.state in ['approved', 'borrowed', 'returned'] else ''}">
-                                    <t t-if="loan.state == 'rejected'">
-                                        <div class="tb-timeline-dot tb-timeline-dot-rejected">
-                                            <i class="mdi mdi-close"/>
-                                        </div>
-                                        <div class="tb-timeline-content">
-                                            <div class="tb-timeline-title" style="color: #b83040;">Rejected</div>
-                                        </div>
-                                    </t>
-                                    <t t-else="">
-                                        <div t-attf-class="tb-timeline-dot #{'tb-timeline-dot-completed' if loan.state in ['approved', 'borrowed', 'returned'] else ('tb-timeline-dot-active' if loan.state == 'pending' else 'tb-timeline-dot-pending')}">
-                                            <i t-attf-class="mdi #{'mdi-check' if loan.state in ['approved', 'borrowed', 'returned'] else ('mdi-clock-outline' if loan.state == 'pending' else 'mdi-circle-outline')}"/>
-                                        </div>
-                                        <div class="tb-timeline-content">
-                                            <div t-attf-class="tb-timeline-title #{'tb-timeline-title-muted' if loan.state in ['draft'] else ''}">
-                                                <t t-if="loan.state == 'pending'">Under Review...</t>
-                                                <t t-else="">Approved</t>
+                            <!-- Status Timeline -->
+                            <div id="loan_timeline" data-anchor="true" class="mb-4">
+                                <h5 class="mb-1">Status Timeline</h5>
+                                <hr class="mt-1 mb-2"/>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item d-flex align-items-center gap-2">
+                                        <i t-attf-class="fa fa-check-circle #{'text-success' if loan.state in ['pending', 'approved', 'borrowed', 'returned'] else 'text-muted'}"/>
+                                        <div>
+                                            <strong>Draft / Submitted</strong>
+                                            <div t-if="loan.request_date" class="small text-muted">
+                                                <span t-field="loan.request_date" t-options="{'widget': 'datetime'}"/>
                                             </div>
-                                            <t t-if="loan.approved_date">
-                                                <div class="tb-timeline-date"><t t-esc="loan.approved_date" t-options="{'widget': 'datetime'}"/></div>
-                                            </t>
                                         </div>
-                                    </t>
-                                </div>
-
-                                <!-- Step 3: Borrowed -->
-                                <t t-if="loan.state != 'rejected'">
-                                    <div t-attf-class="tb-timeline-item #{'tb-step-completed' if loan.state in ['borrowed', 'returned'] else ''}">
-                                        <div t-attf-class="tb-timeline-dot #{'tb-timeline-dot-completed' if loan.state in ['borrowed', 'returned'] else 'tb-timeline-dot-pending'}">
-                                            <i t-attf-class="mdi #{'mdi-check' if loan.state in ['borrowed', 'returned'] else 'mdi-circle-outline'}"/>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center gap-2">
+                                        <i t-if="loan.state == 'rejected'" class="fa fa-times-circle text-danger"/>
+                                        <i t-elif="loan.state in ['approved', 'borrowed', 'returned']" class="fa fa-check-circle text-success"/>
+                                        <i t-elif="loan.state == 'pending'" class="fa fa-clock-o text-info"/>
+                                        <i t-else="" class="fa fa-circle-o text-muted"/>
+                                        <div>
+                                            <strong t-if="loan.state == 'rejected'">Rejected</strong>
+                                            <strong t-elif="loan.state == 'pending'">Under Review...</strong>
+                                            <strong t-else="">Approved</strong>
+                                            <div t-if="loan.approved_date" class="small text-muted">
+                                                <span t-field="loan.approved_date" t-options="{'widget': 'datetime'}"/>
+                                            </div>
                                         </div>
-                                        <div class="tb-timeline-content">
-                                            <div t-attf-class="tb-timeline-title #{'tb-timeline-title-muted' if loan.state not in ['borrowed', 'returned'] else ''}">Borrowed</div>
-                                            <t t-if="loan.borrow_date">
-                                                <div class="tb-timeline-date"><t t-esc="loan.borrow_date" t-options="{'widget': 'datetime'}"/></div>
-                                            </t>
+                                    </li>
+                                    <li t-if="loan.state != 'rejected'" class="list-group-item d-flex align-items-center gap-2">
+                                        <i t-attf-class="fa #{'fa-check-circle text-success' if loan.state in ['borrowed', 'returned'] else 'fa-circle-o text-muted'}"/>
+                                        <div>
+                                            <strong t-attf-class="#{'text-muted' if loan.state not in ['borrowed', 'returned'] else ''}">Borrowed</strong>
+                                            <div t-if="loan.borrow_date" class="small text-muted">
+                                                <span t-field="loan.borrow_date" t-options="{'widget': 'datetime'}"/>
+                                            </div>
                                         </div>
-                                    </div>
-
-                                    <!-- Step 4: Returned -->
-                                    <div class="tb-timeline-item">
-                                        <div t-attf-class="tb-timeline-dot #{'tb-timeline-dot-completed' if loan.state == 'returned' else 'tb-timeline-dot-pending'}">
-                                            <i t-attf-class="mdi #{'mdi-check-all' if loan.state == 'returned' else 'mdi-circle-outline'}"/>
+                                    </li>
+                                    <li t-if="loan.state != 'rejected'" class="list-group-item d-flex align-items-center gap-2">
+                                        <i t-attf-class="fa #{'fa-check-circle text-success' if loan.state == 'returned' else 'fa-circle-o text-muted'}"/>
+                                        <div>
+                                            <strong t-attf-class="#{'text-muted' if loan.state != 'returned' else ''}">Returned</strong>
+                                            <div t-if="loan.return_date" class="small text-muted">
+                                                <span t-field="loan.return_date" t-options="{'widget': 'datetime'}"/>
+                                            </div>
                                         </div>
-                                        <div class="tb-timeline-content">
-                                            <div t-attf-class="tb-timeline-title #{'tb-timeline-title-muted' if loan.state != 'returned' else ''}">Returned</div>
-                                            <t t-if="loan.return_date">
-                                                <div class="tb-timeline-date"><t t-esc="loan.return_date" t-options="{'widget': 'datetime'}"/></div>
-                                            </t>
-                                        </div>
-                                    </div>
-                                </t>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Message / Chatter Section -->
-                <div class="tb-chatter-section mt-4">
-                    <div class="tb-section-title">
-                        <i class="mdi mdi-comment-text-outline"/> Comments
+                    <hr/>
+                    <!-- Chatter -->
+                    <div id="loan_chat" data-anchor="true">
+                        <h3>Communication history</h3>
+                        <t t-call="portal.message_thread">
+                            <t t-set="object" t-value="loan"/>
+                        </t>
                     </div>
-                    <t t-call="portal.message_thread">
-                        <t t-set="object" t-value="loan"/>
-                    </t>
                 </div>
-
-                <!-- Back Link -->
-                <a href="/my/loans" class="tb-back-link">
-                    <i class="mdi mdi-arrow-left"/> Back to My Loans
-                </a>
             </div>
-        </t>
+
+            <!-- Record Pager (prev/next) -->
+            <t t-call="portal.record_pager"/>
+        </xpath>
     </template>
+
 </odoo>
