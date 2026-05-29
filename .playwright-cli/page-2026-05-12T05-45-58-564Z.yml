@@ -1,0 +1,89 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - navigation [ref=e3]:
+      - button "" [ref=e5] [cursor=pointer]:
+        - generic [ref=e6]: 
+      - menuitem "Discuss" [ref=e21] [cursor=pointer]
+      - menu [ref=e22]:
+        - button "Configuration" [ref=e23] [cursor=pointer]:
+          - generic [ref=e24]: Configuration
+      - menu [ref=e7]:
+        - button "Messages 3" [ref=e25] [cursor=pointer]:
+          - img "Messages" [ref=e10]: 
+          - generic [ref=e11]: "3"
+        - button "Activities" [ref=e12] [cursor=pointer]:
+          - img "Activities" [ref=e13]: 
+        - button "YourCompany" [disabled] [ref=e15]:
+          - text: 
+          - generic [ref=e16]: YourCompany
+        - button "User" [ref=e18] [cursor=pointer]:
+          - img "User" [ref=e19]
+          - text: 
+  - generic [ref=e107]:
+    - generic [ref=e109]:
+      - generic [ref=e111]:
+        - list [ref=e112]:
+          - listitem [ref=e113]:
+            - link "Tool Categories" [ref=e114] [cursor=pointer]:
+              - /url: /odoo/action-168
+        - generic [ref=e117]: 量測儀器
+      - generic [ref=e119]:
+        - button " 7 Tools" [ref=e120] [cursor=pointer]:
+          - generic [ref=e121]: 
+          - generic [ref=e122]:
+            - generic [ref=e123]: "7"
+            - generic [ref=e124]: Tools
+        - button " 0 Loans" [ref=e125] [cursor=pointer]:
+          - generic [ref=e126]: 
+          - generic [ref=e127]:
+            - generic [ref=e128]: "0"
+            - generic [ref=e129]: Loans
+        - button " 0 Maintenance" [ref=e130] [cursor=pointer]:
+          - generic [ref=e131]: 
+          - generic [ref=e132]:
+            - generic [ref=e133]: "0"
+            - generic [ref=e134]: Maintenance
+      - search [ref=e136]:
+        - navigation "Pager" [ref=e137]:
+          - generic [ref=e138]:
+            - generic [ref=e139]: "4"
+            - text: / 5
+          - generic [ref=e140]:
+            - button "Previous" [ref=e141] [cursor=pointer]:
+              - generic [ref=e142]: 
+            - button "Next" [ref=e143] [cursor=pointer]:
+              - generic [ref=e144]: 
+    - generic [ref=e146]:
+      - generic [ref=e148]:
+        - generic [ref=e149]:
+          - generic [ref=e150]: Category Name
+          - heading "量測儀器" [level=1] [ref=e151]:
+            - generic [ref=e152]: 量測儀器
+        - generic [ref=e155]:
+          - generic [ref=e157]: Responsible
+          - link "OdooBot" [ref=e160] [cursor=pointer]:
+            - /url: /odoo/res.users/1
+            - generic [ref=e161]: OdooBot
+        - generic [ref=e165]: Comments
+        - list [ref=e169]:
+          - listitem [ref=e170] [cursor=pointer]:
+            - tab "Properties Definition" [ref=e171]
+          - listitem [ref=e172] [cursor=pointer]:
+            - tab "Tools" [ref=e173]
+      - generic [ref=e177]:
+        - generic [ref=e179]:
+          - button "Send message" [disabled]
+          - button "Log note" [disabled]
+          - button "Search Messages" [ref=e181] [cursor=pointer]:
+            - img [ref=e182]: 
+          - generic [ref=e183]:
+            - button "Attach files" [disabled]:
+              - generic: 
+          - button "0" [ref=e185] [cursor=pointer]:
+            - img [ref=e186]: 
+            - superscript: "0"
+          - button "Follow" [ref=e187] [cursor=pointer]:
+            - generic [ref=e189]: Follow
+        - generic [ref=e192]:
+          - generic [ref=e193]: 😶
+          - generic [ref=e194]: The conversation is empty.

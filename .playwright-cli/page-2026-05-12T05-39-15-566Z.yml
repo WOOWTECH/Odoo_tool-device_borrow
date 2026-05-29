@@ -1,0 +1,98 @@
+- generic [ref=e1]:
+  - banner [ref=e2]:
+    - navigation [ref=e3]:
+      - button "" [ref=e5] [cursor=pointer]:
+        - generic [ref=e6]: 
+      - menuitem "工具借用" [ref=e7] [cursor=pointer]
+      - menu [ref=e8]:
+        - menuitem "工具" [ref=e9] [cursor=pointer]
+        - menuitem "借用請求" [ref=e10] [cursor=pointer]
+        - menuitem "我的借用" [ref=e11] [cursor=pointer]
+        - button "設定" [ref=e12] [cursor=pointer]:
+          - generic [ref=e13]: 設定
+      - menu [ref=e14]:
+        - button "訊息 7" [ref=e28] [cursor=pointer]:
+          - img "訊息" [ref=e17]: 
+          - generic [ref=e18]: "7"
+        - button "活動" [ref=e19] [cursor=pointer]:
+          - img "活動" [ref=e20]: 
+        - button "YourCompany" [disabled] [ref=e22]:
+          - text: 
+          - generic [ref=e23]: YourCompany
+        - button "使用者" [ref=e25] [cursor=pointer]:
+          - img "使用者" [ref=e26]
+          - text: 
+  - generic [ref=e211]:
+    - generic [ref=e213]:
+      - generic [ref=e214]:
+        - button "新增" [ref=e217] [cursor=pointer]
+        - generic [ref=e218]:
+          - generic [ref=e220]: 工具類別
+          - button "" [ref=e224] [cursor=pointer]:
+            - generic [ref=e225]: 
+      - search [ref=e227]:
+        - search [ref=e228]:
+          - button "搜尋⋯" [ref=e229] [cursor=pointer]:
+            - img [ref=e230]: 
+          - searchbox "搜尋⋯" [active] [ref=e232]
+        - button "" [ref=e233] [cursor=pointer]
+      - generic [ref=e234]:
+        - search [ref=e235]:
+          - navigation "頁面工具" [ref=e236]:
+            - generic [ref=e237]:
+              - generic [ref=e238]: 1-5
+              - text: / 5
+            - generic [ref=e239]:
+              - button "上一頁" [disabled]:
+                - generic: 
+              - button "下一頁" [disabled]:
+                - generic: 
+        - navigation [ref=e240]:
+          - button "" [ref=e241] [cursor=pointer]:
+            - generic [ref=e242]: 
+          - button "" [ref=e243] [cursor=pointer]:
+            - generic [ref=e244]: 
+    - table [ref=e247]:
+      - rowgroup [ref=e248]:
+        - row "類別名稱  負責人 " [ref=e249]:
+          - columnheader [ref=e250] [cursor=pointer]:
+            - checkbox [ref=e252]
+          - columnheader "類別名稱 " [ref=e253] [cursor=pointer]:
+            - generic [ref=e254]:
+              - generic [ref=e255]: 類別名稱
+              - generic [ref=e256]: 
+          - columnheader "負責人 " [ref=e258] [cursor=pointer]:
+            - generic [ref=e259]:
+              - generic [ref=e260]: 負責人
+              - generic [ref=e261]: 
+      - rowgroup [ref=e263]:
+        - row "Playwright 測試類別 Mitchell Admin" [ref=e316]:
+          - cell [ref=e317]:
+            - checkbox [ref=e319] [cursor=pointer]
+          - cell "Playwright 測試類別" [ref=e320] [cursor=pointer]
+          - cell "Mitchell Admin" [ref=e321] [cursor=pointer]
+        - row "一般工具 OdooBot" [ref=e322]:
+          - cell [ref=e323]:
+            - checkbox [ref=e325] [cursor=pointer]
+          - cell "一般工具" [ref=e326] [cursor=pointer]
+          - cell "OdooBot" [ref=e327] [cursor=pointer]
+        - row "手工具 OdooBot" [ref=e328]:
+          - cell [ref=e329]:
+            - checkbox [ref=e331] [cursor=pointer]
+          - cell "手工具" [ref=e332] [cursor=pointer]
+          - cell "OdooBot" [ref=e333] [cursor=pointer]
+        - row "量測儀器 OdooBot" [ref=e334]:
+          - cell [ref=e335]:
+            - checkbox [ref=e337] [cursor=pointer]
+          - cell "量測儀器" [ref=e338] [cursor=pointer]
+          - cell "OdooBot" [ref=e339] [cursor=pointer]
+        - row "電動工具 OdooBot" [ref=e340]:
+          - cell [ref=e341]:
+            - checkbox [ref=e343] [cursor=pointer]
+          - cell "電動工具" [ref=e344] [cursor=pointer]
+          - cell "OdooBot" [ref=e345] [cursor=pointer]
+      - rowgroup [ref=e294]:
+        - row [ref=e295]:
+          - cell [ref=e296]
+          - cell [ref=e297]
+          - cell [ref=e298]

@@ -1,0 +1,275 @@
+- generic [ref=e2]:
+  - link "跳至內容" [ref=e3] [cursor=pointer]:
+    - /url: "#wrap"
+  - banner [ref=e4]:
+    - navigation [ref=e5]:
+      - generic [ref=e6]:
+        - link "Logo of YourCompany" [ref=e7] [cursor=pointer]:
+          - /url: /
+          - img "Logo of YourCompany" [ref=e8]
+        - list [ref=e9]:
+          - listitem [ref=e10]:
+            - button "Joel Willis" [ref=e11] [cursor=pointer]
+            - text:  
+  - main [ref=e12]:
+    - generic [ref=e15]:
+      - generic [ref=e18]:
+        - generic [ref=e19]: 󱁤
+        - generic [ref=e20]:
+          - heading "設備工具" [level=2] [ref=e21]
+          - paragraph [ref=e22]: 瀏覽所有可用工具，點選查看詳情或申請借用
+      - navigation [ref=e23]:
+        - list [ref=e24]:
+          - listitem [ref=e25]:
+            - link "首頁" [ref=e26] [cursor=pointer]:
+              - /url: /my/home
+              - generic [ref=e27]: 
+          - listitem [ref=e28]:
+            - text: /
+            - link "設備借用" [ref=e29] [cursor=pointer]:
+              - /url: /my/equipment
+          - listitem [ref=e30]: / 設備工具
+        - text: 
+        - generic [ref=e33]:
+          - text: 排列依據：
+          - button "名稱" [ref=e35] [cursor=pointer]
+      - generic [ref=e36]:
+        - generic [ref=e37]:
+          - generic [ref=e38]:
+            - generic [ref=e40]: 󰯠
+            - generic [ref=e41]:
+              - heading "3D 列印機 Prusa MK4" [level=5] [ref=e42]:
+                - link "3D 列印機 Prusa MK4" [ref=e43] [cursor=pointer]:
+                  - /url: /my/tools/7
+              - generic [ref=e44]:
+                - generic [ref=e45]: 󰁱
+                - text: TL-007
+          - generic [ref=e47]:
+            - generic [ref=e48]: 󰓼
+            - text: 電動工具
+          - generic [ref=e49]:
+            - generic [ref=e50]: 可借用
+            - link "查看詳情 󰁔" [ref=e51] [cursor=pointer]:
+              - /url: /my/tools/7
+              - text: 查看詳情
+              - generic [ref=e52]: 󰁔
+        - generic [ref=e53]:
+          - generic [ref=e54]:
+            - generic [ref=e56]: 󰯠
+            - generic [ref=e57]:
+              - heading "噪音計 SNDWAY SW-524" [level=5] [ref=e58]:
+                - link "噪音計 SNDWAY SW-524" [ref=e59] [cursor=pointer]:
+                  - /url: /my/tools/11
+              - generic [ref=e60]:
+                - generic [ref=e61]: 󰁱
+                - text: TL-011
+          - generic [ref=e63]:
+            - generic [ref=e64]: 󰓼
+            - text: 量測儀器
+          - generic [ref=e65]:
+            - generic [ref=e66]: 可借用
+            - link "查看詳情 󰁔" [ref=e67] [cursor=pointer]:
+              - /url: /my/tools/11
+              - text: 查看詳情
+              - generic [ref=e68]: 󰁔
+        - generic [ref=e69]:
+          - generic [ref=e70]:
+            - generic [ref=e72]: 󰯠
+            - generic [ref=e73]:
+              - heading "手持式焊接機 TS100" [level=5] [ref=e74]:
+                - link "手持式焊接機 TS100" [ref=e75] [cursor=pointer]:
+                  - /url: /my/tools/10
+              - generic [ref=e76]:
+                - generic [ref=e77]: 󰁱
+                - text: TL-010
+          - generic [ref=e79]:
+            - generic [ref=e80]: 󰓼
+            - text: 手工具
+          - generic [ref=e81]:
+            - generic [ref=e82]: 已借出
+            - link "查看詳情 󰁔" [ref=e83] [cursor=pointer]:
+              - /url: /my/tools/10
+              - text: 查看詳情
+              - generic [ref=e84]: 󰁔
+        - generic [ref=e85]:
+          - generic [ref=e86]:
+            - generic [ref=e88]: 󰯠
+            - generic [ref=e89]:
+              - heading "扭力扳手 Topeak T-25" [level=5] [ref=e90]:
+                - link "扭力扳手 Topeak T-25" [ref=e91] [cursor=pointer]:
+                  - /url: /my/tools/12
+              - generic [ref=e92]:
+                - generic [ref=e93]: 󰁱
+                - text: TL-012
+          - generic [ref=e95]:
+            - generic [ref=e96]: 󰓼
+            - text: 手工具
+          - generic [ref=e97]:
+            - generic [ref=e98]: 可借用
+            - link "查看詳情 󰁔" [ref=e99] [cursor=pointer]:
+              - /url: /my/tools/12
+              - text: 查看詳情
+              - generic [ref=e100]: 󰁔
+        - generic [ref=e101]:
+          - generic [ref=e102]:
+            - generic [ref=e104]: 󰯠
+            - generic [ref=e105]:
+              - heading "熱感應相機 FLIR C5" [level=5] [ref=e106]:
+                - link "熱感應相機 FLIR C5" [ref=e107] [cursor=pointer]:
+                  - /url: /my/tools/3
+              - generic [ref=e108]:
+                - generic [ref=e109]: 󰁱
+                - text: TL-003
+          - generic [ref=e111]:
+            - generic [ref=e112]: 󰓼
+            - text: 量測儀器
+          - generic [ref=e113]:
+            - generic [ref=e114]: 可借用
+            - link "查看詳情 󰁔" [ref=e115] [cursor=pointer]:
+              - /url: /my/tools/3
+              - text: 查看詳情
+              - generic [ref=e116]: 󰁔
+        - generic [ref=e117]:
+          - generic [ref=e118]:
+            - generic [ref=e120]: 󰯠
+            - generic [ref=e121]:
+              - heading "示波器 Rigol DS1054Z" [level=5] [ref=e122]:
+                - link "示波器 Rigol DS1054Z" [ref=e123] [cursor=pointer]:
+                  - /url: /my/tools/8
+              - generic [ref=e124]:
+                - generic [ref=e125]: 󰁱
+                - text: TL-008
+          - generic [ref=e127]:
+            - generic [ref=e128]: 󰓼
+            - text: 量測儀器
+          - generic [ref=e129]:
+            - generic [ref=e130]: 可借用
+            - link "查看詳情 󰁔" [ref=e131] [cursor=pointer]:
+              - /url: /my/tools/8
+              - text: 查看詳情
+              - generic [ref=e132]: 󰁔
+        - generic [ref=e133]:
+          - generic [ref=e134]:
+            - generic [ref=e136]: 󰯠
+            - generic [ref=e137]:
+              - heading "空氣品質偵測器 Aranet4" [level=5] [ref=e138]:
+                - link "空氣品質偵測器 Aranet4" [ref=e139] [cursor=pointer]:
+                  - /url: /my/tools/6
+              - generic [ref=e140]:
+                - generic [ref=e141]: 󰁱
+                - text: TL-006
+          - generic [ref=e143]:
+            - generic [ref=e144]: 󰓼
+            - text: 量測儀器
+          - generic [ref=e145]:
+            - generic [ref=e146]: 可借用
+            - link "查看詳情 󰁔" [ref=e147] [cursor=pointer]:
+              - /url: /my/tools/6
+              - text: 查看詳情
+              - generic [ref=e148]: 󰁔
+        - generic [ref=e149]:
+          - generic [ref=e150]:
+            - generic [ref=e152]: 󰯠
+            - generic [ref=e153]:
+              - heading "萬用電表 Fluke 87V" [level=5] [ref=e154]:
+                - link "萬用電表 Fluke 87V" [ref=e155] [cursor=pointer]:
+                  - /url: /my/tools/4
+              - generic [ref=e156]:
+                - generic [ref=e157]: 󰁱
+                - text: TL-004
+          - generic [ref=e159]:
+            - generic [ref=e160]: 󰓼
+            - text: 量測儀器
+          - generic [ref=e161]:
+            - generic [ref=e162]: 可借用
+            - link "查看詳情 󰁔" [ref=e163] [cursor=pointer]:
+              - /url: /my/tools/4
+              - text: 查看詳情
+              - generic [ref=e164]: 󰁔
+        - generic [ref=e165]:
+          - generic [ref=e166]:
+            - generic [ref=e168]: 󰯠
+            - generic [ref=e169]:
+              - heading "鉗式電流錶 Hioki 3280-10F" [level=5] [ref=e170]:
+                - link "鉗式電流錶 Hioki 3280-10F" [ref=e171] [cursor=pointer]:
+                  - /url: /my/tools/9
+              - generic [ref=e172]:
+                - generic [ref=e173]: 󰁱
+                - text: TL-009
+          - generic [ref=e175]:
+            - generic [ref=e176]: 󰓼
+            - text: 量測儀器
+          - generic [ref=e177]:
+            - generic [ref=e178]: 已借出
+            - link "查看詳情 󰁔" [ref=e179] [cursor=pointer]:
+              - /url: /my/tools/9
+              - text: 查看詳情
+              - generic [ref=e180]: 󰁔
+        - generic [ref=e181]:
+          - generic [ref=e182]:
+            - generic [ref=e184]: 󰯠
+            - generic [ref=e185]:
+              - heading "雷射測距儀 Leica D2" [level=5] [ref=e186]:
+                - link "雷射測距儀 Leica D2" [ref=e187] [cursor=pointer]:
+                  - /url: /my/tools/2
+              - generic [ref=e188]:
+                - generic [ref=e189]: 󰁱
+                - text: TL-002
+          - generic [ref=e191]:
+            - generic [ref=e192]: 󰓼
+            - text: 量測儀器
+          - generic [ref=e193]:
+            - generic [ref=e194]: 可借用
+            - link "查看詳情 󰁔" [ref=e195] [cursor=pointer]:
+              - /url: /my/tools/2
+              - text: 查看詳情
+              - generic [ref=e196]: 󰁔
+        - generic [ref=e197]:
+          - generic [ref=e198]:
+            - generic [ref=e200]: 󰯠
+            - generic [ref=e201]:
+              - heading "電動起子 Makita DF001D" [level=5] [ref=e202]:
+                - link "電動起子 Makita DF001D" [ref=e203] [cursor=pointer]:
+                  - /url: /my/tools/5
+              - generic [ref=e204]:
+                - generic [ref=e205]: 󰁱
+                - text: TL-005
+          - generic [ref=e207]:
+            - generic [ref=e208]: 󰓼
+            - text: 電動工具
+          - generic [ref=e209]:
+            - generic [ref=e210]: 可借用
+            - link "查看詳情 󰁔" [ref=e211] [cursor=pointer]:
+              - /url: /my/tools/5
+              - text: 查看詳情
+              - generic [ref=e212]: 󰁔
+        - generic [ref=e213]:
+          - generic [ref=e214]:
+            - generic [ref=e216]: 󰯠
+            - generic [ref=e217]:
+              - heading "電鑽 Bosch GSB 18V" [level=5] [ref=e218]:
+                - link "電鑽 Bosch GSB 18V" [ref=e219] [cursor=pointer]:
+                  - /url: /my/tools/1
+              - generic [ref=e220]:
+                - generic [ref=e221]: 󰁱
+                - text: TL-001
+          - generic [ref=e223]:
+            - generic [ref=e224]: 󰓼
+            - text: 電動工具
+          - generic [ref=e225]:
+            - generic [ref=e226]: 已借出
+            - link "查看詳情 󰁔" [ref=e227] [cursor=pointer]:
+              - /url: /my/tools/1
+              - text: 查看詳情
+              - generic [ref=e228]: 󰁔
+  - contentinfo [ref=e229]:
+    - generic [ref=e232]:
+      - generic [ref=e233]:
+        - generic [ref=e234]: 版權所有 © YourCompany
+        - button "繁體中文" [expanded] [ref=e236] [cursor=pointer]
+      - generic [ref=e238]:
+        - text: 由
+        - link "Odoo" [ref=e239] [cursor=pointer]:
+          - /url: http://www.odoo.com?utm_source=db&utm_medium=portal
+          - img "Odoo" [ref=e240]
+        - text: 驅動

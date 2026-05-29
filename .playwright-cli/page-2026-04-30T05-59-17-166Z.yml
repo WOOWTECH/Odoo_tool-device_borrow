@@ -1,0 +1,46 @@
+- generic [ref=e2]:
+  - link "跳至內容" [ref=e3] [cursor=pointer]:
+    - /url: "#wrap"
+  - banner [ref=e4]:
+    - navigation [ref=e5]:
+      - generic [ref=e6]:
+        - link "Logo of YourCompany" [ref=e7] [cursor=pointer]:
+          - /url: /
+          - img "Logo of YourCompany" [ref=e8]
+        - list [ref=e9]:
+          - listitem [ref=e10]:
+            - button "Joel Willis" [ref=e11] [cursor=pointer]
+            - text:  
+  - main [ref=e12]:
+    - list [ref=e15]:
+      - listitem [ref=e16]:
+        - link "首頁" [ref=e17] [cursor=pointer]:
+          - /url: /my/home
+          - generic [ref=e18]: 
+      - listitem [ref=e19]: / 設備借用
+    - generic [ref=e22]:
+      - heading "設備借用" [level=3] [ref=e23]
+      - generic [ref=e24]:
+        - link "設備工具 瀏覽可用的工具設備" [ref=e26] [cursor=pointer]:
+          - /url: /my/tools
+          - img [ref=e28]
+          - generic [ref=e29]:
+            - generic [ref=e31]: 設備工具
+            - generic [ref=e32]: 瀏覽可用的工具設備
+        - link "我的借用 查看與管理借用紀錄" [ref=e34] [cursor=pointer]:
+          - /url: /my/loans
+          - img [ref=e36]
+          - generic [ref=e37]:
+            - generic [ref=e39]: 我的借用
+            - generic [ref=e40]: 查看與管理借用紀錄
+  - contentinfo [ref=e41]:
+    - generic [ref=e44]:
+      - generic [ref=e45]:
+        - generic [ref=e46]: 版權所有 © YourCompany
+        - button "繁體中文" [expanded] [ref=e48] [cursor=pointer]
+      - generic [ref=e50]:
+        - text: 由
+        - link "Odoo" [ref=e51] [cursor=pointer]:
+          - /url: http://www.odoo.com?utm_source=db&utm_medium=portal
+          - img "Odoo" [ref=e52]
+        - text: 驅動
