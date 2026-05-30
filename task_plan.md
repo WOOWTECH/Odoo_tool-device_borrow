@@ -1,65 +1,45 @@
-# Task Plan: Portal Page Audit & Sample Data Completion
+# Task Plan: Fix Chinese Translations for All Custom Modules
 
 ## Goal
-Audit every portal page for the 3 new module groups (Community, HA, Loyalty), check:
-1. Each page has ~20 sample records visible to portal user
-2. Visual design is consistent across all pages (Odoo 18 native portal style)
+Fix zh_TW (Traditional Chinese) translations for all portal pages across Community, HA, and Loyalty modules on odoo-toolborrow (port 9076).
 
-## Modules & Routes
+## Root Cause
+The .po files use `model:ir.ui.view,arch_db:...` format but Odoo 18 requires `model_terms:ir.ui.view,arch_db:...` for QWeb template string translations. The `model` type tries to replace the entire field value, while `model_terms` replaces individual translatable strings within the JSONB `arch_db` field.
 
-### Community Package (community_base, community_parcel, community_visitor)
-| Page | Route | Current Records | Target |
-|------|-------|----------------|--------|
-| Announcements | /my/announcements | 3 | ~20 |
-| Feedbacks | /my/feedbacks | 3 | ~20 |
-| Parcels | /my/parcels | 3 | ~20 |
-| Visitors (Visits) | /my/visitors | 3 | ~20 |
-| Appointments | /my/appointments | 2 | ~20 |
-
-### HA Addon (odoo_ha_addon)
-| Page | Route | Current Records | Target |
-|------|-------|----------------|--------|
-| HA Home | /my/ha | 1 instance, 7 entities, 3 devices | Check if detail pages work |
-| HA Entities | /my/ha/instance/1/entities | ? | ~20 entities |
-| HA Devices | /my/ha/instance/1/devices | 3 | ~20 devices |
-
-### Loyalty / Member Center (woow_member_center + 6 mc modules)
-| Page | Route | Current Records | Target |
-|------|-------|----------------|--------|
-| Member Center Hub | /my/member-center | hub page | N/A (links only) |
-| Consign Cards | /my/consign-cards | 1 card | ~5 cards with lines |
-| Loyalty Cards | /my/member-center/loyalty | 1 card | ~5 cards |
-| Gift Cards | /my/member-center/gift-cards | 1 card | ~5 cards |
-| eWallet | /my/member-center/ewallet | 1 card | ~5 cards |
-| Coupons | /my/member-center/coupons | 1 card | ~5 coupons |
-| Membership | /my/member-center/membership | 0? | ~5 memberships |
+## Affected Modules (11)
+- community_base, community_parcel, community_visitor
+- odoo_ha_addon
+- woow_member_center, woow_mc_loyalty, woow_mc_consign, woow_mc_coupon, woow_mc_ewallet, woow_mc_gift_card, woow_mc_membership
 
 ## Phases
 
-### Phase 1: Audit - Screenshot & count records on every page [in_progress]
-- Take screenshots of all list pages
-- Count visible records
-- Note visual inconsistencies
+### Phase 1: Export correct .pot files from Odoo — `pending`
+Use Odoo's translation export to generate .pot files with correct `model_terms` references for each module.
 
-### Phase 2: Create missing sample data [pending]
-- Community: Add ~17 more records per model
-- HA: Add more entities/devices if needed
-- Loyalty: Add more cards/programs
+### Phase 2: Rebuild zh_TW.po files — `pending`
+- Use the exported .pot as template
+- Merge existing Chinese translations from current .po files
+- Fill in any remaining untranslated strings
+- Ensure all QWeb view entries use `model_terms:ir.ui.view,arch_db:` format
 
-### Phase 3: Visual consistency check [pending]
-- Compare searchbar, sorting, filtering, paging across all pages
-- Check breadcrumbs, status badges, table headers
-- Note any design inconsistencies
+### Phase 3: Deploy and reload translations — `pending`
+- Copy updated .po files to container addons
+- Run `odoo -u <modules> --load-language=zh_TW --stop-after-init`
+- Verify translations stored in DB (check JSONB `arch_db` has `zh_TW` key)
 
-### Phase 4: Fix visual inconsistencies [pending]
-- Align designs where needed
+### Phase 4: Verify all portal pages display Chinese — `pending`
+- Screenshot all 15 pages
+- Check no English UI strings remain (breadcrumbs, column headers, buttons, labels)
+- Compare with 9077 reference
 
-### Phase 5: Final verification [pending]
-- Re-screenshot all pages
-- Confirm ~20 records visible
-- Confirm consistent design
+### Phase 5: Update source repos — `pending`
+- Copy corrected .po files back to source repos
+- Commit changes
 
 ## Errors Encountered
 | Error | Attempt | Resolution |
 |-------|---------|------------|
-| (none yet) | | |
+| .po uses `model:` instead of `model_terms:` | 1 | Need to regenerate .pot with correct type |
+| `base.update.translations` doesn't exist in Odoo 18 | 1 | Use CLI `odoo -u` instead |
+| Cron lock error during XML-RPC module upgrade | 1 | Use standalone CLI container |
+| `ir.translation` model removed in Odoo 18 | 1 | Translations now in JSONB `arch_db` field |
