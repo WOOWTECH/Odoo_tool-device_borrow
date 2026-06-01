@@ -234,7 +234,7 @@
                                         <textarea name="notes" id="notes" class="form-control" rows="3"
                                                   placeholder="Add any notes for your request..."/>
                                     </div>
-                                    <button type="submit" class="btn btn-light">
+                                    <button type="submit" class="btn btn-secondary">
                                         Submit Borrow Request
                                     </button>
                                 </form>
