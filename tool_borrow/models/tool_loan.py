@@ -1,5 +1,5 @@
 from odoo import api, fields, models, _
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 
 class ToolLoan(models.Model):
@@ -118,6 +118,37 @@ class ToolLoan(models.Model):
             'approved_by': False,
         })
 
+    # ------------------------------------------------------------------
+    # Constraints
+    # ------------------------------------------------------------------
+    @api.constrains('tool_id', 'state')
+    def _check_tool_available(self):
+        """Prevent creating or moving a loan to active states when the tool
+        is already borrowed by another loan."""
+        active_states = ('draft', 'pending', 'approved', 'borrowed')
+        for loan in self:
+            if loan.state not in active_states:
+                continue
+            if loan.tool_id.state == 'borrowed' and loan.tool_id.current_loan_id and loan.tool_id.current_loan_id != loan:
+                raise ValidationError(
+                    _('Tool "%(tool)s" is already borrowed and cannot be '
+                      'assigned to a new loan request.',
+                      tool=loan.tool_id.name)
+                )
+
+    @api.constrains('borrow_date', 'return_date')
+    def _check_return_date(self):
+        """Return date must be on or after the borrow date."""
+        for loan in self:
+            if loan.borrow_date and loan.return_date:
+                if loan.return_date < loan.borrow_date:
+                    raise ValidationError(
+                        _('Return date cannot be earlier than the borrow date.')
+                    )
+
+    # ------------------------------------------------------------------
+    # CRUD
+    # ------------------------------------------------------------------
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
