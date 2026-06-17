@@ -238,12 +238,9 @@
                         <group>
                             <field name="code"/>
                             <field name="category_id" options="{'no_create': False}"/>
-                            <field name="well_equipment_type"/>
                         </group>
                         <group>
                             <field name="portal_user_ids" widget="many2many_tags"/>
-                            <field name="calibration_date"/>
-                            <field name="next_calibration_date"/>
                             <field name="active" invisible="1"/>
                         </group>
                     </group>

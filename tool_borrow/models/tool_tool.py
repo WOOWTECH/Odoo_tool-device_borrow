@@ -80,23 +80,6 @@ class ToolTool(models.Model):
     name = fields.Char(string='Name', required=True, tracking=True)
     code = fields.Char(string='Code', required=True, copy=False, tracking=True)
 
-    # WELL Building Standard equipment classification
-    well_equipment_type = fields.Selection([
-        ('air_monitor', 'Air Quality Monitor'),
-        ('light_meter', 'Light Meter / Lux Meter'),
-        ('sound_meter', 'Sound Level Meter'),
-        ('thermal', 'Thermal Comfort Meter'),
-        ('water', 'Water Quality Tester'),
-        ('none', 'General Equipment'),
-    ], string='WELL Equipment Type', default='none',
-        help='WELL Building Standard equipment type for environmental monitoring')
-    calibration_date = fields.Date(
-        string='Last Calibration Date',
-        help='Date when this equipment was last calibrated')
-    next_calibration_date = fields.Date(
-        string='Next Calibration Date',
-        help='Date when this equipment is due for next calibration')
-
     # Stage-based state (like Project tasks)
     stage_id = fields.Many2one(
         'tool.stage',
