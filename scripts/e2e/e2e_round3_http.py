@@ -5,15 +5,21 @@ Tests route access control, form submissions, CSRF, pagination, sorting, filteri
 
 Current architecture: stage-based computed state, portal_user_ids, 2-tier permissions.
 All authenticated users (portal + internal) can browse tools via portal.
-Tool state is computed from stage_id.is_closed and current_loan_id.state.
+Tool state is computed from stage_id (Under Maintenance / Retired XML ids)
+and current_loan_id.state.
 """
 import requests
 import re
 import sys
 import xmlrpc.client
 
-URL = 'http://localhost:9076'
-DB = 'odootoolborrow'
+# Connection settings and credentials come from the environment
+# (see e2e_config.py); nothing is hardcoded.
+from e2e_config import URL, DB, admin_session, credentials, login_of, default_stages  # noqa: E402,F401
+PORTAL_LOGIN, PORTAL_PASS = credentials('portal')
+PORTAL2_LOGIN, PORTAL2_PASS = credentials('portal2')
+USER_LOGIN, USER_PASS = credentials('user')
+ADMIN_LOGIN = login_of('admin')
 
 passed = 0
 failed = 0
@@ -58,60 +64,53 @@ def get_csrf(session, url):
 
 
 # ---- Setup: sessions ----
-portal_s = login_session('portal', 'portal')
-xiaoming_s = login_session('xiaoming', 'xiaoming')
-testuser_s = login_session('testuser', 'testuser')
+portal_s = login_session(PORTAL_LOGIN, PORTAL_PASS)
+xiaoming_s = login_session(PORTAL2_LOGIN, PORTAL2_PASS)
+testuser_s = login_session(USER_LOGIN, USER_PASS)
 anon_s = requests.Session()  # Not logged in
 
 # Get IDs via XML-RPC
-admin_uid = xmlrpc.client.ServerProxy(f'{URL}/xmlrpc/2/common').authenticate(DB, 'admin', 'admin', {})
-M = xmlrpc.client.ServerProxy(f'{URL}/xmlrpc/2/object')
-portal_user_id = M.execute_kw(DB, admin_uid, 'admin', 'res.users', 'search', [[('login', '=', 'portal')]])[0]
-xiaoming_user_id = M.execute_kw(DB, admin_uid, 'admin', 'res.users', 'search', [[('login', '=', 'xiaoming')]])[0]
+admin_uid, M, ADMIN_PASS = admin_session()
+portal_user_id = M.execute_kw(DB, admin_uid, ADMIN_PASS, 'res.users', 'search', [[('login', '=', PORTAL_LOGIN)]])[0]
+xiaoming_user_id = M.execute_kw(DB, admin_uid, ADMIN_PASS, 'res.users', 'search', [[('login', '=', PORTAL2_LOGIN)]])[0]
 
 # Find existing available tools and stages
-stages = M.execute_kw(DB, admin_uid, 'admin', 'tool.stage', 'search_read', [[]], {'fields': ['name', 'is_closed'], 'order': 'sequence'})
-stage_available = None
-stage_maintenance = None
-for s in stages:
-    if not s['is_closed'] and not stage_available:
-        stage_available = s['id']
-    elif s['is_closed'] and not stage_maintenance:
-        stage_maintenance = s['id']
+# Default stages by XML id (tool.stage has no is_closed/fold any more)
+stage_available, stage_maintenance, _stage_retired = default_stages(M, admin_uid, ADMIN_PASS)
 
 # Create test tool for HTTP tests
-test_tool_id = M.execute_kw(DB, admin_uid, 'admin', 'tool.tool', 'create', [{
+test_tool_id = M.execute_kw(DB, admin_uid, ADMIN_PASS, 'tool.tool', 'create', [{
     'name': 'R3 HTTP Test Tool', 'code': 'R3-HTTP-001', 'stage_id': stage_available
 }])
 
 # Create a second tool for borrow POST tests
-post_tool_id = M.execute_kw(DB, admin_uid, 'admin', 'tool.tool', 'create', [{
+post_tool_id = M.execute_kw(DB, admin_uid, ADMIN_PASS, 'tool.tool', 'create', [{
     'name': 'R3 POST Test Tool', 'code': 'R3-POST-001', 'stage_id': stage_available,
     'portal_user_ids': [(6, 0, [portal_user_id])]
 }])
 
 # Find portal user's existing loans
-portal_loans = M.execute_kw(DB, admin_uid, 'admin', 'tool.loan', 'search', [
+portal_loans = M.execute_kw(DB, admin_uid, ADMIN_PASS, 'tool.loan', 'search', [
     [('user_id', '=', portal_user_id)]
 ], {'limit': 1})
 test_loan_id = portal_loans[0] if portal_loans else None
 
 # Create a loan for portal user if none exists
 if not test_loan_id:
-    temp_tool = M.execute_kw(DB, admin_uid, 'admin', 'tool.tool', 'create', [{
+    temp_tool = M.execute_kw(DB, admin_uid, ADMIN_PASS, 'tool.tool', 'create', [{
         'name': 'R3 Loan Tool', 'code': 'R3-LOAN-001', 'stage_id': stage_available
     }])
-    test_loan_id = M.execute_kw(DB, admin_uid, 'admin', 'tool.loan', 'create', [{
+    test_loan_id = M.execute_kw(DB, admin_uid, ADMIN_PASS, 'tool.loan', 'create', [{
         'tool_id': temp_tool, 'user_id': portal_user_id, 'notes': 'R3 test loan'
     }])
-    M.execute_kw(DB, admin_uid, 'admin', 'tool.loan', 'action_submit', [[test_loan_id]])
+    M.execute_kw(DB, admin_uid, ADMIN_PASS, 'tool.loan', 'action_submit', [[test_loan_id]])
     _created_temp_loan = True
 else:
     _created_temp_loan = False
     temp_tool = None
 
 # Find xiaoming's loans for cross-user testing
-xiaoming_loans = M.execute_kw(DB, admin_uid, 'admin', 'tool.loan', 'search', [
+xiaoming_loans = M.execute_kw(DB, admin_uid, ADMIN_PASS, 'tool.loan', 'search', [
     [('user_id', '=', xiaoming_user_id)]
 ], {'limit': 1})
 other_loan_id = xiaoming_loans[0] if xiaoming_loans else None
@@ -245,10 +244,10 @@ test(75, "Available tool detail shows borrow form/button", test_75)
 
 def test_76():
     """Maintenance tool detail hides borrow form"""
-    M.execute_kw(DB, admin_uid, 'admin', 'tool.tool', 'write', [[test_tool_id], {'stage_id': stage_maintenance}])
+    M.execute_kw(DB, admin_uid, ADMIN_PASS, 'tool.tool', 'write', [[test_tool_id], {'stage_id': stage_maintenance}])
     r = portal_s.get(f'{URL}/my/tools/{test_tool_id}')
     # Restore
-    M.execute_kw(DB, admin_uid, 'admin', 'tool.tool', 'write', [[test_tool_id], {'stage_id': stage_available}])
+    M.execute_kw(DB, admin_uid, ADMIN_PASS, 'tool.tool', 'write', [[test_tool_id], {'stage_id': stage_available}])
     if r.status_code != 200:
         return f"Expected 200, got {r.status_code}"
     # For maintenance tools, borrow form should be hidden
@@ -364,24 +363,24 @@ print("\n--- 3D. Borrow Request POST ---")
 
 def cleanup_post_tool_loans():
     """Remove all loans for post_tool_id and reset stage"""
-    loans = M.execute_kw(DB, admin_uid, 'admin', 'tool.loan', 'search', [
+    loans = M.execute_kw(DB, admin_uid, ADMIN_PASS, 'tool.loan', 'search', [
         [('tool_id', '=', post_tool_id)]
     ])
     for lid in loans:
         try:
-            data = M.execute_kw(DB, admin_uid, 'admin', 'tool.loan', 'read', [[lid], ['state']])[0]
+            data = M.execute_kw(DB, admin_uid, ADMIN_PASS, 'tool.loan', 'read', [[lid], ['state']])[0]
             if data['state'] == 'approved':
-                M.execute_kw(DB, admin_uid, 'admin', 'tool.loan', 'action_confirm_borrow', [[lid]])
-                M.execute_kw(DB, admin_uid, 'admin', 'tool.loan', 'action_confirm_return', [[lid]])
+                M.execute_kw(DB, admin_uid, ADMIN_PASS, 'tool.loan', 'action_confirm_borrow', [[lid]])
+                M.execute_kw(DB, admin_uid, ADMIN_PASS, 'tool.loan', 'action_confirm_return', [[lid]])
             elif data['state'] == 'borrowed':
-                M.execute_kw(DB, admin_uid, 'admin', 'tool.loan', 'action_confirm_return', [[lid]])
+                M.execute_kw(DB, admin_uid, ADMIN_PASS, 'tool.loan', 'action_confirm_return', [[lid]])
         except Exception:
             pass
         try:
-            M.execute_kw(DB, admin_uid, 'admin', 'tool.loan', 'unlink', [[lid]])
+            M.execute_kw(DB, admin_uid, ADMIN_PASS, 'tool.loan', 'unlink', [[lid]])
         except Exception:
             pass
-    M.execute_kw(DB, admin_uid, 'admin', 'tool.tool', 'write', [[post_tool_id], {'stage_id': stage_available}])
+    M.execute_kw(DB, admin_uid, ADMIN_PASS, 'tool.tool', 'write', [[post_tool_id], {'stage_id': stage_available}])
 
 
 def test_85():
@@ -393,13 +392,13 @@ def test_85():
     }, allow_redirects=False)
     if r.status_code not in (200, 302, 303):
         return f"Unexpected status: {r.status_code}"
-    loans = M.execute_kw(DB, admin_uid, 'admin', 'tool.loan', 'search', [
+    loans = M.execute_kw(DB, admin_uid, ADMIN_PASS, 'tool.loan', 'search', [
         [('tool_id', '=', post_tool_id), ('user_id', '=', portal_user_id)]
     ])
     if not loans:
         return "Loan not created"
     # Verify it's in pending state (auto-submitted)
-    state = M.execute_kw(DB, admin_uid, 'admin', 'tool.loan', 'read', [[loans[0]], ['state']])[0]['state']
+    state = M.execute_kw(DB, admin_uid, ADMIN_PASS, 'tool.loan', 'read', [[loans[0]], ['state']])[0]['state']
     cleanup_post_tool_loans()
     if state != 'pending':
         return f"Expected pending, got {state}"
@@ -417,7 +416,7 @@ def test_86():
     if r.status_code in (400, 403):
         return True
     # Check no loan was created
-    loans = M.execute_kw(DB, admin_uid, 'admin', 'tool.loan', 'search', [
+    loans = M.execute_kw(DB, admin_uid, ADMIN_PASS, 'tool.loan', 'search', [
         [('tool_id', '=', post_tool_id), ('user_id', '=', portal_user_id)]
     ])
     cleanup_post_tool_loans()
@@ -453,13 +452,13 @@ test(88, "POST to non-existent tool → redirect/error", test_88)
 def test_89():
     """POST borrow for maintenance tool → redirect (no loan created)"""
     cleanup_post_tool_loans()
-    M.execute_kw(DB, admin_uid, 'admin', 'tool.tool', 'write', [[post_tool_id], {'stage_id': stage_maintenance}])
+    M.execute_kw(DB, admin_uid, ADMIN_PASS, 'tool.tool', 'write', [[post_tool_id], {'stage_id': stage_maintenance}])
     csrf = get_csrf(portal_s, f'{URL}/my/tools/{post_tool_id}')
     r = portal_s.post(f'{URL}/my/tools/{post_tool_id}/request', data={
         'csrf_token': csrf, 'notes': 'Try maintenance'
     }, allow_redirects=False)
-    M.execute_kw(DB, admin_uid, 'admin', 'tool.tool', 'write', [[post_tool_id], {'stage_id': stage_available}])
-    loans = M.execute_kw(DB, admin_uid, 'admin', 'tool.loan', 'search', [
+    M.execute_kw(DB, admin_uid, ADMIN_PASS, 'tool.tool', 'write', [[post_tool_id], {'stage_id': stage_available}])
+    loans = M.execute_kw(DB, admin_uid, ADMIN_PASS, 'tool.loan', 'search', [
         [('tool_id', '=', post_tool_id), ('user_id', '=', portal_user_id)]
     ])
     cleanup_post_tool_loans()
@@ -476,7 +475,7 @@ def test_90():
     r = portal_s.post(f'{URL}/my/tools/{post_tool_id}/request', data={
         'csrf_token': csrf, 'notes': ''
     }, allow_redirects=False)
-    loans = M.execute_kw(DB, admin_uid, 'admin', 'tool.loan', 'search', [
+    loans = M.execute_kw(DB, admin_uid, ADMIN_PASS, 'tool.loan', 'search', [
         [('tool_id', '=', post_tool_id), ('user_id', '=', portal_user_id)]
     ])
     cleanup_post_tool_loans()
@@ -493,7 +492,7 @@ def test_91():
     r = portal_s.post(f'{URL}/my/tools/{post_tool_id}/request', data={
         'csrf_token': csrf, 'notes': '測試借用工具 中文備註'
     }, allow_redirects=False)
-    loans = M.execute_kw(DB, admin_uid, 'admin', 'tool.loan', 'search', [
+    loans = M.execute_kw(DB, admin_uid, ADMIN_PASS, 'tool.loan', 'search', [
         [('tool_id', '=', post_tool_id), ('user_id', '=', portal_user_id)]
     ])
     created = len(loans) > 0
@@ -515,7 +514,7 @@ def test_92():
     portal_s.post(f'{URL}/my/tools/{post_tool_id}/request', data={
         'csrf_token': csrf2, 'notes': 'Second'
     }, allow_redirects=True)
-    loans = M.execute_kw(DB, admin_uid, 'admin', 'tool.loan', 'search', [
+    loans = M.execute_kw(DB, admin_uid, ADMIN_PASS, 'tool.loan', 'search', [
         [('tool_id', '=', post_tool_id), ('user_id', '=', portal_user_id)]
     ])
     count = len(loans)
@@ -590,21 +589,21 @@ test(98, "/my/tools/page/999 (out of range) → handles gracefully", test_98)
 # =====================================================
 cleanup_post_tool_loans()
 try:
-    M.execute_kw(DB, admin_uid, 'admin', 'tool.tool', 'unlink', [[test_tool_id]])
+    M.execute_kw(DB, admin_uid, ADMIN_PASS, 'tool.tool', 'unlink', [[test_tool_id]])
 except Exception:
     pass
 try:
-    M.execute_kw(DB, admin_uid, 'admin', 'tool.tool', 'unlink', [[post_tool_id]])
+    M.execute_kw(DB, admin_uid, ADMIN_PASS, 'tool.tool', 'unlink', [[post_tool_id]])
 except Exception:
     pass
 if _created_temp_loan:
     try:
-        M.execute_kw(DB, admin_uid, 'admin', 'tool.loan', 'unlink', [[test_loan_id]])
+        M.execute_kw(DB, admin_uid, ADMIN_PASS, 'tool.loan', 'unlink', [[test_loan_id]])
     except Exception:
         pass
     if temp_tool:
         try:
-            M.execute_kw(DB, admin_uid, 'admin', 'tool.tool', 'unlink', [[temp_tool]])
+            M.execute_kw(DB, admin_uid, ADMIN_PASS, 'tool.tool', 'unlink', [[temp_tool]])
         except Exception:
             pass
 

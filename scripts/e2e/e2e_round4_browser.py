@@ -11,13 +11,19 @@ import re
 import xmlrpc.client
 from playwright.sync_api import sync_playwright
 
-URL = 'http://100.113.239.105:9076'
-DB = 'odootoolborrow'
+# Connection settings and credentials come from the environment
+# (see e2e_config.py); nothing is hardcoded.
+from e2e_config import URL, DB, admin_session, credentials, login_of, default_stages  # noqa: E402,F401
+from e2e_config import screenshots_dir as e2e_screenshots_dir  # noqa: E402
+NOACCESS_LOGIN, NOACCESS_PASS = credentials('noaccess')
+PORTAL_LOGIN, PORTAL_PASS = credentials('portal')
+PORTAL2_LOGIN, PORTAL2_PASS = credentials('portal2')
+ADMIN_LOGIN = login_of('admin')
 
 passed = 0
 failed = 0
 errors = []
-screenshots_dir = '/var/tmp/vibe-kanban/worktrees/19a0-odoo-tool-borrow/tool_borrow/tests/screenshots'
+screenshots_dir = e2e_screenshots_dir()
 
 
 def test(num, desc, fn):
@@ -47,18 +53,29 @@ def login(page, username, password):
 
 
 # Setup XML-RPC for data checks
-admin_uid = xmlrpc.client.ServerProxy(f'{URL}/xmlrpc/2/common').authenticate(DB, 'admin', 'admin', {})
-M = xmlrpc.client.ServerProxy(f'{URL}/xmlrpc/2/object')
-portal_user_id = M.execute_kw(DB, admin_uid, 'admin', 'res.users', 'search', [[('login', '=', 'portal')]])[0]
+admin_uid, M, ADMIN_PASS = admin_session()
+portal_user_id = M.execute_kw(DB, admin_uid, ADMIN_PASS, 'res.users', 'search', [[('login', '=', PORTAL_LOGIN)]])[0]
+
+
+def restore_available(tool_id):
+    """Put a tool back in service through the manager action.
+
+    tool.tool.state is computed (stage + borrowed loan); it is never written
+    directly.  Deleting the test loans already frees the tool, this only
+    undoes a maintenance stage if a case left one behind.
+    """
+    state = M.execute_kw(DB, admin_uid, ADMIN_PASS, 'tool.tool', 'read', [[tool_id], ['state']])[0]['state']
+    if state == 'maintenance':
+        M.execute_kw(DB, admin_uid, ADMIN_PASS, 'tool.tool', 'action_set_available', [[tool_id]])
 
 # Find test tool
-tool_ids = M.execute_kw(DB, admin_uid, 'admin', 'tool.tool', 'search', [
-    [('allowed_user_ids', 'in', [portal_user_id]), ('state', '=', 'available')]
+tool_ids = M.execute_kw(DB, admin_uid, ADMIN_PASS, 'tool.tool', 'search', [
+    [('portal_user_ids', 'in', [portal_user_id]), ('state', '=', 'available')]
 ], {'limit': 1})
 test_tool_id = tool_ids[0] if tool_ids else None
 
 # Find test loan
-loan_ids = M.execute_kw(DB, admin_uid, 'admin', 'tool.loan', 'search', [
+loan_ids = M.execute_kw(DB, admin_uid, ADMIN_PASS, 'tool.loan', 'search', [
     [('user_id', '=', portal_user_id)]
 ], {'limit': 1})
 test_loan_id = loan_ids[0] if loan_ids else None
@@ -81,7 +98,7 @@ with sync_playwright() as p:
     # Desktop context
     desktop_ctx = browser.new_context(viewport={'width': 1280, 'height': 800})
     desktop_page = desktop_ctx.new_page()
-    login(desktop_page, 'portal', 'portal')
+    login(desktop_page, PORTAL_LOGIN, PORTAL_PASS)
 
     def test_99():
         """Portal home cards render"""
@@ -156,13 +173,13 @@ with sync_playwright() as p:
         # Should redirect to loans page or show confirmation
         current_url = desktop_page.url
         # Cleanup: delete the loan
-        loans = M.execute_kw(DB, admin_uid, 'admin', 'tool.loan', 'search', [
+        loans = M.execute_kw(DB, admin_uid, ADMIN_PASS, 'tool.loan', 'search', [
             [('tool_id', '=', test_tool_id), ('user_id', '=', portal_user_id),
              ('notes', 'ilike', 'Playwright')]
         ])
         if loans:
-            M.execute_kw(DB, admin_uid, 'admin', 'tool.loan', 'unlink', [loans])
-        M.execute_kw(DB, admin_uid, 'admin', 'tool.tool', 'write', [[test_tool_id], {'state': 'available'}])
+            M.execute_kw(DB, admin_uid, ADMIN_PASS, 'tool.loan', 'unlink', [loans])
+        restore_available(test_tool_id)
         desktop_page.screenshot(path=f'{screenshots_dir}/102_borrow_submitted.png')
         return True
     test(102, "Borrow form submission flow", test_102)
@@ -239,7 +256,7 @@ with sync_playwright() as p:
     # Mobile viewport tests
     mobile_ctx = browser.new_context(viewport={'width': 375, 'height': 812})
     mobile_page = mobile_ctx.new_page()
-    login(mobile_page, 'portal', 'portal')
+    login(mobile_page, PORTAL_LOGIN, PORTAL_PASS)
 
     def test_107():
         """Mobile: hamburger menu style"""
@@ -285,7 +302,7 @@ with sync_playwright() as p:
     # Tablet viewport
     tablet_ctx = browser.new_context(viewport={'width': 768, 'height': 1024})
     tablet_page = tablet_ctx.new_page()
-    login(tablet_page, 'portal', 'portal')
+    login(tablet_page, PORTAL_LOGIN, PORTAL_PASS)
 
     def test_110():
         """RWD 768px: tablet layout"""
@@ -300,8 +317,8 @@ with sync_playwright() as p:
         login_ctx = browser.new_context(viewport={'width': 1280, 'height': 800})
         login_page = login_ctx.new_page()
         login_page.goto(f'{URL}/web/login', wait_until='networkidle')
-        login_page.fill('input[name="login"]', 'portal')
-        login_page.fill('input[name="password"]', 'portal')
+        login_page.fill('input[name="login"]', PORTAL_LOGIN)
+        login_page.fill('input[name="password"]', PORTAL_PASS)
         login_page.click('button[type="submit"]')
         login_page.wait_for_load_state('networkidle')
         if '/my' not in login_page.url and '/odoo' not in login_page.url:
@@ -316,7 +333,7 @@ with sync_playwright() as p:
         login_ctx = browser.new_context(viewport={'width': 1280, 'height': 800})
         login_page = login_ctx.new_page()
         login_page.goto(f'{URL}/web/login', wait_until='networkidle')
-        login_page.fill('input[name="login"]', 'portal')
+        login_page.fill('input[name="login"]', PORTAL_LOGIN)
         login_page.fill('input[name="password"]', 'wrongpassword')
         login_page.click('button[type="submit"]')
         login_page.wait_for_load_state('networkidle')
@@ -361,9 +378,9 @@ with sync_playwright() as p:
     def test_117():
         """E2E: portal browse → borrow → admin approve → portal sees update"""
         # Create a dedicated tool
-        e2e_tool = M.execute_kw(DB, admin_uid, 'admin', 'tool.tool', 'create', [{
-            'name': 'E2E Playwright Tool', 'state': 'available',
-            'allowed_user_ids': [(6, 0, [portal_user_id])]
+        e2e_tool = M.execute_kw(DB, admin_uid, ADMIN_PASS, 'tool.tool', 'create', [{
+            'name': 'E2E Playwright Tool', 'code': 'R4-E2E-117',
+            'portal_user_ids': [(6, 0, [portal_user_id])]
         }])
         # Portal: browse and submit borrow
         desktop_page.goto(f'{URL}/my/tools/{e2e_tool}', wait_until='networkidle')
@@ -376,14 +393,14 @@ with sync_playwright() as p:
             desktop_page.wait_for_load_state('networkidle')
 
         # Admin: approve via XML-RPC
-        loans = M.execute_kw(DB, admin_uid, 'admin', 'tool.loan', 'search', [
+        loans = M.execute_kw(DB, admin_uid, ADMIN_PASS, 'tool.loan', 'search', [
             [('tool_id', '=', e2e_tool), ('user_id', '=', portal_user_id)]
         ])
         if not loans:
-            M.execute_kw(DB, admin_uid, 'admin', 'tool.tool', 'unlink', [[e2e_tool]])
+            M.execute_kw(DB, admin_uid, ADMIN_PASS, 'tool.tool', 'unlink', [[e2e_tool]])
             return "No loan created in E2E flow"
         try:
-            M.execute_kw(DB, admin_uid, 'admin', 'tool.loan', 'action_approve', [loans])
+            M.execute_kw(DB, admin_uid, ADMIN_PASS, 'tool.loan', 'action_approve', [loans])
         except:
             pass
 
@@ -394,15 +411,15 @@ with sync_playwright() as p:
 
         # Cleanup
         try:
-            M.execute_kw(DB, admin_uid, 'admin', 'tool.loan', 'action_confirm_borrow', [loans])
+            M.execute_kw(DB, admin_uid, ADMIN_PASS, 'tool.loan', 'action_confirm_borrow', [loans])
         except:
             pass
         try:
-            M.execute_kw(DB, admin_uid, 'admin', 'tool.loan', 'action_confirm_return', [loans])
+            M.execute_kw(DB, admin_uid, ADMIN_PASS, 'tool.loan', 'action_confirm_return', [loans])
         except:
             pass
-        M.execute_kw(DB, admin_uid, 'admin', 'tool.loan', 'unlink', [loans])
-        M.execute_kw(DB, admin_uid, 'admin', 'tool.tool', 'unlink', [[e2e_tool]])
+        M.execute_kw(DB, admin_uid, ADMIN_PASS, 'tool.loan', 'unlink', [loans])
+        M.execute_kw(DB, admin_uid, ADMIN_PASS, 'tool.tool', 'unlink', [[e2e_tool]])
         return True
     test(117, "E2E: portal borrow → admin approve → portal sees update", test_117)
 
@@ -417,12 +434,12 @@ with sync_playwright() as p:
         submit.click()
         desktop_page.wait_for_load_state('networkidle')
         # Cleanup
-        loans = M.execute_kw(DB, admin_uid, 'admin', 'tool.loan', 'search', [
+        loans = M.execute_kw(DB, admin_uid, ADMIN_PASS, 'tool.loan', 'search', [
             [('tool_id', '=', test_tool_id), ('user_id', '=', portal_user_id)]
         ])
         if loans:
-            M.execute_kw(DB, admin_uid, 'admin', 'tool.loan', 'unlink', [loans])
-        M.execute_kw(DB, admin_uid, 'admin', 'tool.tool', 'write', [[test_tool_id], {'state': 'available'}])
+            M.execute_kw(DB, admin_uid, ADMIN_PASS, 'tool.loan', 'unlink', [loans])
+        restore_available(test_tool_id)
         return True
     test(118, "Empty form submit (no notes) succeeds", test_118)
 
@@ -441,7 +458,7 @@ with sync_playwright() as p:
         desktop_page.wait_for_load_state('networkidle')
 
         # Check the latest loan page — XSS should NOT execute
-        loans = M.execute_kw(DB, admin_uid, 'admin', 'tool.loan', 'search', [
+        loans = M.execute_kw(DB, admin_uid, ADMIN_PASS, 'tool.loan', 'search', [
             [('tool_id', '=', test_tool_id), ('user_id', '=', portal_user_id)]
         ], {'order': 'id desc', 'limit': 1})
         if loans:
@@ -449,11 +466,11 @@ with sync_playwright() as p:
             content = desktop_page.content()
             # Check that script tag is escaped, not raw
             if '<script>alert("XSS")</script>' in content:
-                M.execute_kw(DB, admin_uid, 'admin', 'tool.loan', 'unlink', [loans])
-                M.execute_kw(DB, admin_uid, 'admin', 'tool.tool', 'write', [[test_tool_id], {'state': 'available'}])
+                M.execute_kw(DB, admin_uid, ADMIN_PASS, 'tool.loan', 'unlink', [loans])
+                restore_available(test_tool_id)
                 return "RAW script tag found in page — potential XSS!"
-            M.execute_kw(DB, admin_uid, 'admin', 'tool.loan', 'unlink', [loans])
-        M.execute_kw(DB, admin_uid, 'admin', 'tool.tool', 'write', [[test_tool_id], {'state': 'available'}])
+            M.execute_kw(DB, admin_uid, ADMIN_PASS, 'tool.loan', 'unlink', [loans])
+        restore_available(test_tool_id)
         return True
     test(119, "XSS injection in notes — script not executed", test_119)
 
@@ -472,16 +489,16 @@ with sync_playwright() as p:
         desktop_page.wait_for_load_state('networkidle')
         # Verify tool_loan table still exists
         try:
-            count = M.execute_kw(DB, admin_uid, 'admin', 'tool.loan', 'search_count', [[]])
+            count = M.execute_kw(DB, admin_uid, ADMIN_PASS, 'tool.loan', 'search_count', [[]])
             if count >= 0:
                 # Cleanup
-                loans = M.execute_kw(DB, admin_uid, 'admin', 'tool.loan', 'search', [
+                loans = M.execute_kw(DB, admin_uid, ADMIN_PASS, 'tool.loan', 'search', [
                     [('tool_id', '=', test_tool_id), ('user_id', '=', portal_user_id),
                      ('notes', 'ilike', 'DROP')]
                 ])
                 if loans:
-                    M.execute_kw(DB, admin_uid, 'admin', 'tool.loan', 'unlink', [loans])
-                M.execute_kw(DB, admin_uid, 'admin', 'tool.tool', 'write', [[test_tool_id], {'state': 'available'}])
+                    M.execute_kw(DB, admin_uid, ADMIN_PASS, 'tool.loan', 'unlink', [loans])
+                restore_available(test_tool_id)
                 return True
         except:
             return "tool.loan table may be damaged!"
@@ -501,12 +518,12 @@ with sync_playwright() as p:
         submit.click()
         desktop_page.wait_for_load_state('networkidle')
         # Cleanup
-        loans = M.execute_kw(DB, admin_uid, 'admin', 'tool.loan', 'search', [
+        loans = M.execute_kw(DB, admin_uid, ADMIN_PASS, 'tool.loan', 'search', [
             [('tool_id', '=', test_tool_id), ('user_id', '=', portal_user_id)]
         ])
         if loans:
-            M.execute_kw(DB, admin_uid, 'admin', 'tool.loan', 'unlink', [loans])
-        M.execute_kw(DB, admin_uid, 'admin', 'tool.tool', 'write', [[test_tool_id], {'state': 'available'}])
+            M.execute_kw(DB, admin_uid, ADMIN_PASS, 'tool.loan', 'unlink', [loans])
+        restore_available(test_tool_id)
         return True
     test(121, "Super long input (5000 chars)", test_121)
 
@@ -518,7 +535,7 @@ with sync_playwright() as p:
         # Login as xiaoming
         xm_ctx = browser.new_context(viewport={'width': 1280, 'height': 800})
         xm_page = xm_ctx.new_page()
-        login(xm_page, 'xiaoming', 'xiaoming')
+        login(xm_page, PORTAL2_LOGIN, PORTAL2_PASS)
         xm_page.goto(f'{URL}/my/loans', wait_until='networkidle')
         xm_content = xm_page.content()
 
@@ -538,7 +555,7 @@ with sync_playwright() as p:
         """noaccess user UI: no tool/loan cards on home"""
         na_ctx = browser.new_context(viewport={'width': 1280, 'height': 800})
         na_page = na_ctx.new_page()
-        login(na_page, 'noaccess', 'noaccess')
+        login(na_page, NOACCESS_LOGIN, NOACCESS_PASS)
         na_page.goto(f'{URL}/my/home', wait_until='networkidle')
         content = na_page.content()
         na_page.screenshot(path=f'{screenshots_dir}/123_noaccess_home.png')
