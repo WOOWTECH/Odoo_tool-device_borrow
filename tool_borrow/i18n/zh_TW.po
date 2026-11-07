@@ -1163,3 +1163,45 @@ msgstr "您尚未借用任何工具"
 #: model_terms:ir.ui.view,arch_db:tool_borrow.tool_category_view_form
 msgid "e.g. Hand Tools"
 msgstr "例如：手工具"
+
+#. module: tool_borrow
+#. odoo-python
+#: code:addons/tool_borrow/models/tool_loan.py:0
+msgid "You can only manage your own loan requests."
+msgstr "您只能處理自己的借用請求。"
+
+#. module: tool_borrow
+#. odoo-python
+#: code:addons/tool_borrow/models/tool_loan.py:0
+msgid "Only Tool Managers can reset a rejected request to draft."
+msgstr "只有工具管理員可以將已拒絕的請求重設為草稿。"
+
+#. module: tool_borrow
+#. odoo-python
+#: code:addons/tool_borrow/models/tool_loan.py:0
+msgid "Only Tool Managers can create loan requests in a state other than draft."
+msgstr "只有工具管理員可以建立非草稿狀態的借用請求。"
+
+#. module: tool_borrow
+#. odoo-python
+#: code:addons/tool_borrow/models/tool_loan.py:0
+msgid "Only Tool Managers can set the following fields: %(fields)s"
+msgstr "只有工具管理員可以設定下列欄位：%(fields)s"
+
+#. module: tool_borrow
+#. odoo-python
+#: code:addons/tool_borrow/models/tool_loan.py:0
+msgid "Only Tool Managers can change the following fields: %(fields)s"
+msgstr "只有工具管理員可以變更下列欄位：%(fields)s"
+
+#. module: tool_borrow
+#. odoo-python
+#: code:addons/tool_borrow/models/tool_loan.py:0
+msgid "You can only create loan requests for yourself."
+msgstr "您只能為自己建立借用請求。"
+
+#. module: tool_borrow
+#. odoo-python
+#: code:addons/tool_borrow/models/tool_loan.py:0
+msgid "The tool and borrower can only be changed while the request is a draft."
+msgstr "只有草稿狀態的請求可以變更工具與借用人。"

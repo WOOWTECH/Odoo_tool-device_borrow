@@ -28,3 +28,8 @@ non_functional_sensitive_files.md
 # OS
 .DS_Store
 Thumbs.db
+
+# Browser automation artefacts (session cookies / page snapshots)
+admin-auth.json
+*-auth.json
+.playwright-cli/

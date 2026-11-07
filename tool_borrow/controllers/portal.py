@@ -5,6 +5,15 @@ from odoo.addons.portal.controllers.portal import CustomerPortal, pager as porta
 
 class ToolBorrowPortal(CustomerPortal):
 
+    def _get_portal_tool(self, tool_id):
+        """Return the tool with ``tool_id`` as seen by the current user.
+
+        ``browse().exists()`` ignores ``active``, so archived tools would still
+        be reachable (and requestable) by URL; searching honours
+        ``active_test`` and the record rules.
+        """
+        return request.env['tool.tool'].search([('id', '=', tool_id)], limit=1)
+
     def _prepare_home_portal_values(self, counters):
         values = super()._prepare_home_portal_values(counters)
         if 'tool_count' in counters:
@@ -35,7 +44,7 @@ class ToolBorrowPortal(CustomerPortal):
             'code': {'label': _('Code'), 'order': 'code'},
             'state': {'label': _('Status'), 'order': 'state'},
         }
-        if not sortby:
+        if sortby not in searchbar_sortings:
             sortby = 'name'
         order = searchbar_sortings[sortby]['order']
 
@@ -94,8 +103,8 @@ class ToolBorrowPortal(CustomerPortal):
 
     @http.route(['/my/tools/<int:tool_id>'], type='http', auth='user', website=True)
     def portal_my_tool_detail(self, tool_id, **kw):
-        tool = request.env['tool.tool'].browse(tool_id)
-        if not tool.exists():
+        tool = self._get_portal_tool(tool_id)
+        if not tool:
             return request.redirect('/my/tools')
 
         # Record pager (prev/next)
@@ -129,7 +138,7 @@ class ToolBorrowPortal(CustomerPortal):
             'tool': {'label': _('Tool'), 'order': 'tool_id'},
             'state': {'label': _('Status'), 'order': 'state'},
         }
-        if not sortby:
+        if sortby not in searchbar_sortings:
             sortby = 'date'
         order = searchbar_sortings[sortby]['order']
 
@@ -141,7 +150,7 @@ class ToolBorrowPortal(CustomerPortal):
             'borrowed': {'label': _('Borrowed'), 'domain': [('state', '=', 'borrowed')]},
             'returned': {'label': _('Returned'), 'domain': [('state', '=', 'returned')]},
         }
-        if not filterby:
+        if filterby not in searchbar_filters:
             filterby = 'all'
         domain += searchbar_filters[filterby]['domain']
 
@@ -219,13 +228,13 @@ class ToolBorrowPortal(CustomerPortal):
 
     @http.route(['/my/tools/<int:tool_id>/request'], type='http', auth='user', website=True, methods=['POST'])
     def portal_request_tool(self, tool_id, **kw):
-        tool = request.env['tool.tool'].browse(tool_id)
-        if not tool.exists() or tool.state != 'available':
+        tool = self._get_portal_tool(tool_id)
+        if not tool or tool.state != 'available':
             return request.redirect('/my/tools')
 
         # Create loan request
         loan = request.env['tool.loan'].create({
-            'tool_id': tool_id,
+            'tool_id': tool.id,
             'user_id': request.env.user.id,
             'notes': kw.get('notes', ''),
         })

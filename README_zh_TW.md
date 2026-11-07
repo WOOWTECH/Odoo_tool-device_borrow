@@ -24,7 +24,7 @@
   <img src="https://img.shields.io/badge/Odoo-18.0-purple?logo=odoo" alt="Odoo 18"/>
   <img src="https://img.shields.io/badge/Python-3.10+-blue?logo=python" alt="Python 3.10+"/>
   <img src="https://img.shields.io/badge/License-LGPL--3-green" alt="License"/>
-  <img src="https://img.shields.io/badge/版本-1.3.0-orange" alt="Version"/>
+  <img src="https://img.shields.io/badge/版本-1.3.2-orange" alt="Version"/>
   <img src="https://img.shields.io/badge/PostgreSQL-14+-blue?logo=postgresql" alt="PostgreSQL"/>
 </p>
 
@@ -40,7 +40,7 @@
 | 借用缺乏審批流程 | 多階段工作流程：草稿 → 待審核 → 已批准 → 已借出 → 已歸還（或已拒絕） |
 | 管理者缺乏整體掌握度 | 依類別組織，看板儀表板顯示各類別工具數量與借用數量 |
 | 入口網站使用者無法自助操作 | 品牌化入口頁面，使用者可直接瀏覽工具並提交借用請求 |
-| 權限控管過於粗糙 | 精細的二層權限模型：一般使用者（唯讀）vs 設備管理者（完整控制） |
+| 權限控管過於粗糙 | 二層權限模型：人人可申請，只有設備管理者能審核與設定；流程欄位由 ORM 把關 |
 
 ---
 
@@ -53,7 +53,7 @@
 - **一鍵切換狀態** — 表單上的「設為維護中」/「設為可借用」按鈕
 - **類別管理** — 依類別分組，支援看板與列表檢視
 - **動態屬性** — 透過 `PropertiesDefinition` 為各類別定義自訂欄位
-- **入口使用者指派** — 控制哪些入口使用者可以查看與借用各工具
+- **入口使用者清單** — 記錄工具預定給哪些入口使用者（`portal_user_ids`；僅供參考，不是存取篩選）
 
 ### 借用流程
 - **完整生命週期** — 草稿 → 待審核 → 已批准 → 已借出 → 已歸還（或已拒絕）
@@ -64,15 +64,15 @@
 
 ### 入口網站自助服務
 - **設備中心** — 品牌化入口頁面，包含「設備工具」與「我的借用」卡片
-- **工具瀏覽** — 入口使用者可查看已指派的工具
+- **工具瀏覽** — 入口與內部使用者可瀏覽所有啟用中的工具
 - **借用申請** — 直接從入口網站提交借用請求
 - **借用追蹤** — 從入口網站查看借用狀態與歷史
 
 ### 存取控制
-- **一般使用者** — 唯讀存取所有工具；可建立與管理自己的借用請求
-- **設備管理者** — 工具、類別、階段完整 CRUD；審核/拒絕借用
-- **入口使用者** — 透過入口網站瀏覽指定工具與管理自己的借用請求
-- **後台限制** — 非管理者使用者無法透過直接 URL 存取後台選單
+- **一般使用者** — 唯讀存取所有工具；可建立、送出、撤回自己的借用請求
+- **設備管理者**（`tool_borrow.group_tool_manager`）— 工具、類別、階段與借用完整 CRUD；核准、拒絕、確認取件／歸還
+- **入口使用者** — 透過入口網站瀏覽啟用中的工具，並建立、送出、撤回自己的請求
+- **流程欄位由 ORM 把關** — 只有設備管理者能設定借用的狀態、核准資訊與日期，或替別人建立借用
 
 ---
 
@@ -125,20 +125,23 @@ erDiagram
     tool_tool {
         int id PK
         char name "工具名稱"
-        char code "自動產生（TL-XXX）"
+        char code "唯一編號（必填）"
         int category_id FK
         int stage_id FK
-        selection state "可借用 / 不可借用 / 維護中"
+        selection state "可借用 / 已借出 / 維護中（計算）"
+        int current_loan_id FK
         int current_borrower_id FK
-        many2many allowed_user_ids
+        many2many portal_user_ids "僅供參考"
     }
 
     tool_loan {
         int id PK
         int tool_id FK
-        int borrower_id FK
+        int user_id FK "借用人"
         selection state "草稿 / 待審核 / 已批准 / 已拒絕 / 已借出 / 已歸還"
         datetime request_date
+        datetime approved_date
+        int approved_by FK
         datetime borrow_date
         datetime return_date
         text notes
@@ -154,11 +157,13 @@ erDiagram
 ```mermaid
 stateDiagram-v2
     [*] --> 草稿 : 使用者建立請求
-    草稿 --> 待審核 : 提交審批
+    草稿 --> 待審核 : 送出審核（借用人或管理者）
+    待審核 --> 草稿 : 撤回（借用人或管理者）
     待審核 --> 已批准 : 管理者核准
     待審核 --> 已拒絕 : 管理者拒絕
-    已批准 --> 已借出 : 確認取件
-    已借出 --> 已歸還 : 確認歸還
+    已拒絕 --> 草稿 : 管理者重設
+    已批准 --> 已借出 : 管理者確認取件
+    已借出 --> 已歸還 : 管理者確認歸還
     已拒絕 --> [*]
     已歸還 --> [*]
 ```
@@ -172,66 +177,65 @@ sequenceDiagram
     participant 後台系統
     participant 管理者
 
-    使用者->>入口網站: 瀏覽可用工具
-    入口網站->>後台系統: GET /my/equipment
-    後台系統-->>入口網站: 工具清單
+    使用者->>入口網站: 瀏覽工具
+    入口網站->>後台系統: GET /my/tools
+    後台系統-->>入口網站: 啟用中的工具
     使用者->>入口網站: 提交借用請求
-    入口網站->>後台系統: POST /my/equipment/{id}/borrow
-    後台系統-->>後台系統: 建立 tool.loan（state=pending）
-    後台系統-->>管理者: 透過討論串通知
-    管理者->>後台系統: 核准請求
-    後台系統-->>後台系統: state → approved，工具 → 不可借用
-    管理者->>後台系統: 確認取件
-    後台系統-->>後台系統: state → borrowed
+    入口網站->>後台系統: POST /my/tools/{id}/request
+    後台系統-->>後台系統: 建立 tool.loan（草稿、借用人＝目前使用者），action_submit → pending
+    後台系統-->>管理者: 出現在「借用請求」清單（討論串追蹤）
+    管理者->>後台系統: 核准請求（action_approve）
+    後台系統-->>後台系統: state → approved
+    管理者->>後台系統: 確認取件（action_confirm_borrow）
+    後台系統-->>後台系統: state → borrowed，工具 → 已借出
     使用者->>入口網站: 歸還工具
-    管理者->>後台系統: 確認歸還
+    管理者->>後台系統: 確認歸還（action_confirm_return）
     後台系統-->>後台系統: state → returned，工具 → 可借用
 ```
 
 ### 目錄結構
 
 ```
-tool_borrow/
-├── __init__.py                  # 模組初始化 + post_init_hook
-├── __manifest__.py              # v18.0.1.3.0，相依：base、mail、portal
-├── controllers/
-│   ├── action.py                # 後台動作存取控制
-│   └── portal.py                # 入口路由（/my/equipment、/my/loans）
-├── data/
-│   ├── tool_category_data.xml   # 預設類別
-│   ├── tool_sequence_data.xml   # 自動編號序列（TL-XXX）
-│   └── tool_stage_data.xml      # 預設階段
-├── i18n/
-│   └── zh_TW.po                 # 繁體中文翻譯
-├── migrations/
-│   ├── 18.0.1.1.0/
-│   └── 18.0.1.2.0/
-├── models/
-│   ├── ir_http.py               # 入口 URL 規則
-│   ├── res_users.py             # 使用者 tool_borrow_access 欄位
-│   ├── tool_loan.py             # 借用請求模型 + 流程
-│   └── tool_tool.py             # 階段、類別、工具模型
-├── security/
-│   ├── ir.model.access.csv      # ACL 規則
-│   └── tool_borrow_security.xml # 群組 + 記錄規則
-├── static/
-│   ├── description/
-│   │   └── icon.png             # 模組圖示（橘色扳手）
-│   └── src/
-│       ├── css/portal_brand.css # 入口樣式
-│       └── img/                 # 入口 SVG 圖示
-├── tests/                       # 5 套測試
-│   ├── test_round1_models.py
-│   ├── test_round2_security.py
-│   ├── test_round3_http.py
-│   ├── test_round4_browser.py
-│   └── test_round5_supplementary.py
-└── views/
-    ├── menu_views.xml           # 應用程式選單
-    ├── portal_templates.xml     # 入口頁面
-    ├── res_users_views.xml      # 使用者表單擴充
-    ├── tool_loan_views.xml      # 借用檢視
-    └── tool_tool_views.xml      # 工具/類別/階段檢視
+Odoo_tool-device_borrow/
+├── tool_borrow/                     # Odoo 模組本體（部署時只需要這個目錄）
+│   ├── __init__.py
+│   ├── __manifest__.py              # v18.0.1.3.2，相依：base、mail、portal
+│   ├── controllers/
+│   │   └── portal.py                # /my/equipment、/my/tools、/my/loans、POST /my/tools/<id>/request
+│   ├── data/
+│   │   └── tool_stage_data.xml      # 預設階段＋預設類別
+│   ├── i18n/
+│   │   └── zh_TW.po                 # 繁體中文翻譯
+│   ├── models/
+│   │   ├── ir_http.py               # 入口頁面依使用者語言顯示
+│   │   ├── tool_loan.py             # 借用模型、流程動作、流程欄位的 ORM 把關
+│   │   └── tool_tool.py             # 階段、類別、工具、屬性模型
+│   ├── security/
+│   │   ├── ir.model.access.csv      # ACL 規則
+│   │   └── tool_borrow_security.xml # 設備管理者群組＋記錄規則
+│   ├── static/
+│   │   ├── description/icon.png     # 模組圖示（橘色扳手）
+│   │   └── src/img/                 # 入口 SVG 圖示
+│   ├── tests/                       # Odoo 回歸測試（--test-enable）
+│   │   ├── common.py
+│   │   ├── test_loan_workflow_security.py
+│   │   └── test_portal_hardening.py
+│   └── views/
+│       ├── menu_views.xml           # 應用程式選單
+│       ├── portal_templates.xml     # 入口頁面
+│       ├── res_users_views.xml      # 移除舊的使用者表單「工具借用」分頁
+│       ├── tool_loan_views.xml      # 借用檢視
+│       └── tool_tool_views.xml      # 工具/類別/階段檢視
+├── scripts/
+│   └── e2e/                         # 對執行中站台跑的外部 E2E 腳本（非 Odoo 測試；帳密讀環境變數）
+│       ├── e2e_config.py
+│       ├── e2e_round1_models.py     # 模型 CRUD、約束、計算欄位（XML-RPC）
+│       ├── e2e_round2_security.py   # ACL、記錄規則、流程欄位把關（XML-RPC）
+│       ├── e2e_round3_http.py       # 入口 HTTP 路由（requests）
+│       ├── e2e_round4_browser.py    # 入口 UI（Playwright）
+│       ├── e2e_round5_supplementary.py
+│       └── screenshots/
+└── docs/
 ```
 
 ---
@@ -296,7 +300,7 @@ tool_borrow/
 
 ### 後台 — 使用者權限設定
 
-透過使用者表單上的 `tool_borrow_access` 選擇欄位，為每位使用者設定工具借用存取等級。
+設備管理者改由 Odoo 原生的使用者表單 **存取權限** 分頁指派（**Tool Borrow → Equipment Manager**）。舊的 `tool_borrow_access` 選擇欄位與自訂的使用者表單分頁都已移除；下圖是移除前的畫面。
 
 <p align="center">
   <img src="docs/screenshots/user_access.png" alt="使用者權限設定" width="720"/>
@@ -375,10 +379,7 @@ podman run -d \
 
 ### 步驟三：驗證安裝
 
-安裝完成後，**工具借用** 應用程式（扳手圖示）會出現在主選單中。安裝後鉤子會自動：
-
-- 將後台選單設為僅設備管理者可見
-- 將管理員使用者設為工具借用管理員
+安裝完成後，**工具借用** 應用程式（扳手圖示）會出現在主選單中。安裝時不會自動把任何人設為設備管理者：請到 **設定 → 使用者 → 存取權限 → Tool Borrow**，把負責審核的人（需要的話包含管理員）加入 **Equipment Manager**。
 
 ---
 
@@ -404,19 +405,17 @@ podman run -d \
 
 ### 3. 使用者權限
 
-前往 **設定 → 使用者** 設定 **工具借用存取** 欄位：
+權限依 Odoo 群組決定，沒有逐人設定的存取欄位。到 **設定 → 使用者 → 存取權限 → Tool Borrow** 把審核者加入 **Equipment Manager**：
 
-| 等級 | 後台存取 | 入口存取 | 說明 |
-|------|----------|----------|------|
-| *（空白）* | 無 | 無 | 無法存取工具借用功能 |
-| 使用者 | 唯讀工具、管理自己的借用 | — | 一般內部使用者 |
-| 管理者 | 完整 CRUD、審批借用 | — | 設備管理者 |
-| 管理員 | 完整 CRUD + 階段/類別設定 | — | 系統管理員 |
-| 入口 | — | 瀏覽工具、提交請求 | 外部入口使用者 |
+| 使用者類型 | 後台 | 入口 | 借用 |
+|-----------|------|------|------|
+| 入口使用者（`base.group_portal`） | — | 瀏覽啟用中的工具、提出申請 | 自己的借用：建立（草稿）、送出、撤回待審請求 |
+| 內部使用者（`base.group_user`） | 工具（唯讀）、我的借用 | 同入口使用者 | 自己的借用：建立（草稿）、送出、撤回待審請求 |
+| 設備管理者（`tool_borrow.group_tool_manager`） | 工具、借用、階段、類別完整 CRUD | 同入口使用者 | 所有借用：核准、拒絕、確認取件／歸還、把已拒絕重設為草稿、刪除 |
 
 ### 4. 入口使用者
 
-在各工具的表單檢視中，於 **入口網站使用者** 欄位指派入口使用者。僅被指派的入口使用者能從入口網站查看與申請該工具。
+每件工具都有 **入口網站使用者** 欄位（`portal_user_ids`），用來記錄這件工具預定給哪些入口使用者。這個欄位僅供參考：目前入口網站會把所有啟用中的工具列給每位登入的使用者，記錄規則也不會依它篩選。
 
 ---
 
@@ -428,45 +427,69 @@ podman run -d \
 ┌──────────────────────────────────────────────────────────────┐
 │                   tool_borrow 存取控制                         │
 ├───────────────────┬──────────────────────────────────────────┤
-│  入口使用者        │  瀏覽已指派的工具、提交請求              │
-│  (group_portal)   │  唯讀工具、僅限自己的借用                │
+│  入口使用者        │  讀取所有工具／階段／類別                │
+│  (group_portal)   │  自己的借用：建立草稿、送出、撤回待審，  │
+│                   │  不能刪除                                │
 ├───────────────────┼──────────────────────────────────────────┤
-│  一般使用者        │  唯讀所有工具                            │
-│  (group_user)     │  CRUD 自己的借用請求                     │
+│  一般使用者        │  同入口使用者（後台：工具、我的借用）    │
+│  (group_user)     │                                          │
 ├───────────────────┼──────────────────────────────────────────┤
-│  設備管理者        │  完整 CRUD：工具、類別、借用             │
-│ (group_tool_mgr)  │  審核/拒絕所有借用請求                   │
-├───────────────────┼──────────────────────────────────────────┤
-│  管理員            │  以上全部 + 階段設定                     │
-│ (group_tool_adm)  │  + 使用者存取等級管理                    │
+│  設備管理者        │  完整 CRUD：工具、階段、類別、屬性、     │
+│ (group_tool_      │  所有借用；核准／拒絕、確認取件／歸還、  │
+│  manager)         │  重設已拒絕的請求                        │
 └───────────────────┴──────────────────────────────────────────┘
 ```
 
 ### 安全特性
 
-- **記錄規則** 按模型執行列層級存取控制
-- **後台選單限制** — 非管理者使用者無法看到工具借用選單
-- **動作層級防護** — 未授權使用者透過 `controllers/action.py` 阻擋直接 URL 存取後台動作
-- **入口隔離** — 入口使用者僅能讀取工具並管理自己的借用
-- **安裝後鉤子** 在模組安裝後強化預設權限
+- **記錄規則** — 非管理者只看得到、改得到自己的借用
+- **流程欄位由 ORM 把關** — `state`、`approved_by`、`approved_date`、`borrow_date`、`return_date`、`request_date` 只有設備管理者能在建立或寫入時設定（流程動作會先檢查狀態轉移，再以 superuser 寫入）。非管理者建立的借用一律固定為目前使用者的草稿，`default_*` context 或 `ir.default` 都無法偽造核准；工具與借用人只能在草稿時修改
+- **流程動作** — 核准／拒絕／確認取件／確認歸還需要設備管理者；送出與撤回限借用人本人（或管理者）；只有管理者能重設已拒絕的請求
+- **入口加固** — 已封存的工具不能檢視或申請；未知的 `sortby`／`filterby` 會退回預設值
+- **後台選單** — 「借用請求」與「設定」只顯示給設備管理者
 
 ---
 
 ## 測試
 
-模組包含 5 套完整測試：
+### 模組測試（Odoo 測試執行器）
 
-| 測試套件 | 檔案 | 重點 |
-|----------|------|------|
-| 第一輪 | `test_round1_models.py` | 模型 CRUD、約束、計算欄位 |
-| 第二輪 | `test_round2_security.py` | 權限規則、群組存取 |
-| 第三輪 | `test_round3_http.py` | 入口 HTTP 端點、存取控制 |
-| 第四輪 | `test_round4_browser.py` | 瀏覽器 UI 整合測試 |
-| 第五輪 | `test_round5_supplementary.py` | 邊緣案例、資料完整性 |
+`tool_borrow/tests/` 是隨模組出貨的回歸測試（`TransactionCase` 測借用流程與欄位把關，`HttpCase` 測入口路由）：
 
-### Playwright UI 測試
+```bash
+odoo -d <test_db> -i tool_borrow --test-enable --test-tags /tool_borrow --stop-after-init
+```
 
-7 項 Playwright 瀏覽器測試驗證最近變更後的 UI 行為：
+### 外部 E2E 腳本（`scripts/e2e/`）
+
+`scripts/e2e/e2e_round*.py` 透過 XML-RPC、HTTP 與 Playwright 操作**執行中**的站台。它們不屬於模組（`tool_borrow/` 底下沒有任何地方引用，`--test-enable` 也不會載入），而且會自行建立、刪除測試用的工具與借用，請對可丟棄的資料庫執行。
+
+| 腳本 | 重點 | 需要的角色 |
+|------|------|-----------|
+| `e2e_round1_models.py` | 模型 CRUD、約束、計算欄位 | admin |
+| `e2e_round2_security.py` | ACL、記錄規則、流程欄位把關 | admin、manager、user、portal、portal2 |
+| `e2e_round3_http.py` | 入口 HTTP 路由、CSRF、分頁、排序／篩選 | admin、user、portal、portal2 |
+| `e2e_round4_browser.py` | 入口 UI、RWD、端到端流程、XSS（Playwright） | admin、portal、portal2、noaccess |
+| `e2e_round5_supplementary.py` | 邊緣案例、各角色 ACL、計數 | admin、manager、user、portal、portal2 |
+
+目標資料庫的前提：已安裝 `tool_borrow`；負責建立與清理資料的 admin 帳號要在 **Equipment Manager** 群組（否則腳本會停止；設 `TB_E2E_GRANT_ADMIN_MANAGER=1` 則由腳本加入）；其他角色的使用者已存在（預設 `testmanager` 內部＋設備管理者、`testuser` 內部、`portal` 與 `xiaoming` 入口，另有第四輪首頁檢查用的 `noaccess`）。因為非管理者已不能直接寫流程欄位，所有狀態變更都走 `action_*` 方法。
+
+帳密只從環境變數讀取，任何密碼都沒有預設值（見 `scripts/e2e/e2e_config.py`）：
+
+```bash
+export TB_E2E_URL=http://localhost:8069 TB_E2E_DB=tool_borrow_e2e
+export TB_E2E_ADMIN_PASSWORD=...        # TB_E2E_ADMIN_LOGIN 預設 admin
+export TB_E2E_MANAGER_PASSWORD=... TB_E2E_USER_PASSWORD=...
+export TB_E2E_PORTAL_PASSWORD=... TB_E2E_PORTAL2_PASSWORD=... TB_E2E_NOACCESS_PASSWORD=...
+# 選用：TB_E2E_<ROLE>_LOGIN 改用其他帳號、TB_E2E_SCREENSHOT_DIR 指定第四輪截圖目錄
+python3 scripts/e2e/e2e_round2_security.py
+```
+
+第三、五輪需要 `requests`；第四輪需要 `playwright`（`pip install playwright && playwright install chromium`）。
+
+### Playwright UI 檢查（v1.3.0）
+
+v1.3.0 變更後以 7 項 Playwright 瀏覽器檢查驗證 UI：
 
 | # | 測試項目 | 結果 |
 |---|---------|------|
@@ -481,6 +504,13 @@ podman run -d \
 ---
 
 ## 版本紀錄
+
+### v1.3.2 (2026-11)
+
+- `tool.loan` 流程欄位（狀態、核准、日期）改由 ORM 把關：只有設備管理者能設定，或替別人建立借用；其他人建立的借用一律固定為草稿
+- 借用人可送出、撤回自己的請求；重設已拒絕的請求限管理者
+- 入口：已封存的工具不能檢視或申請；未知的排序／篩選值不再報錯
+- 新增模組回歸測試 `tool_borrow/tests/`；舊的 XML-RPC 測試套件搬到 `scripts/e2e/`，帳密改讀環境變數
 
 ### v1.3.0 (2026-05)
 
