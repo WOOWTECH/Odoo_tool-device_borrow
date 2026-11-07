@@ -1,5 +1,19 @@
 from odoo import api, fields, models, _
-from odoo.exceptions import UserError, ValidationError
+from odoo.exceptions import AccessError, UserError, ValidationError
+
+# Workflow / approval fields that only Equipment Managers (or sudo code
+# running inside the workflow actions) may set.  Regular internal and portal
+# users have write/create ACL on their own loans (needed for drafts and
+# notes), so these fields must be guarded at the ORM level -- the ``readonly``
+# attribute is a UI hint only and is not enforced by ``write()``.
+PROTECTED_LOAN_FIELDS = (
+    'state',
+    'approved_by',
+    'approved_date',
+    'borrow_date',
+    'return_date',
+    'request_date',
+)
 
 
 class ToolLoan(models.Model):
@@ -29,14 +43,14 @@ class ToolLoan(models.Model):
         ('rejected', 'Rejected'),
         ('borrowed', 'Borrowed'),
         ('returned', 'Returned'),
-    ], string='Status', default='draft', required=True, tracking=True)
+    ], string='Status', default='draft', required=True, tracking=True, copy=False)
 
-    request_date = fields.Datetime(string='Request Date', readonly=True)
-    approved_date = fields.Datetime(string='Approved Date', readonly=True)
-    borrow_date = fields.Datetime(string='Borrow Date', readonly=True)
-    return_date = fields.Datetime(string='Return Date', readonly=True)
+    request_date = fields.Datetime(string='Request Date', readonly=True, copy=False)
+    approved_date = fields.Datetime(string='Approved Date', readonly=True, copy=False)
+    borrow_date = fields.Datetime(string='Borrow Date', readonly=True, copy=False)
+    return_date = fields.Datetime(string='Return Date', readonly=True, copy=False)
 
-    approved_by = fields.Many2one('res.users', string='Approved By', readonly=True)
+    approved_by = fields.Many2one('res.users', string='Approved By', readonly=True, copy=False)
     notes = fields.Text(string='Notes')
 
     def _check_manager_access(self):
@@ -44,14 +58,29 @@ class ToolLoan(models.Model):
         if not self.env.user.has_group('tool_borrow.group_tool_manager'):
             raise UserError(_('Only Tool Managers can perform this action.'))
 
+    def _is_loan_manager(self):
+        """True for superuser-mode code and Equipment Managers."""
+        return self.env.su or self.env.user.has_group('tool_borrow.group_tool_manager')
+
+    def _check_borrower_or_manager(self):
+        """Only the borrower himself (or a manager) may drive his own request."""
+        if self._is_loan_manager():
+            return
+        for loan in self:
+            if loan.user_id != self.env.user:
+                raise AccessError(_('You can only manage your own loan requests.'))
+
     def action_submit(self):
         """Submit loan request for approval"""
         self.ensure_one()
+        self._check_borrower_or_manager()
         if self.state != 'draft':
             raise UserError(_('Only draft requests can be submitted.'))
-        if self.tool_id.state != 'available':
+        if not self.tool_id.active or self.tool_id.state != 'available':
             raise UserError(_('This tool is not available for borrowing.'))
-        self.write({
+        # The transition has been validated above; write the protected
+        # workflow fields in sudo so regular users cannot set them directly.
+        self.sudo().write({
             'state': 'pending',
             'request_date': fields.Datetime.now(),
         })
@@ -107,11 +136,15 @@ class ToolLoan(models.Model):
         # Note: tool.state is computed from current_loan_id.state, no direct assignment needed
 
     def action_reset_to_draft(self):
-        """Reset rejected request to draft"""
+        """Reset a pending (borrower or manager) or rejected (manager only)
+        request back to draft."""
         self.ensure_one()
+        self._check_borrower_or_manager()
         if self.state not in ('rejected', 'pending'):
             raise UserError(_('Only rejected or pending requests can be reset to draft.'))
-        self.write({
+        if self.state == 'rejected' and not self._is_loan_manager():
+            raise UserError(_('Only Tool Managers can reset a rejected request to draft.'))
+        self.sudo().write({
             'state': 'draft',
             'request_date': False,
             'approved_date': False,
@@ -149,11 +182,70 @@ class ToolLoan(models.Model):
     # ------------------------------------------------------------------
     # CRUD
     # ------------------------------------------------------------------
+    def _changed_fields(self, vals, fnames):
+        """Return the fields of ``fnames`` whose value in ``vals`` differs
+        from the current value of at least one record of ``self`` (so that a
+        client re-sending an unchanged value is not rejected)."""
+        changed = []
+        for fname in fnames:
+            if fname not in vals:
+                continue
+            field = self._fields[fname]
+            for loan in self:
+                new = field.convert_to_cache(vals[fname], loan)
+                old = field.convert_to_cache(loan[fname], loan)
+                if new != old:
+                    changed.append(fname)
+                    break
+        return changed
+
     @api.model_create_multi
     def create(self, vals_list):
+        if not self._is_loan_manager():
+            for vals in vals_list:
+                if vals.get('state', 'draft') != 'draft':
+                    raise AccessError(_(
+                        'Only Tool Managers can create loan requests in a '
+                        'state other than draft.'))
+                forbidden = [
+                    fname for fname in PROTECTED_LOAN_FIELDS
+                    if fname != 'state' and vals.get(fname)
+                ]
+                if forbidden:
+                    raise AccessError(_(
+                        'Only Tool Managers can set the following fields: '
+                        '%(fields)s', fields=', '.join(forbidden)))
+                user_id = vals.get('user_id', self.env.uid)
+                if user_id and user_id != self.env.uid:
+                    raise AccessError(_(
+                        'You can only create loan requests for yourself.'))
+                vals['state'] = 'draft'
         for vals in vals_list:
             if vals.get('tool_id'):
                 tool = self.env['tool.tool'].browse(vals['tool_id'])
-                if tool.state != 'available':
+                if not tool.active or tool.state != 'available':
                     raise UserError(_('Cannot create loan request for unavailable tool.'))
         return super().create(vals_list)
+
+    def write(self, vals):
+        if not self._is_loan_manager():
+            forbidden = self._changed_fields(vals, PROTECTED_LOAN_FIELDS)
+            if forbidden:
+                raise AccessError(_(
+                    'Only Tool Managers can change the following fields: '
+                    '%(fields)s', fields=', '.join(forbidden)))
+            relinked = self._changed_fields(vals, ('tool_id', 'user_id'))
+            if relinked:
+                if any(loan.state != 'draft' for loan in self):
+                    raise AccessError(_(
+                        'The tool and borrower can only be changed while the '
+                        'request is a draft.'))
+                if 'user_id' in relinked and vals['user_id'] != self.env.uid:
+                    raise AccessError(_(
+                        'You can only create loan requests for yourself.'))
+                if 'tool_id' in relinked:
+                    tool = self.env['tool.tool'].browse(vals['tool_id'])
+                    if not tool.active or tool.state != 'available':
+                        raise UserError(_(
+                            'Cannot create loan request for unavailable tool.'))
+        return super().write(vals)
