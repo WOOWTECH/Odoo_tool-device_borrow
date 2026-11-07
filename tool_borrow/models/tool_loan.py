@@ -149,6 +149,8 @@ class ToolLoan(models.Model):
             'request_date': False,
             'approved_date': False,
             'approved_by': False,
+            'borrow_date': False,
+            'return_date': False,
         })
 
     # ------------------------------------------------------------------
@@ -219,7 +221,14 @@ class ToolLoan(models.Model):
                 if user_id and user_id != self.env.uid:
                     raise AccessError(_(
                         'You can only create loan requests for yourself.'))
-                vals['state'] = 'draft'
+                # Pin every protected field (and the borrower) explicitly so
+                # that no default source -- ``default_<field>`` context keys
+                # sent over RPC or user-scoped ``ir.default`` rows, both
+                # applied by ``default_get`` for missing keys -- can fill
+                # them in behind the checks above.
+                for fname in PROTECTED_LOAN_FIELDS:
+                    vals[fname] = 'draft' if fname == 'state' else False
+                vals['user_id'] = self.env.uid
         for vals in vals_list:
             if vals.get('tool_id'):
                 tool = self.env['tool.tool'].browse(vals['tool_id'])

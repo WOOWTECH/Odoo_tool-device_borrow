@@ -103,7 +103,7 @@ class TestPortalHardening(ToolBorrowTestMixin, HttpCase):
     def test_rpc_cannot_forge_borrowed_loan(self):
         self.authenticate('tb_portal', 'tb_portal')
         with self.assertLogs('odoo.http', level='WARNING'):
-            with self.assertRaises(Exception):
+            with self.assertRaisesRegex(Exception, 'odoo.exceptions.AccessError'):
                 self.make_jsonrpc_request('/web/dataset/call_kw', {
                     'model': 'tool.loan',
                     'method': 'create',
@@ -117,3 +117,42 @@ class TestPortalHardening(ToolBorrowTestMixin, HttpCase):
                 })
         self.assertFalse(self._loans(self.portal_user))
         self.assertEqual(self.tool.state, 'available')
+
+    def test_rpc_context_defaults_cannot_forge_approval(self):
+        """default_<field> keys in the call_kw context must not fill the
+        protected workflow fields (d3da922fb4ba, round 2)."""
+        self.authenticate('tb_portal', 'tb_portal')
+        now = '2026-01-01 08:00:00'
+        loan_id = self.make_jsonrpc_request('/web/dataset/call_kw', {
+            'model': 'tool.loan',
+            'method': 'create',
+            'args': [{'tool_id': self.tool.id}],
+            'kwargs': {'context': {
+                'default_state': 'borrowed',
+                'default_approved_by': self.manager.id,
+                'default_approved_date': now,
+                'default_borrow_date': now,
+                'default_return_date': now,
+                'default_request_date': now,
+            }},
+        })
+        loan = self.env['tool.loan'].browse(loan_id)
+        self.assertEqual(loan.user_id, self.portal_user)
+        self.assertEqual(loan.state, 'draft')
+        for fname in ('approved_by', 'approved_date', 'borrow_date',
+                      'return_date', 'request_date'):
+            self.assertFalse(loan[fname], '%s must not be forged' % fname)
+        self.make_jsonrpc_request('/web/dataset/call_kw', {
+            'model': 'tool.loan',
+            'method': 'action_submit',
+            'args': [[loan_id]],
+            'kwargs': {},
+        })
+        loan.invalidate_recordset()
+        self.assertEqual(loan.state, 'pending')
+        self.assertFalse(loan.approved_by)
+        self.assertFalse(loan.borrow_date)
+        # The portal detail page must not show a forged approver.
+        res = self.url_open('/my/loans/%d' % loan_id)
+        self.assertEqual(res.status_code, 200)
+        self.assertNotIn('TB Manager', res.text)

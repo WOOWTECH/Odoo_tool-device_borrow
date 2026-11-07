@@ -212,3 +212,71 @@ class TestLoanWorkflowSecurity(ToolBorrowTestMixin, TransactionCase):
         with self.assertRaises(UserError):
             loan.action_submit()
         self.assertEqual(loan.state, 'draft')
+
+    # ------------------------------------------------------------------
+    # create(): default sources cannot fill protected fields
+    # (d3da922fb4ba, round 2 -- default_<field> context / ir.default)
+    # ------------------------------------------------------------------
+    def _forged_defaults_context(self):
+        now = fields.Datetime.to_string(fields.Datetime.now())
+        return {
+            'default_state': 'borrowed',
+            'default_approved_by': self.manager.id,
+            'default_approved_date': now,
+            'default_borrow_date': now,
+            'default_return_date': now,
+            'default_request_date': now,
+        }
+
+    def _assert_clean_draft(self, loan, user):
+        self.assertEqual(loan.state, 'draft')
+        self.assertEqual(loan.user_id, user)
+        for fname in ('approved_by', 'approved_date', 'borrow_date',
+                      'return_date', 'request_date'):
+            self.assertFalse(loan[fname], '%s must not be forged' % fname)
+
+    def _assert_clean_after_submit(self, loan):
+        loan.action_submit()
+        self.assertEqual(loan.state, 'pending')
+        self.assertTrue(loan.request_date)
+        for fname in ('approved_by', 'approved_date', 'borrow_date',
+                      'return_date'):
+            self.assertFalse(loan[fname], '%s must not be forged' % fname)
+
+    def test_context_defaults_cannot_forge_protected_fields(self):
+        for user in (self.portal_user, self.internal_user):
+            with self.subTest(user=user.login):
+                loan = self.env['tool.loan'].with_user(user).with_context(
+                    **self._forged_defaults_context()
+                ).create({'tool_id': self.tool.id})
+                self._assert_clean_draft(loan, user)
+                self._assert_clean_after_submit(loan)
+                loan.action_reset_to_draft()
+                loan.sudo().unlink()
+        self.assertEqual(self.tool.state, 'available')
+
+    def test_context_default_borrower_is_ignored_for_non_manager(self):
+        loan = self.env['tool.loan'].with_user(self.internal_user).with_context(
+            default_user_id=self.portal_user.id,
+        ).create({'tool_id': self.tool.id})
+        self.assertEqual(loan.user_id, self.internal_user)
+
+    def test_user_scoped_ir_default_cannot_forge_protected_fields(self):
+        IrDefault = self.env['ir.default'].with_user(self.internal_user)
+        now = fields.Datetime.to_string(fields.Datetime.now())
+        IrDefault.set('tool.loan', 'approved_by', self.manager.id, user_id=True)
+        IrDefault.set('tool.loan', 'borrow_date', now, user_id=True)
+        IrDefault.set('tool.loan', 'state', 'borrowed', user_id=True)
+        loan = self.env['tool.loan'].with_user(self.internal_user).create({
+            'tool_id': self.tool.id,
+        })
+        self._assert_clean_draft(loan, self.internal_user)
+        self._assert_clean_after_submit(loan)
+
+    def test_manager_context_defaults_still_apply(self):
+        loan = self.env['tool.loan'].with_user(self.manager).with_context(
+            default_user_id=self.portal_user.id,
+            default_state='pending',
+        ).create({'tool_id': self.tool.id})
+        self.assertEqual(loan.user_id, self.portal_user)
+        self.assertEqual(loan.state, 'pending')
